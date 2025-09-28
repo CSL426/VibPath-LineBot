@@ -1,0 +1,73 @@
+# This file specifies files that are intentionally untracked by gcloud
+.gcloudignore
+.git
+.gitignore
+README.md
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+.venv
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+
+# Documentation
+docs/
+*.md
+
+# Development files (不需要上傳到 Cloud Run)
+docker-compose.yml
+deploy.sh
+.env.example
+
+# Cloud and IDE specific
+.claude/
+
+# Other
+.dockerignore
+Procfile
+runtime.txt

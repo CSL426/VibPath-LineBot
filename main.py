@@ -11,10 +11,9 @@ from linebot.models import MessageEvent, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
 from linebot import AsyncLineBotApi, WebhookParser
-from multi_tool_agent.agent import (
-    get_weather,
-    get_current_time,
-)
+from multi_tool_agent.agent import get_weather
+from multi_tool_agent.utils.line_utils import set_line_bot_api, before_reply_display_loading_animation
+from linebot_ui.message_handler import MessageHandler
 from google.adk.agents import Agent
 
 # Import necessary session components
@@ -22,8 +21,7 @@ from google.adk.sessions import InMemorySessionService, Session
 from google.adk.runners import Runner
 from google.genai import types
 
-# OpenAI Agent configuration
-USE_VERTEX = os.getenv("GOOGLE_GENAI_USE_VERTEXAI") or "FALSE"
+# Google AI API configuration
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") or ""
 
 # LINE Bot configuration
@@ -37,18 +35,7 @@ if channel_secret is None:
 if channel_access_token is None:
     print("Specify ChannelAccessToken as environment variable.")
     sys.exit(1)
-if USE_VERTEX == "True":  # Check if USE_VERTEX is true as a string
-    GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
-    GOOGLE_CLOUD_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION")
-    if not GOOGLE_CLOUD_PROJECT:
-        raise ValueError(
-            "Please set GOOGLE_CLOUD_PROJECT via env var or code when USE_VERTEX is true."
-        )
-    if not GOOGLE_CLOUD_LOCATION:
-        raise ValueError(
-            "Please set GOOGLE_CLOUD_LOCATION via env var or code when USE_VERTEX is true."
-        )
-elif not GOOGLE_API_KEY:
+if not GOOGLE_API_KEY:
     raise ValueError("Please set GOOGLE_API_KEY via env var or code.")
 
 # Initialize the FastAPI app for LINEBot
@@ -58,13 +45,19 @@ async_http_client = AiohttpAsyncHttpClient(session)
 line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
 parser = WebhookParser(channel_secret)
 
+# Set LINE Bot API instance for utilities
+set_line_bot_api(line_bot_api)
+
+# Initialize message handler for Flex Messages
+message_handler = MessageHandler()
+
 # Initialize ADK client
 root_agent = Agent(
-    name="weather_time_agent",
+    name="weather_agent",
     model="gemini-2.0-flash",
-    description=("Agent to answer questions about the time and weather in a city."),
-    instruction=("I can answer your questions about the time and weather in a city."),
-    tools=[get_weather, get_current_time],
+    description="VibPath智能客服",
+    instruction="你是VibPath的智能客服，請用繁體中文回答",
+    tools=[get_weather],
 )
 print(f"Agent '{root_agent.name}' created.")
 
@@ -114,7 +107,51 @@ runner = Runner(
 print(f"Runner created for agent '{runner.agent.name}'.")
 
 
-@app.post("/")
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Cloud Run"""
+    return {"status": "healthy", "service": "linebot-adk"}
+
+
+@app.get("/")
+async def root():
+    """Root endpoint"""
+    return {"message": "LINE Bot ADK is running", "status": "active"}
+
+
+@app.post("/callback")
+async def generic_callback(request: Request):
+    """Generic callback endpoint for other web services"""
+    try:
+        # Get request body
+        body = await request.body()
+        headers = dict(request.headers)
+
+        # Log the callback for debugging
+        print(f"Received callback from: {headers.get('user-agent', 'Unknown')}")
+        print(f"Callback body: {body.decode('utf-8', errors='ignore')}")
+
+        # TODO: Add your callback processing logic here
+        # You can handle different services based on headers or body content
+
+        return {"status": "success", "message": "Callback received"}
+
+    except Exception as e:
+        print(f"Error processing callback: {str(e)}")
+        return {"status": "error", "message": "Failed to process callback"}
+
+
+@app.get("/callback")
+async def callback_info():
+    """Info about callback endpoint"""
+    return {
+        "message": "Generic callback endpoint",
+        "usage": "POST to this endpoint for web service callbacks",
+        "url": "/callback"
+    }
+
+
+@app.post("/webhook")
 async def handle_callback(request: Request):
     signature = request.headers["X-Line-Signature"]
 
@@ -137,9 +174,39 @@ async def handle_callback(request: Request):
             user_id = event.source.user_id
             print(f"Received message: {msg} from user: {user_id}")
 
-            # Use the user's prompt directly with the agent
-            response = await call_agent_async(msg, user_id)
-            reply_msg = TextSendMessage(text=response)
+            # Detect message type for appropriate handling
+            message_type = message_handler.detect_message_type(msg)
+
+            # Handle special commands without calling agent
+            if message_type == "menu":
+                reply_msg = message_handler.create_service_menu()
+                await line_bot_api.reply_message(event.reply_token, reply_msg)
+                continue
+            elif message_type == "help":
+                reply_msg = message_handler.create_help_message()
+                await line_bot_api.reply_message(event.reply_token, reply_msg)
+                continue
+
+            # Show loading animation while processing
+            try:
+                await before_reply_display_loading_animation(user_id, loading_seconds=60)
+            except Exception as e:
+                print(f"載入動畫顯示失敗: {e}")
+
+            # Use the agent for weather queries and general conversation
+            if message_type == "weather":
+                # For weather queries, we want to use agent but format as Flex Message
+                response = await call_agent_async(msg, user_id)
+
+                # Try to parse agent response and create Flex Message
+                # If agent returns weather data, format it nicely
+                # For now, fallback to text response
+                reply_msg = TextSendMessage(text=response)
+            else:
+                # General conversation with agent
+                response = await call_agent_async(msg, user_id)
+                reply_msg = TextSendMessage(text=response)
+
             await line_bot_api.reply_message(event.reply_token, reply_msg)
         elif event.message.type == "image":
             return "OK"
@@ -209,3 +276,11 @@ async def call_agent_async(query: str, user_id: str) -> str:
 
     print(f"<<< Agent Response: {final_response_text}")
     return final_response_text
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.getenv("PORT", 8080))
+    print(f"Starting server on port {port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)

@@ -1,177 +1,225 @@
-# LINE Bot with Google ADK (Agent SDK) and Google Gemini
+# VibPath 智能客服 LINE Bot
 
-## Project Background
+基於 Google ADK (Agent SDK) 和 Google Gemini 的智能客服 LINE Bot，專門提供天氣查詢服務並支援繁體中文對話。
 
-This project is a LINE bot that uses Google ADK (Agent SDK) and Google Gemini models to generate responses to text inputs. The bot can answer questions in Traditional Chinese and provide helpful information.
+## 🌟 功能特色
 
-## Screenshot
+- 🌤️ **即時天氣查詢** - 使用 wttr.in API 提供全球城市天氣資訊
+- 🤖 **智能對話** - 基於 Google Gemini 2.0 Flash 模型
+- ⚡ **等待動畫** - 處理請求時顯示「正在輸入」動畫
+- 🌐 **多語言支援** - 優化繁體中文回應
+- 🔧 **模組化架構** - 清晰的工具和代理分離
+- ☁️ **雲端部署** - 針對 Google Cloud Run 優化
 
-![image](https://github.com/user-attachments/assets/2bcbd827-0047-4a3a-8645-f8075d996c10)
-
-## Features
-
-- Text message processing using AI models (Google ADK or Google Gemini)
-- Support for function calling with custom tools
-- Integration with LINE Messaging API
-- Built with FastAPI for high-performance async processing
-- Containerized with Docker for easy deployment
-
-## Technologies Used
-
-- Python 3.9+
-- FastAPI
-- LINE Messaging API
-- Google ADK (Agent SDK)
-- Google Gemini API
-- Docker
-- Google Cloud Run (for deployment)
-
-## Setup
-
-1. Clone the repository to your local machine.
-2. Set the following environment variables:
-   - `ChannelSecret`: Your LINE channel secret
-   - `ChannelAccessToken`: Your LINE channel access token
-   - `GEMINI_API_KEY`: Your Google Gemini API key
-
-3. Install the required dependencies:
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. Start the FastAPI server:
-
-   ```
-   uvicorn main:app --reload
-   ```
-
-5. Set up your LINE bot webhook URL to point to your server's endpoint.
-
-## Usage
-
-### Text Processing
-
-Send any text message to the LINE bot, and it will use the configured AI model to generate a response. The bot is optimized for Traditional Chinese responses.
-
-### Available Tools
-
-The bot can be configured with various function tools such as:
-
-- Weather information retrieval
-- Translation services
-- Data lookup capabilities
-- Custom tools based on your specific needs
-
-## Deployment Options
-
-### Local Development
-
-Use ngrok or similar tools to expose your local server to the internet for webhook access:
+## 🛠️ 技術架構
 
 ```
-ngrok http 8000
+multi_tool_agent/
+├── agent.py              # 中控台 (Control Center)
+├── utils/
+│   ├── weather_utils.py  # 天氣 API 工具
+│   └── line_utils.py     # LINE Bot 工具 (等待動畫)
+└── agents/               # 代理模組目錄
 ```
 
-### Docker Deployment
+### 技術堆疊
 
-You can use the included Dockerfile to build and deploy the application:
+- **Python 3.10** - 主要程式語言
+- **FastAPI** - 高效能異步 Web 框架
+- **LINE Messaging API** - LINE Bot 通訊
+- **Google ADK** - AI 代理開發框架
+- **Google Gemini 2.0 Flash** - 語言模型
+- **wttr.in API** - 天氣數據來源
+- **Docker** - 容器化部署
+- **Google Cloud Run** - 雲端託管
+
+## 🚀 快速開始
+
+### 1. 環境設定
+
+複製環境變數範本並填入您的設定：
+
+```bash
+cp .env.example .env
+```
+
+編輯 `.env` 檔案：
+
+```env
+# LINE Bot Configuration
+ChannelSecret=your_line_channel_secret_here
+ChannelAccessToken=your_line_channel_access_token_here
+
+# Google AI Configuration
+GOOGLE_API_KEY=your_google_ai_api_key_here
+
+# Google Cloud Project
+GOOGLE_CLOUD_PROJECT=your-project-id
+
+# Service Name (可選)
+SERVICE_NAME=my-linebot-service
+```
+
+### 2. 本地開發
+
+使用 Docker Compose 進行本地開發：
+
+```bash
+# 啟動開發環境
+docker-compose up --build
+
+# 測試端點
+curl http://localhost:8080/health
+```
+
+### 3. 雲端部署
+
+一鍵部署到 Google Cloud Run：
+
+```bash
+# 設定 Google Cloud SDK
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# 啟用必要的 APIs
+gcloud services enable run.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+
+# 部署
+./deploy.sh
+```
+
+## 📱 LINE Bot 設定
+
+部署完成後，在 [LINE Developers Console](https://developers.line.biz/) 設定 Webhook URL：
 
 ```
-docker build -t linebot-adk .
-docker run -p 8000:8000 \
-  -e ChannelSecret=YOUR_SECRET \
-  -e ChannelAccessToken=YOUR_TOKEN \
-  -e GEMINI_API_KEY=YOUR_GEMINI_KEY \
-  linebot-adk
+https://your-service-url/webhook
 ```
 
-### Google Cloud Deployment
+### 可用端點
 
-#### Prerequisites
+- `GET /` - 服務狀態
+- `GET /health` - 健康檢查
+- `POST /webhook` - LINE Bot 訊息處理
+- `POST /callback` - 通用回調端點
 
-1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
-2. Create a Google Cloud project and enable the following APIs:
-   - Cloud Run API
-   - Container Registry API or Artifact Registry API
-   - Cloud Build API
+## 🌤️ 使用方式
 
-#### Steps for Deployment
+### 天氣查詢範例
 
-1. Authenticate with Google Cloud:
+向您的 LINE Bot 發送以下訊息：
 
-   ```
-   gcloud auth login
-   ```
+- "台北天氣如何？"
+- "東京明天會下雨嗎？"
+- "高雄的天氣資訊"
+- "London weather"
 
-2. Set your Google Cloud project:
+### 回應格式
 
-   ```
-   gcloud config set project YOUR_PROJECT_ID
-   ```
+```
+🌤️ 台北, Taiwan 天氣資訊：
+📊 天氣：Clear
+🌡️ 溫度：25°C (77°F)
+🌡️ 體感：27°C
+💧 濕度：65%
+🌬️ 風速：8 km/h (NE)
+```
 
-3. Build and push the Docker image to Google Container Registry:
+## 🔧 開發指南
 
-   ```
-   gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/linebot-adk
-   ```
+### 添加新工具
 
-4. Deploy to Cloud Run:
+1. 在 `multi_tool_agent/utils/` 建立新的工具模組
+2. 在 `multi_tool_agent/agent.py` 中建立對應函數
+3. 將函數加入 `tools` 列表
 
-   ```
-   gcloud run deploy linebot-adk \
-     --image gcr.io/YOUR_PROJECT_ID/linebot-adk \
-     --platform managed \
-     --region asia-east1 \
-     --allow-unauthenticated \
-     --set-env-vars ChannelSecret=YOUR_SECRET,ChannelAccessToken=YOUR_TOKEN,GEMINI_API_KEY=YOUR_GEMINI_KEY
-   ```
+### 本地測試流程
 
-   Note: For production, it's recommended to use Secret Manager for storing sensitive environment variables.
+```bash
+# 1. 本地開發測試
+docker-compose up --build
 
-5. Get the service URL:
+# 2. 確認功能正常後部署
+./deploy.sh
 
-   ```
-   gcloud run services describe linebot-adk --platform managed --region asia-east1 --format 'value(status.url)'
-   ```
+# 3. 檢查部署狀態
+gcloud run services describe SERVICE_NAME --region=asia-east1
+```
 
-6. Set the service URL as your LINE Bot webhook URL in the LINE Developer Console.
+## 📊 監控與維護
 
-#### Setting Up Secrets in Google Cloud (Recommended)
+### 檢視日誌
 
-For better security, store your API keys as secrets:
+```bash
+# 即時日誌
+gcloud logs tail --service=your-service-name
 
-1. Create secrets for your sensitive values:
+# 錯誤日誌
+gcloud logs read "resource.type=cloud_run_revision AND severity=ERROR"
+```
 
-   ```
-   echo -n "YOUR_SECRET" | gcloud secrets create line-channel-secret --data-file=-
-   echo -n "YOUR_TOKEN" | gcloud secrets create line-channel-token --data-file=-
-   echo -n "YOUR_GEMINI_KEY" | gcloud secrets create gemini-api-key --data-file=-
-   ```
+### 服務管理
 
-2. Give the Cloud Run service access to these secrets:
+```bash
+# 查看所有服務
+gcloud run services list --region=asia-east1
 
-   ```
-   gcloud secrets add-iam-policy-binding line-channel-secret --member=serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com --role=roles/secretmanager.secretAccessor
-   gcloud secrets add-iam-policy-binding line-channel-token --member=serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com --role=roles/secretmanager.secretAccessor
-   gcloud secrets add-iam-policy-binding gemini-api-key --member=serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com --role=roles/secretmanager.secretAccessor
-   ```
+# 刪除舊服務
+gcloud run services delete old-service-name --region=asia-east1
+```
 
-3. Deploy with secrets:
+## 🔐 安全性
 
-   ```
-   gcloud run deploy linebot-adk \
-     --image gcr.io/YOUR_PROJECT_ID/linebot-adk \
-     --platform managed \
-     --region asia-east1 \
-     --allow-unauthenticated \
-     --update-secrets=ChannelSecret=line-channel-secret:latest,ChannelAccessToken=line-channel-token:latest,GEMINI_API_KEY=gemini-api-key:latest
-   ```
+- 使用環境變數管理敏感資訊
+- 建議在生產環境使用 Google Secret Manager
+- LINE Bot Webhook 使用簽名驗證
+- Cloud Run 服務預設使用 HTTPS
 
-## Maintenance and Monitoring
+## 📈 擴展性
 
-After deployment, you can monitor your service through the Google Cloud Console:
+### 新增功能模組
 
-1. View logs: `gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=linebot-adk"`
-2. Check service metrics: Access the Cloud Run dashboard in Google Cloud Console
-3. Set up alerts for error rates or high latency in Cloud Monitoring
+1. **新增代理** - 在 `agents/` 目錄建立專門的代理
+2. **新增工具** - 在 `utils/` 目錄建立工具函數
+3. **API 整合** - 透過工具模組整合外部 API
+
+### 效能優化
+
+- Docker Layer Caching 減少建構時間
+- Cloud Run 自動擴縮容
+- 異步處理提升回應速度
+
+## 🆘 故障排除
+
+### 常見問題
+
+1. **部署失敗** - 檢查環境變數是否正確設定
+2. **Webhook 無回應** - 確認 LINE Bot 設定正確
+3. **天氣查詢失敗** - 檢查網路連線和 API 可用性
+4. **等待動畫不顯示** - 確認 LINE Bot API 實例正確設定
+
+### 除錯指令
+
+```bash
+# 檢查服務狀態
+curl https://your-service-url/health
+
+# 檢查容器日誌
+gcloud logs read "resource.type=cloud_run_revision"
+
+# 測試本地部署
+docker build -t test . && docker run -p 8080:8080 --env-file .env test
+```
+
+## 🤝 貢獻
+
+歡迎提交 Issue 和 Pull Request 來改進這個專案！
+
+## 📄 授權
+
+本專案採用 MIT 授權條款。
+
+---
+
+🚀 **快速部署**: 執行 `./deploy.sh` 立即部署到 Google Cloud Run！

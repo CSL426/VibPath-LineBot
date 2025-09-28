@@ -1,48 +1,51 @@
-import datetime
-from zoneinfo import ZoneInfo
+import logging
+
+# Global variable to store current user ID
+current_user_id = None
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def get_weather(city: str) -> dict:
-    """Retrieves the current weather report for a specified city.
+    """Retrieves the current weather report for a specified city using wttr.in API.
 
     Args:
         city (str): The name of the city for which to retrieve the weather report.
 
     Returns:
-        dict: status and result or error msg.
+        dict: status and result or error message.
     """
-    return {
-        "status": "success",
-        "report": (
-            f"The weather in {city} is sunny with a temperature of 25 degrees"
-            " Celsius (41 degrees Fahrenheit)."
-        ),
-    }
+    try:
+        logger.info(f"Getting weather for city: {city}")
 
+        # Import and use weather utility module
+        from .utils.weather_utils import fetch_weather_data_sync, format_weather_response
 
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city.
+        # Get weather data from wttr.in API
+        weather_data = fetch_weather_data_sync(city)
 
-    Args:
-        city (str): The name of the city for which to retrieve the current time.
+        if weather_data["status"] == "success":
+            # Format the response nicely
+            formatted_response = format_weather_response(weather_data)
+            result = {
+                "status": "success",
+                "results": formatted_response
+            }
+        else:
+            # Return error message
+            result = {
+                "status": "error",
+                "error_message": weather_data.get("error_message", "天氣查詢失敗")
+            }
 
-    Returns:
-        dict: status and result or error msg.
-    """
+        logger.info(f"Weather query completed for {city}: {result['status']}")
+        return result
 
-    if city.lower() == "new york":
-        tz_identifier = "America/New_York"
-    else:
+    except Exception as e:
+        logger.error(f"Error getting weather for {city}: {str(e)}")
         return {
             "status": "error",
-            "error_message": (
-                f"Sorry, I don't have timezone information for {city}."
-            ),
+            "error_message": f"Failed to get weather for {city}: {str(e)}"
         }
-
-    tz = ZoneInfo(tz_identifier)
-    now = datetime.datetime.now(tz)
-    report = (
-        f'The current time in {city} is {now.strftime("%Y-%m-%d %H:%M:%S %Z%z")}'
-    )
-    return {"status": "success", "report": report}
