@@ -5,15 +5,18 @@ from io import BytesIO
 
 import aiohttp
 from fastapi import Request, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from zoneinfo import ZoneInfo
 
-from linebot.models import MessageEvent, TextSendMessage
+from linebot.models import MessageEvent, PostbackEvent, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
 from linebot import AsyncLineBotApi, WebhookParser
-from multi_tool_agent.agent import get_weather
+# No tools needed for now - just using agent for general conversation
 from multi_tool_agent.utils.line_utils import set_line_bot_api, before_reply_display_loading_animation
-from linebot_ui.message_handler import MessageHandler
+from vibpath_bot.handlers.message_handler import MessageHandler
+from vibpath_bot.handlers.postback_handler import postback_handler
+from vibpath_bot.config.agent_prompts import get_agent_instruction
 from google.adk.agents import Agent
 
 # Import necessary session components
@@ -40,6 +43,10 @@ if not GOOGLE_API_KEY:
 
 # Initialize the FastAPI app for LINEBot
 app = FastAPI()
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 session = aiohttp.ClientSession()
 async_http_client = AiohttpAsyncHttpClient(session)
 line_bot_api = AsyncLineBotApi(channel_access_token, async_http_client)
@@ -53,11 +60,11 @@ message_handler = MessageHandler()
 
 # Initialize ADK client
 root_agent = Agent(
-    name="weather_agent",
+    name="vibpath_agent",
     model="gemini-2.0-flash",
     description="VibPath智能客服",
-    instruction="你是VibPath的智能客服，請用繁體中文回答",
-    tools=[get_weather],
+    instruction=get_agent_instruction("vibpath_customer_service"),
+    tools=[],
 )
 print(f"Agent '{root_agent.name}' created.")
 
@@ -165,10 +172,7 @@ async def handle_callback(request: Request):
         raise HTTPException(status_code=400, detail="Invalid signature")
 
     for event in events:
-        if not isinstance(event, MessageEvent):
-            continue
-
-        if event.message.type == "text":
+        if isinstance(event, MessageEvent) and event.message.type == "text":
             # Process text message
             msg = event.message.text
             user_id = event.source.user_id
@@ -176,6 +180,9 @@ async def handle_callback(request: Request):
 
             # Detect message type for appropriate handling
             message_type = message_handler.detect_message_type(msg)
+
+            # Get request host for dynamic URL generation
+            request_host = request.headers.get("host")
 
             # Handle special commands without calling agent
             if message_type == "menu":
@@ -186,6 +193,14 @@ async def handle_callback(request: Request):
                 reply_msg = message_handler.create_help_message()
                 await line_bot_api.reply_message(event.reply_token, reply_msg)
                 continue
+            elif message_type == "frequency":
+                reply_msg = message_handler.create_frequency_services_carousel(request_host)
+                await line_bot_api.reply_message(event.reply_token, reply_msg)
+                continue
+            elif message_type == "business":
+                reply_msg = message_handler.create_company_introduction(request_host)
+                await line_bot_api.reply_message(event.reply_token, reply_msg)
+                continue
 
             # Show loading animation while processing
             try:
@@ -193,24 +208,30 @@ async def handle_callback(request: Request):
             except Exception as e:
                 print(f"載入動畫顯示失敗: {e}")
 
-            # Use the agent for weather queries and general conversation
-            if message_type == "weather":
-                # For weather queries, we want to use agent but format as Flex Message
-                response = await call_agent_async(msg, user_id)
-
-                # Try to parse agent response and create Flex Message
-                # If agent returns weather data, format it nicely
-                # For now, fallback to text response
-                reply_msg = TextSendMessage(text=response)
-            else:
-                # General conversation with agent
-                response = await call_agent_async(msg, user_id)
-                reply_msg = TextSendMessage(text=response)
+            # Use the agent for general conversation
+            response = await call_agent_async(msg, user_id)
+            reply_msg = TextSendMessage(
+                text=response,
+                quick_reply=message_handler.create_quick_reply_services()
+            )
 
             await line_bot_api.reply_message(event.reply_token, reply_msg)
-        elif event.message.type == "image":
-            return "OK"
+
+        elif isinstance(event, PostbackEvent):
+            # Handle postback events from buttons
+            user_id = event.source.user_id
+            postback_data = event.postback.data
+            print(f"Received postback: {postback_data} from user: {user_id}")
+
+            # Process postback with handler
+            reply_msg = postback_handler.handle_postback(postback_data, user_id)
+            await line_bot_api.reply_message(event.reply_token, reply_msg)
+
+        elif isinstance(event, MessageEvent) and event.message.type == "image":
+            # Handle image messages if needed
+            continue
         else:
+            # Skip other event types
             continue
 
     return "OK"
