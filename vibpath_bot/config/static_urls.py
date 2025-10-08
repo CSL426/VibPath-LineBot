@@ -34,6 +34,9 @@ class StaticURLManager:
             # If using GCS, path structure is different
             if "storage.googleapis.com" in self.base_url:
                 return f"{self.base_url.rstrip('/')}/images/{image_path}"
+            # If using GitHub Pages, path structure is /images/
+            elif "github.io" in self.base_url:
+                return f"{self.base_url.rstrip('/')}/images/{image_path}"
             else:
                 return f"{self.base_url.rstrip('/')}/static/images/{image_path}"
 

@@ -1,25 +1,46 @@
-# VibPath 智能客服 LINE Bot
+# VibPath 商品介紹 LINE Bot
 
-基於 Google ADK (Agent SDK) 和 Google Gemini 的智能客服 LINE Bot，專門提供天氣查詢服務並支援繁體中文對話。
+基於 Google ADK (Agent SDK) 和 Google Gemini 的專業商品介紹 LINE Bot，專門提供產品諮詢和購買導引服務。
 
 ## 🌟 功能特色
 
-- 🌤️ **即時天氣查詢** - 使用 wttr.in API 提供全球城市天氣資訊
-- 🤖 **智能對話** - 基於 Google Gemini 2.0 Flash 模型
-- ⚡ **等待動畫** - 處理請求時顯示「正在輸入」動畫
-- 🌐 **多語言支援** - 優化繁體中文回應
-- 🔧 **模組化架構** - 清晰的工具和代理分離
+- 🎵 **商品產品展示** - 舒曼波、α/θ波、γ波、13頻脈輪波產品介紹
+- 🛒 **商品購買導引** - 直接連結蝦皮商店，方便下單
+- 🤖 **AI 產品客服** - 基於 Google Gemini 2.0 Flash 的專業產品諮詢
+- 📱 **Flex Message 展示** - 美觀的圖文訊息和輪播介面
+- ⚡ **Quick Reply 快速操作** - 便捷的按鈕式互動
+- 🔧 **Postback 互動** - 詳細的產品解說和技術說明
 - ☁️ **雲端部署** - 針對 Google Cloud Run 優化
 
 ## 🛠️ 技術架構
 
 ```
+vibpath_bot/
+├── templates/              # Flex Message 模板
+│   ├── custom_templates.py # 業務模板（商品產品）
+│   ├── flex_templates.py   # 基礎 Flex 模板
+│   └── bubble_templates.py # 進階 Bubble 模板
+├── handlers/               # 處理器
+│   ├── message_handler.py  # 訊息處理
+│   ├── postback_handler.py # 按鈕回調處理
+│   └── quick_reply.py      # 快速回覆
+├── config/                 # 配置管理
+│   ├── agent_prompts.py    # AI 提示詞管理
+│   ├── button_config.py    # 按鈕配置
+│   └── static_urls.py      # 靜態資源配置
+└── utils/                  # 工具函數
+    └── image_manager.py    # 圖片管理
+
 multi_tool_agent/
-├── agent.py              # 中控台 (Control Center)
-├── utils/
-│   ├── weather_utils.py  # 天氣 API 工具
-│   └── line_utils.py     # LINE Bot 工具 (等待動畫)
-└── agents/               # 代理模組目錄
+├── agent.py                # AI 代理中控台
+└── utils/
+    └── line_utils.py       # LINE Bot 工具 (等待動畫)
+
+static/
+├── images/
+│   ├── business/           # 企業形象圖片
+│   └── services/           # 產品服務圖片
+└── rich_menu/              # Rich Menu 圖片
 ```
 
 ### 技術堆疊
@@ -29,9 +50,9 @@ multi_tool_agent/
 - **LINE Messaging API** - LINE Bot 通訊
 - **Google ADK** - AI 代理開發框架
 - **Google Gemini 2.0 Flash** - 語言模型
-- **wttr.in API** - 天氣數據來源
 - **Docker** - 容器化部署
 - **Google Cloud Run** - 雲端託管
+- **Google Cloud Storage** - 靜態資源託管（可選）
 
 ## 🚀 快速開始
 
@@ -56,8 +77,8 @@ GOOGLE_API_KEY=your_google_ai_api_key_here
 # Google Cloud Project
 GOOGLE_CLOUD_PROJECT=your-project-id
 
-# Service Name (可選)
-SERVICE_NAME=my-linebot-service
+# Static Assets Base URL (可選)
+STATIC_BASE_URL=https://storage.googleapis.com/your-bucket
 ```
 
 ### 2. 本地開發
@@ -89,6 +110,19 @@ gcloud services enable cloudbuild.googleapis.com
 ./deploy.sh
 ```
 
+### 4. 靜態資源部署（可選）
+
+使用 Google Cloud Storage 託管圖片：
+
+```bash
+# 創建 bucket
+gsutil mb -p your-project -c standard -l asia-east1 gs://your-bucket
+
+# 上傳圖片並設為公開
+gsutil -m cp -r static/images gs://your-bucket/
+gsutil -m acl ch -r -u AllUsers:R gs://your-bucket/images
+```
+
 ## 📱 LINE Bot 設定
 
 部署完成後，在 [LINE Developers Console](https://developers.line.biz/) 設定 Webhook URL：
@@ -103,48 +137,76 @@ https://your-service-url/webhook
 - `GET /health` - 健康檢查
 - `POST /webhook` - LINE Bot 訊息處理
 - `POST /callback` - 通用回調端點
+- `GET /static/*` - 靜態檔案服務（如不使用 GCS）
 
-## 🌤️ 使用方式
+## 🎵 產品功能
 
-### 天氣查詢範例
+### 主要產品線
 
-向您的 LINE Bot 發送以下訊息：
+1. **舒曼波 (7.83Hz)** - 助眠放鬆
+2. **13頻脈輪波** - 瑜珈能量調理
+3. **γ波 (40Hz)** - 專注力提升
+4. **雙頻複合治療** - 多頻率組合
 
-- "台北天氣如何？"
-- "東京明天會下雨嗎？"
-- "高雄的天氣資訊"
-- "London weather"
+### 使用方式
 
-### 回應格式
+向您的 LINE Bot 發送以下訊息或使用 Quick Reply：
 
-```
-🌤️ 台北, Taiwan 天氣資訊：
-📊 天氣：Clear
-🌡️ 溫度：25°C (77°F)
-🌡️ 體感：27°C
-💧 濕度：65%
-🌬️ 風速：8 km/h (NE)
-```
+- **「公司介紹」** - 查看企業資訊
+- **「商品介紹」** - 瀏覽4種產品輪播
+- **「選單」** - 顯示服務選單
+- **「幫助」** - 查看使用說明
+
+### Quick Reply 互動
+
+- 🏢 公司介紹 → 企業資訊
+- 🎵 商品介紹 → 產品輪播
+- 📋 選單 → 服務選單
+- 💡 快速解說 → AI 產品說明
+
+### Postback 詳細解說
+
+每個產品都有詳細的技術說明：
+- 🌍 7.83Hz 舒曼共振原理
+- 🧠 13頻脈輪系統說明
+- ⚡ 40Hz γ波專注效果
+- 🔄 雙頻複合治療機制
 
 ## 🔧 開發指南
 
-### 添加新工具
+### 添加新產品
 
-1. 在 `multi_tool_agent/utils/` 建立新的工具模組
-2. 在 `multi_tool_agent/agent.py` 中建立對應函數
-3. 將函數加入 `tools` 列表
+1. 更新 `config/agent_prompts.py` 的產品知識庫
+2. 在 `templates/custom_templates.py` 加入新產品模板
+3. 更新 `config/button_config.py` 的按鈕配置
+4. 在 `static/images/services/` 添加產品圖片
 
-### 本地測試流程
+### AI 提示詞管理
 
-```bash
-# 1. 本地開發測試
-docker-compose up --build
+```python
+from vibpath_bot.config.agent_prompts import agent_prompt_manager
 
-# 2. 確認功能正常後部署
-./deploy.sh
+# 新增產品知識
+agent_prompt_manager.add_product_knowledge(
+    "新產品名稱",
+    "產品特色和技術說明"
+)
 
-# 3. 檢查部署狀態
-gcloud run services describe SERVICE_NAME --region=asia-east1
+# 更新提示詞
+agent_prompt_manager.update_prompt("vibpath_customer_service", "新提示詞")
+```
+
+### 按鈕配置管理
+
+```python
+from vibpath_bot.config.button_config import button_config_manager
+
+# 更新按鈕 URL
+button_config_manager.update_button_url(
+    "service_7_83hz",
+    "商品蝦皮連結",
+    "https://new-url.com"
+)
 ```
 
 ## 📊 監控與維護
@@ -172,22 +234,23 @@ gcloud run services delete old-service-name --region=asia-east1
 ## 🔐 安全性
 
 - 使用環境變數管理敏感資訊
-- 建議在生產環境使用 Google Secret Manager
 - LINE Bot Webhook 使用簽名驗證
 - Cloud Run 服務預設使用 HTTPS
+- 靜態資源支援 CDN 加速
 
 ## 📈 擴展性
 
 ### 新增功能模組
 
-1. **新增代理** - 在 `agents/` 目錄建立專門的代理
-2. **新增工具** - 在 `utils/` 目錄建立工具函數
-3. **API 整合** - 透過工具模組整合外部 API
+1. **新增產品線** - 在配置檔案中添加新產品資訊
+2. **新增互動方式** - 擴展 Quick Reply 或 Postback 功能
+3. **API 整合** - 透過工具模組整合外部服務
 
 ### 效能優化
 
 - Docker Layer Caching 減少建構時間
 - Cloud Run 自動擴縮容
+- GCS 靜態資源託管降低服務負載
 - 異步處理提升回應速度
 
 ## 🆘 故障排除
@@ -196,8 +259,8 @@ gcloud run services delete old-service-name --region=asia-east1
 
 1. **部署失敗** - 檢查環境變數是否正確設定
 2. **Webhook 無回應** - 確認 LINE Bot 設定正確
-3. **天氣查詢失敗** - 檢查網路連線和 API 可用性
-4. **等待動畫不顯示** - 確認 LINE Bot API 實例正確設定
+3. **圖片無法載入** - 檢查靜態資源 URL 配置
+4. **AI 回應異常** - 檢查 Google API Key 和提示詞設定
 
 ### 除錯指令
 
@@ -223,3 +286,4 @@ docker build -t test . && docker run -p 8080:8080 --env-file .env test
 ---
 
 🚀 **快速部署**: 執行 `./deploy.sh` 立即部署到 Google Cloud Run！
+🎵 **產品展示**: 專業商品設備，波形純淨、失真度低、磁場強度足！

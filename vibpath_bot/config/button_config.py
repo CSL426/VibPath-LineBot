@@ -42,9 +42,13 @@ class ButtonConfigManager:
                     ),
                     ButtonAction(
                         type="postback",
+                        label="🎵 產品介紹",
+                        data="show_frequency_products"
+                    ),
+                    ButtonAction(
+                        type="postback",
                         label="📖 詳細介紹",
-                        data="explain_company",
-                        text="了解更多公司資訊"
+                        data="explain_company"
                     )
                 ]
             ),
@@ -54,8 +58,7 @@ class ButtonConfigManager:
                     ButtonAction(
                         type="postback",
                         label="產品介紹",
-                        data="explain_frequency",
-                        text="我想了解頻率治療原理"
+                        data="explain_frequency"
                     )
                 ]
             ),
@@ -70,8 +73,7 @@ class ButtonConfigManager:
                     ButtonAction(
                         type="postback",
                         label="產品介紹",
-                        data="explain_7_83hz",
-                        text="7.83Hz 舒曼共振原理說明"
+                        data="explain_7_83hz"
                     )
                 ]
             ),
@@ -86,8 +88,7 @@ class ButtonConfigManager:
                     ButtonAction(
                         type="postback",
                         label="產品介紹",
-                        data="explain_13Freq",
-                        text="13 個頻率效果說明"
+                        data="explain_13Freq"
                     )
                 ]
             ),
@@ -102,8 +103,7 @@ class ButtonConfigManager:
                     ButtonAction(
                         type="postback",
                         label="產品介紹",
-                        data="explain_40hz",
-                        text="40Hz γ波頻率能量說明"
+                        data="explain_40hz"
                     )
                 ]
             ),
@@ -112,14 +112,13 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="💰 療程價格",
+                        label="商品蝦皮連結",
                         uri="https://tw.shp.ee/ciUiZfy"
                     ),
                     ButtonAction(
                         type="postback",
                         label="產品介紹",
-                        data="explain_double_freq",
-                        text="雙頻複合治療原理說明"
+                        data="explain_double_freq"
                     )
                 ]
             )

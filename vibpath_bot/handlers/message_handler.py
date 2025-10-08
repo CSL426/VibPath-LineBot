@@ -57,50 +57,13 @@ class MessageHandler:
         """
         messages = [
             TextSendMessage(
-                text="🤖 歡迎使用 VibPath 智能客服！\n\n🎵 專業頻率治療服務\n🏢 企業諮詢服務\n💬 智能對話助手",
-                quick_reply=self.create_quick_reply_services()
+                text="🤖 歡迎使用 VibPath 智能客服！\n\n🎵 專業商品服務\n🏢 企業諮詢服務\n💬 智能對話助手"
+                # Removed quick_reply from welcome message
             ),
             self.create_service_menu()
         ]
         return messages
 
-    def create_quick_reply_services(self) -> QuickReply:
-        """
-        Create quick reply for VibPath services with mixed actions.
-
-        Returns:
-            QuickReply: Quick reply with service options (message + postback actions)
-        """
-        services = [
-            {"label": "🏢 公司介紹", "action_type": "message", "text": "公司介紹"},
-            {"label": "🎵 頻率治療", "action_type": "message", "text": "頻率治療"},
-            {"label": "📋 選單", "action_type": "message", "text": "選單"},
-            {"label": "💡 快速解說", "action_type": "postback", "data": "explain_frequency", "text": "頻率治療原理說明"}
-        ]
-
-        quick_reply_buttons = []
-        for service in services:
-            if service["action_type"] == "message":
-                quick_reply_buttons.append(
-                    QuickReplyButton(
-                        action=MessageAction(
-                            label=service["label"],
-                            text=service["text"]
-                        )
-                    )
-                )
-            elif service["action_type"] == "postback":
-                quick_reply_buttons.append(
-                    QuickReplyButton(
-                        action=PostbackAction(
-                            label=service["label"],
-                            data=service["data"],
-                            text=service["text"]
-                        )
-                    )
-                )
-
-        return QuickReply(items=quick_reply_buttons)
 
     def create_quick_reply_detailed(self) -> QuickReply:
         """
@@ -110,12 +73,12 @@ class MessageHandler:
             QuickReply: Quick reply with detailed service explanations
         """
         services = [
-            {"label": "🌍 7.83Hz", "action_type": "postback", "data": "explain_7_83hz", "text": "7.83Hz 舒曼共振說明"},
-            {"label": "🧠 13Hz", "action_type": "postback", "data": "explain_13Freq", "text": "13Hz α波頻率說明"},
-            {"label": "⚡ 40Hz", "action_type": "postback", "data": "explain_40hz", "text": "40Hz γ波頻率說明"},
-            {"label": "🔄 雙頻", "action_type": "postback", "data": "explain_double_freq", "text": "雙頻複合治療說明"},
-            {"label": "🏢 公司", "action_type": "postback", "data": "explain_company", "text": "VibPath 公司介紹"},
-            {"label": "🛒 購買", "action_type": "message", "text": "頻率治療"}
+            {"label": "🏢 公司", "action_type": "postback", "data": "show_company_intro"},
+            {"label": "🛒 購買", "action_type": "postback", "data": "show_frequency_products"},
+            {"label": "🌍 7.83Hz", "action_type": "postback", "data": "explain_7_83hz"},
+            {"label": "🧠 13Hz", "action_type": "postback", "data": "explain_13Freq"},
+            {"label": "⚡ 40Hz", "action_type": "postback", "data": "explain_40hz"},
+            {"label": "🔄 雙頻", "action_type": "postback", "data": "explain_double_freq"}
         ]
 
         quick_reply_buttons = []
@@ -134,8 +97,8 @@ class MessageHandler:
                     QuickReplyButton(
                         action=PostbackAction(
                             label=service["label"],
-                            data=service["data"],
-                            text=service["text"]
+                            data=service["data"]
+                            # Removed text parameter to prevent double triggering
                         )
                     )
                 )
@@ -151,10 +114,9 @@ class MessageHandler:
         """
         help_text = """🤖 VibPath 智能客服使用說明
 
-🎵 頻率治療服務：
-• 輸入「頻率治療」或「服務項目」查看療程
-• 輸入「四夜」查看四種頻率服務
-• 專業頻率治療技術
+🎵 商品服務：
+• 輸入「商品介紹」或「服務項目」查看產品
+• 專業商品技術
 
 🏢 企業服務：
 • 輸入「公司介紹」了解我們的服務
@@ -172,7 +134,7 @@ class MessageHandler:
 
         return TextSendMessage(
             text=help_text,
-            quick_reply=self.create_quick_reply_services()
+            quick_reply=self.create_quick_reply_detailed()
         )
 
     def create_frequency_services_carousel(self, request_host: str = None) -> FlexSendMessage:
@@ -212,13 +174,13 @@ class MessageHandler:
         """
         text_lower = text.lower()
 
-        # Frequency therapy keywords
-        frequency_keywords = ['頻率', '赫茲', 'hz', '療程', '四夜', '服務項目', '頻率治療']
+        # Product introduction keywords - more specific matching
+        frequency_keywords = ['商品介紹', '產品介紹', '服務項目']
         if any(keyword in text_lower for keyword in frequency_keywords):
             return 'frequency'
 
         # Business introduction keywords
-        business_keywords = ['公司介紹', '關於我們', '企業簡介', '主業', '業務介紹']
+        business_keywords = ['公司介紹', '關於我們', '企業簡介', '主業', '業務介紹', '公司']
         if any(keyword in text_lower for keyword in business_keywords):
             return 'business'
 
