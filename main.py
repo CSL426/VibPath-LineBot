@@ -12,7 +12,7 @@ from fastapi import Request, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from zoneinfo import ZoneInfo
 
-from linebot.models import MessageEvent, PostbackEvent, TextSendMessage
+from linebot.models import MessageEvent, PostbackEvent, FollowEvent, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
 from linebot import AsyncLineBotApi, WebhookParser
@@ -177,7 +177,16 @@ async def handle_callback(request: Request):
         raise HTTPException(status_code=400, detail="Invalid signature")
 
     for event in events:
-        if isinstance(event, MessageEvent) and event.message.type == "text":
+        if isinstance(event, FollowEvent):
+            # Handle follow event (user adds bot as friend)
+            user_id = event.source.user_id
+            print(f"New user followed: {user_id}")
+
+            # Send welcome message
+            welcome_messages = message_handler.create_welcome_message()
+            await line_bot_api.reply_message(event.reply_token, welcome_messages)
+
+        elif isinstance(event, MessageEvent) and event.message.type == "text":
             # Process text message
             msg = event.message.text
             user_id = event.source.user_id
