@@ -20,7 +20,9 @@ NC='\033[0m' # No Color
 # Load environment variables from .env file
 if [ -f .env ]; then
     echo -e "${YELLOW}📋 Loading environment variables from .env file...${NC}"
-    export $(grep -v '^#' .env | xargs)
+    set -o allexport
+    source .env
+    set +o allexport
 else
     echo -e "${YELLOW}⚠️  No .env file found, using system environment variables${NC}"
 fi
@@ -55,7 +57,7 @@ done
 
 # Check optional but recommended environment variables
 echo -e "${YELLOW}📋 Checking optional environment variables...${NC}"
-OPTIONAL_VARS=("STATIC_BASE_URL")
+OPTIONAL_VARS=("STATIC_BASE_URL" "ADMIN_USER_IDS" "TIMEZONE")
 for var in "${OPTIONAL_VARS[@]}"; do
     if [ -z "${!var}" ]; then
         echo -e "${YELLOW}⚠️  $var is not set (will use default)${NC}"
@@ -76,10 +78,7 @@ gcloud run deploy $SERVICE_NAME \
     --memory=1Gi \
     --cpu=1 \
     --max-instances=10 \
-    --set-env-vars="ChannelSecret=${ChannelSecret}" \
-    --set-env-vars="ChannelAccessToken=${ChannelAccessToken}" \
-    --set-env-vars="GOOGLE_API_KEY=${GOOGLE_API_KEY}" \
-    --set-env-vars="STATIC_BASE_URL=${STATIC_BASE_URL}"
+    --set-env-vars "ChannelSecret=${ChannelSecret},ChannelAccessToken=${ChannelAccessToken},GOOGLE_API_KEY=${GOOGLE_API_KEY},STATIC_BASE_URL=${STATIC_BASE_URL},ADMIN_USER_IDS=${ADMIN_USER_IDS},TIMEZONE=${TIMEZONE:-Asia/Taipei}"
 
 # Get the service URL
 SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
@@ -119,6 +118,61 @@ else
             fi
         fi
     done
+fi
+
+# Clean up old images in Artifact Registry
+echo -e "${YELLOW}🧹 Cleaning up old Docker images in Artifact Registry...${NC}"
+
+# Get the repository location (gcr.io uses different regions)
+if [[ $IMAGE_NAME == gcr.io/* ]]; then
+    echo -e "${YELLOW}   Detected gcr.io registry${NC}"
+
+    # List all image digests (sorted by creation time, oldest first)
+    IMAGE_DIGESTS=$(gcloud container images list-tags $IMAGE_NAME --format="get(digest)" --sort-by="~timestamp" 2>/dev/null)
+
+    if [ -z "$IMAGE_DIGESTS" ]; then
+        echo -e "${GREEN}✨ No old images found in Artifact Registry.${NC}"
+    else
+        # Count total images
+        TOTAL_IMAGES=$(echo "$IMAGE_DIGESTS" | wc -l)
+        echo -e "${YELLOW}   Found $TOTAL_IMAGES image(s) in registry${NC}"
+
+        if [ "$CLEAN_ALL" = true ]; then
+            # Keep only the latest 1 image
+            IMAGES_TO_DELETE=$(echo "$IMAGE_DIGESTS" | tail -n +2)
+            KEEP_COUNT=1
+        else
+            # Keep the latest 3 images
+            IMAGES_TO_DELETE=$(echo "$IMAGE_DIGESTS" | tail -n +4)
+            KEEP_COUNT=3
+        fi
+
+        if [ -z "$IMAGES_TO_DELETE" ]; then
+            echo -e "${GREEN}✨ No old images to clean up (keeping latest $KEEP_COUNT).${NC}"
+        else
+            DELETE_COUNT=$(echo "$IMAGES_TO_DELETE" | wc -l)
+            echo -e "${YELLOW}   Deleting $DELETE_COUNT old image(s) (keeping latest $KEEP_COUNT)...${NC}"
+
+            echo "$IMAGES_TO_DELETE" | while read digest; do
+                if [ ! -z "$digest" ]; then
+                    IMAGE_WITH_DIGEST="${IMAGE_NAME}@${digest}"
+                    echo -e "${YELLOW}   - Deleting image: $digest...${NC}"
+
+                    DELETE_OUTPUT=$(gcloud container images delete "$IMAGE_WITH_DIGEST" --quiet 2>&1)
+
+                    if [ $? -eq 0 ]; then
+                        echo -e "${GREEN}     ✓ Successfully deleted.${NC}"
+                    else
+                        echo -e "${RED}     ✗ Failed to delete. Reason:${NC}"
+                        echo -e "${RED}       $DELETE_OUTPUT${NC}"
+                    fi
+                fi
+            done
+        fi
+    fi
+else
+    echo -e "${YELLOW}   Non-gcr.io registry detected, skipping Artifact Registry cleanup${NC}"
+    echo -e "${YELLOW}   (Add Artifact Registry cleanup commands here if needed)${NC}"
 fi
 
 echo -e "${GREEN}✅ Deployment successful!${NC}"

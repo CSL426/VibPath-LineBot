@@ -10,6 +10,7 @@
 - 📱 **Flex Message 展示** - 美觀的圖文訊息和輪播介面
 - ⚡ **Quick Reply 快速操作** - 便捷的按鈕式互動
 - 🔧 **Postback 互動** - 詳細的產品解說和技術說明
+- 👤 **管理員功能** - 支援暫停/恢復 Bot 運作，方便維護管理
 - ☁️ **雲端部署** - 針對 Google Cloud Run 優化
 
 ## 🛠️ 技術架構
@@ -27,6 +28,7 @@ vibpath_bot/
 ├── config/                 # 配置管理
 │   ├── agent_prompts.py    # AI 提示詞管理
 │   ├── button_config.py    # 按鈕配置
+│   ├── admin_config.py     # 管理員權限與暫停管理
 │   └── static_urls.py      # 靜態資源配置
 └── utils/                  # 工具函數
     └── image_manager.py    # 圖片管理
@@ -77,9 +79,17 @@ GOOGLE_API_KEY=your_google_ai_api_key_here
 # Google Cloud Project
 GOOGLE_CLOUD_PROJECT=your-project-id
 
+# Admin Configuration
+ADMIN_USER_IDS=Uxxx:Uyyy  # 管理員 LINE User ID (用 : 分隔)
+TIMEZONE=Asia/Taipei      # 時區設定 (預設 UTC+8)
+
 # Static Assets Base URL (可選)
 STATIC_BASE_URL=https://storage.googleapis.com/your-bucket
 ```
+
+**說明：**
+- **ADMIN_USER_IDS**: 在日誌中查看或使用 LINE Developers Console 測試工具取得
+- **TIMEZONE**: 支援所有 IANA 時區名稱，例如 `Asia/Taipei`、`Asia/Tokyo`、`UTC` 等
 
 ### 2. 本地開發
 
@@ -172,42 +182,35 @@ https://your-service-url/webhook
 - ⚡ 40Hz γ波專注效果
 - 🔄 雙頻複合治療機制
 
-## 🔧 開發指南
+## 👤 管理員功能
 
-### 添加新產品
+### 設定管理員
 
-1. 更新 `config/agent_prompts.py` 的產品知識庫
-2. 在 `templates/custom_templates.py` 加入新產品模板
-3. 更新 `config/button_config.py` 的按鈕配置
-4. 在 `static/images/services/` 添加產品圖片
+在 `.env` 檔案中設定管理員的 LINE User ID：
 
-### AI 提示詞管理
-
-```python
-from vibpath_bot.config.agent_prompts import agent_prompt_manager
-
-# 新增產品知識
-agent_prompt_manager.add_product_knowledge(
-    "新產品名稱",
-    "產品特色和技術說明"
-)
-
-# 更新提示詞
-agent_prompt_manager.update_prompt("vibpath_customer_service", "新提示詞")
+```env
+ADMIN_USER_IDS=U1234567890abcdef123:U1234567890abcdef
 ```
 
-### 按鈕配置管理
+支援多個管理員，用 `:` 分隔（不要有空格）。
 
-```python
-from vibpath_bot.config.button_config import button_config_manager
+### 管理員指令
 
-# 更新按鈕 URL
-button_config_manager.update_button_url(
-    "service_7_83hz",
-    "商品蝦皮連結",
-    "https://new-url.com"
-)
-```
+| 指令 | 說明 |
+|------|------|
+| `暫停` | 暫停 1 小時（預設） |
+| `暫停15分鐘` `暫停15分` `暫停15m` `暫停15min` | 暫停指定分鐘 |
+| `暫停2小時` `暫停2小` `暫停2h` `暫停2hr` | 暫停指定小時 |
+| `恢復` `繼續` `resume` | 恢復運作 |
+| `狀態` `status` | 查看狀態 |
+| `指令` `commands` `admin` | 顯示管理指令說明 |
+
+支援有無空格皆可，例如：`暫停 15分鐘` 或 `暫停15分鐘`
+
+**運作邏輯：**
+- 暫停期間 Bot 完全靜默（管理指令除外）
+- 時間到達自動恢復
+- 管理員一般訊息同樣不回應
 
 ## 📊 監控與維護
 
@@ -253,31 +256,6 @@ gcloud run services delete old-service-name --region=asia-east1
 - GCS 靜態資源託管降低服務負載
 - 異步處理提升回應速度
 
-## 🆘 故障排除
-
-### 常見問題
-
-1. **部署失敗** - 檢查環境變數是否正確設定
-2. **Webhook 無回應** - 確認 LINE Bot 設定正確
-3. **圖片無法載入** - 檢查靜態資源 URL 配置
-4. **AI 回應異常** - 檢查 Google API Key 和提示詞設定
-
-### 除錯指令
-
-```bash
-# 檢查服務狀態
-curl https://your-service-url/health
-
-# 檢查容器日誌
-gcloud logs read "resource.type=cloud_run_revision"
-
-# 測試本地部署
-docker build -t test . && docker run -p 8080:8080 --env-file .env test
-```
-
-## 🤝 貢獻
-
-歡迎提交 Issue 和 Pull Request 來改進這個專案！
 
 ## 📄 授權
 

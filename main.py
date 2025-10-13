@@ -22,6 +22,7 @@ from multi_tool_agent.utils.line_utils import set_line_bot_api, before_reply_dis
 from vibpath_bot.handlers.message_handler import MessageHandler
 from vibpath_bot.handlers.postback_handler import postback_handler
 from vibpath_bot.config.agent_prompts import get_agent_instruction
+from vibpath_bot.config.admin_config import admin_config
 from google.adk.agents import Agent
 
 # Import necessary session components
@@ -192,6 +193,60 @@ async def handle_callback(request: Request):
             user_id = event.source.user_id
             print(f"Received message: {msg} from user: {user_id}")
 
+            # Check if user is admin
+            is_admin = admin_config.is_admin(user_id)
+
+            # Handle admin commands (pause/resume)
+            if is_admin:
+                # Check for pause command
+                pause_duration = admin_config.parse_pause_command(msg)
+                if pause_duration is not None:
+                    admin_config.pause_bot(pause_duration, user_id)
+                    pause_info = admin_config.get_pause_info()
+                    reply_text = f"✅ Bot 已暫停\n⏰ 暫停時間: {pause_duration} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
+                    await line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=reply_text)
+                    )
+                    continue
+
+                # Check for resume command
+                if admin_config.parse_resume_command(msg):
+                    admin_config.resume_bot(user_id)
+                    reply_text = "✅ Bot 已恢復運作"
+                    await line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=reply_text)
+                    )
+                    continue
+
+                # Check for status command
+                if msg.strip().lower() in ['狀態', 'status']:
+                    pause_info = admin_config.get_pause_info()
+                    if pause_info['paused']:
+                        reply_text = f"⏸️ Bot 目前暫停中\n⏰ 剩餘時間: {pause_info['remaining_minutes']} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
+                    else:
+                        reply_text = "✅ Bot 目前正常運作"
+                    await line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=reply_text)
+                    )
+                    continue
+
+                # Check for help command
+                if admin_config.parse_help_command(msg):
+                    reply_text = admin_config.get_admin_help_message()
+                    await line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=reply_text)
+                    )
+                    continue
+
+            # Check if bot is paused (applies to everyone)
+            if admin_config.check_pause_status():
+                # Don't reply anything during pause
+                continue
+
             # Detect message type for appropriate handling
             message_type = message_handler.detect_message_type(msg)
 
@@ -332,7 +387,7 @@ async def call_agent_async(query: str, user_id: str, request_host: str = None):
             if event.is_final_response():
                 if event.content and event.content.parts:
                     # Assuming text response in the first part
-                    final_response = event.content.parts[0].text
+                    final_response = "AI回覆: " + event.content.parts[0].text
                 elif (
                     event.actions and event.actions.escalate
                 ):  # Handle potential errors/escalations
@@ -383,7 +438,7 @@ async def call_agent_async(query: str, user_id: str, request_host: str = None):
                     # Same event handling code as above
                     if event.is_final_response():
                         if event.content and event.content.parts:
-                            final_response = event.content.parts[0].text
+                            final_response = "AI回覆: " + event.content.parts[0].text
                         elif event.actions and event.actions.escalate:
                             final_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
                         break

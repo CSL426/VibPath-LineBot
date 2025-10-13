@@ -1,0 +1,161 @@
+# Git and Version Control
+.git
+.gitignore
+.gitattributes
+
+# Claude Code
+.claude/
+
+# Environment Variables (容器會用環境變數注入)
+.env
+.env.*
+!.env.example
+
+# Python Cache and Build Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+MANIFEST
+
+# Virtual Environments
+.venv
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+.project
+.classpath
+.settings/
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing and Coverage
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Documentation
+README.md
+*.md
+docs/
+LICENSE
+
+# Development and Deployment Scripts
+docker-compose.yml
+deploy.sh
+.dockerignore
+.gcloudignore
+Procfile
+runtime.txt
+
+# Static Files (因為你放在 GitHub Pages)
+static/images/
+static/rich_menu/
+public/assets/
+# 保留 static/README.md 的說明不放進容器
+static/README.md
+
+# Image Files (常見圖片格式)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.svg
+*.ico
+*.webp
+*.tiff
+*.tif
+*.psd
+*.ai
+
+# Video Files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+
+# Archive Files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+~*
+
+# Node.js (如果有前端資源)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Database Files (本地開發用)
+*.sqlite
+*.sqlite3
+*.db
+
+# Secrets and Credentials
+*.pem
+*.key
+*.cert
+*.crt
+credentials.json
+service-account.json
