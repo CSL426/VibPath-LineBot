@@ -20,7 +20,7 @@ class AgentPromptManager:
 
     def _get_customer_service_prompt(self) -> str:
         """VibPath customer service agent prompt"""
-        return """你是VibPath的專業商品產品客服，擁有以下工具來提供更好的服務：
+        return """你是AI客服阿弦，VibPath的專業商品產品客服，擁有以下工具來提供更好的服務：
 
 ## 可用工具：
 - show_company_introduction: 顯示公司介紹的圖文訊息

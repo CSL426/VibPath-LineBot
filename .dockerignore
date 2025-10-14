@@ -6,9 +6,11 @@
 # Claude Code
 .claude/
 
-# Environment Variables (容器會用環境變數注入)
-.env
+# Environment Variables
+# NOTE: .env is now included in Docker image for Cloud Run deployment
+# .env
 .env.*
+!.env
 !.env.example
 
 # Python Cache and Build Files

@@ -65,25 +65,33 @@ class MessageHandler:
         return messages
 
 
-    def create_quick_reply_detailed(self) -> QuickReply:
+    def create_quick_reply_basic(self) -> QuickReply:
         """
-        Create detailed quick reply with more postback options.
+        Create basic quick reply with general options (公司介紹、AI開關等).
 
         Returns:
-            QuickReply: Quick reply with detailed service explanations
+            QuickReply: Basic quick reply buttons
         """
         services = [
-            {"label": "🏢 公司", "action_type": "postback", "data": "show_company_intro"},
-            {"label": "🛒 購買", "action_type": "postback", "data": "show_frequency_products"},
-            {"label": "🌍 7.83Hz", "action_type": "postback", "data": "explain_7_83hz"},
-            {"label": "🧠 13Hz", "action_type": "postback", "data": "explain_13Freq"},
-            {"label": "⚡ 40Hz", "action_type": "postback", "data": "explain_40hz"},
-            {"label": "🔄 雙頻", "action_type": "postback", "data": "explain_double_freq"}
+            {"label": "🏢 公司介紹", "action_type": "postback", "data": "show_company_intro"},
+            {"label": "🛒 查看產品", "action_type": "postback", "data": "show_frequency_products"},
+            {"label": "📋 選單", "action_type": "postback", "data": "show_service_menu"},
+            {"label": "🤖 AI開關", "action_type": "postback", "data": "toggle_ai_reply"},
+            {"label": "📖 更多產品", "action_type": "postback", "data": "show_product_details"}
         ]
 
         quick_reply_buttons = []
         for service in services:
-            if service["action_type"] == "message":
+            if service["action_type"] == "postback":
+                quick_reply_buttons.append(
+                    QuickReplyButton(
+                        action=PostbackAction(
+                            label=service["label"],
+                            data=service["data"]
+                        )
+                    )
+                )
+            elif service["action_type"] == "message":
                 quick_reply_buttons.append(
                     QuickReplyButton(
                         action=MessageAction(
@@ -92,18 +100,49 @@ class MessageHandler:
                         )
                     )
                 )
-            elif service["action_type"] == "postback":
+
+        return QuickReply(items=quick_reply_buttons)
+
+    def create_quick_reply_products(self) -> QuickReply:
+        """
+        Create product-focused quick reply (產品細節).
+
+        Returns:
+            QuickReply: Product detail quick reply buttons
+        """
+        services = [
+            {"label": "🎵 商品原理", "action_type": "postback", "data": "explain_frequency"},
+            {"label": "🌍 舒曼波", "action_type": "postback", "data": "explain_7_83hz"},
+            {"label": "🕉️ 13頻脈輪", "action_type": "postback", "data": "explain_13Freq"},
+            {"label": "⚡ γ波40Hz", "action_type": "postback", "data": "explain_40hz"},
+            {"label": "🔄 α/θ雙頻", "action_type": "postback", "data": "explain_double_freq"},
+            {"label": "🤖 AI開關", "action_type": "postback", "data": "toggle_ai_reply"},
+            {"label": "◀️ 返回基本", "action_type": "postback", "data": "show_basic_menu"}
+        ]
+
+        quick_reply_buttons = []
+        for service in services:
+            if service["action_type"] == "postback":
                 quick_reply_buttons.append(
                     QuickReplyButton(
                         action=PostbackAction(
                             label=service["label"],
                             data=service["data"]
-                            # Removed text parameter to prevent double triggering
                         )
                     )
                 )
 
         return QuickReply(items=quick_reply_buttons)
+
+    def create_quick_reply_detailed(self) -> QuickReply:
+        """
+        Create detailed quick reply with more postback options.
+        (保留此方法作為預設，使用基本版)
+
+        Returns:
+            QuickReply: Quick reply with detailed service explanations
+        """
+        return self.create_quick_reply_basic()
 
     def create_help_message(self) -> TextSendMessage:
         """

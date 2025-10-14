@@ -14,10 +14,7 @@ Modules:
 __version__ = "1.0.0"
 __author__ = "VibPath"
 
-# Import main components for easy access
-from .handlers.message_handler import MessageHandler
-from .config.button_config import button_config_manager
-
+# Lazy imports - components will be imported when needed
 __all__ = [
     "MessageHandler",
     "button_config_manager"

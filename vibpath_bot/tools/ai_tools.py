@@ -21,7 +21,7 @@ def show_company_introduction(request_host: Optional[str] = None) -> Dict[str, A
 
     return {
         "type": "flex_message",
-        "content": flex_msg.contents,  # 返回contents而不是整個FlexSendMessage
+        "content": flex_msg.contents.as_json_dict(),  # Convert to dict for serialization
         "alt_text": "VibPath 公司介紹"
     }
 
@@ -41,7 +41,7 @@ def show_product_catalog(request_host: Optional[str] = None) -> Dict[str, Any]:
 
     return {
         "type": "flex_message",
-        "content": flex_msg.contents,  # 返回contents而不是整個FlexSendMessage
+        "content": flex_msg.contents.as_json_dict(),  # Convert to dict for serialization
         "alt_text": "VibPath 商品目錄"
     }
 
@@ -61,7 +61,7 @@ def show_service_menu(request_host: Optional[str] = None) -> Dict[str, Any]:
 
     return {
         "type": "flex_message",
-        "content": flex_msg.contents,  # 返回contents而不是整個FlexSendMessage
+        "content": flex_msg.contents.as_json_dict(),  # Convert to dict for serialization
         "alt_text": "VibPath 服務選單"
     }
 

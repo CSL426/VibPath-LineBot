@@ -113,20 +113,66 @@ class PostbackHandler:
             logger.info(f"Handling postback: {postback_data} for user: {user_id}")
 
             # Special handlers for different UI actions
-            if postback_data == "show_frequency_products":
+            if postback_data == "toggle_ai_reply":
+                # Handle AI reply toggle from Rich Menu
+                from .ai_toggle_handler import ai_toggle_handler
+                return ai_toggle_handler.handle_toggle(user_id)
+
+            elif postback_data == "check_ai_status":
+                # Check AI reply status
+                from .ai_toggle_handler import ai_toggle_handler
+                return ai_toggle_handler.get_status(user_id)
+
+            elif postback_data == "show_product_details":
+                # Show product details menu with product quick reply
+                from .message_handler import MessageHandler
+                handler = MessageHandler()
+                return TextSendMessage(
+                    text="📖 產品詳細說明\n\n請選擇您想了解的產品：",
+                    quick_reply=handler.create_quick_reply_products()
+                )
+
+            elif postback_data == "show_basic_menu":
+                # Return to basic menu
+                from .message_handler import MessageHandler
+                handler = MessageHandler()
+                return TextSendMessage(
+                    text="◀️ 返回基本選單",
+                    quick_reply=handler.create_quick_reply_basic()
+                )
+
+            elif postback_data == "show_frequency_products":
                 # Import here to avoid circular import
                 from ..templates.custom_templates import BusinessTemplates
-                return BusinessTemplates.frequency_services_carousel(request_host)
+                from .message_handler import MessageHandler
+
+                flex_msg = BusinessTemplates.frequency_services_carousel(request_host)
+                # Add quick reply to flex message
+                handler = MessageHandler()
+                flex_msg.quick_reply = handler.create_quick_reply_products()
+                return flex_msg
 
             elif postback_data == "show_company_intro":
                 # Import here to avoid circular import
                 from ..templates.custom_templates import BusinessTemplates
-                return BusinessTemplates.company_introduction_with_homepage(request_host)
+                from .message_handler import MessageHandler
+
+                flex_msg = BusinessTemplates.company_introduction_with_homepage(request_host)
+                # Add quick reply to flex message
+                handler = MessageHandler()
+                flex_msg.quick_reply = handler.create_quick_reply_basic()
+                return flex_msg
 
             elif postback_data == "show_service_menu":
                 # Import here to avoid circular import
                 from ..templates.flex_templates import FlexMessageTemplates
-                return FlexMessageTemplates.service_menu()
+                from .message_handler import MessageHandler
+
+                flex_msg = FlexMessageTemplates.service_menu()
+                # Add quick reply to flex message
+                handler = MessageHandler()
+                flex_msg.quick_reply = handler.create_quick_reply_basic()
+                return flex_msg
 
             explanation = self.explanations.get(postback_data)
             if explanation:
@@ -134,7 +180,14 @@ class PostbackHandler:
                     # Import here to avoid circular import
                     from .message_handler import MessageHandler
                     handler = MessageHandler()
-                    quick_reply = handler.create_quick_reply_detailed()
+
+                    # Use product quick reply for product explanations
+                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_frequency"]
+                    if postback_data in product_postbacks:
+                        quick_reply = handler.create_quick_reply_products()
+                    else:
+                        quick_reply = handler.create_quick_reply_basic()
+
                     message = TextSendMessage(text=explanation, quick_reply=quick_reply)
                 else:
                     message = TextSendMessage(text=explanation)

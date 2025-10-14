@@ -4,14 +4,12 @@
 
 ## 🌟 功能特色
 
-- 🎵 **商品產品展示** - 舒曼波、α/θ波、γ波、13頻脈輪波產品介紹
-- 🛒 **商品購買導引** - 直接連結蝦皮商店，方便下單
-- 🤖 **AI 產品客服** - 基於 Google Gemini 2.0 Flash 的專業產品諮詢
-- 📱 **Flex Message 展示** - 美觀的圖文訊息和輪播介面
-- ⚡ **Quick Reply 快速操作** - 便捷的按鈕式互動
-- 🔧 **Postback 互動** - 詳細的產品解說和技術說明
-- 👤 **管理員功能** - 支援暫停/恢復 Bot 運作，方便維護管理
-- ☁️ **雲端部署** - 針對 Google Cloud Run 優化
+- 🎵 **商品展示** - Flex Message 輪播 4 款產品
+- 🤖 **AI 客服** - Gemini 2.0 Flash + 工具調用
+- 🔘 **AI 開關** - 用戶可關閉 AI 自動回覆
+- ⚡ **兩層快速回覆** - 基本/產品選單切換
+- 👤 **管理員暫停** - 可設定時間暫停 Bot
+- 💾 **MongoDB + Cache** - 10 分鐘 TTL 快取
 
 ## 🛠️ 技術架構
 
@@ -22,16 +20,22 @@ vibpath_bot/
 │   ├── flex_templates.py   # 基礎 Flex 模板
 │   └── bubble_templates.py # 進階 Bubble 模板
 ├── handlers/               # 處理器
-│   ├── message_handler.py  # 訊息處理
+│   ├── message_handler.py  # 訊息處理（含兩層快速回覆）
 │   ├── postback_handler.py # 按鈕回調處理
-│   └── quick_reply.py      # 快速回覆
+│   └── ai_toggle_handler.py # AI 開關處理
+├── services/               # 服務層
+│   └── user_preference_service.py # 用戶偏好服務（整合 DB + Cache）
 ├── config/                 # 配置管理
 │   ├── agent_prompts.py    # AI 提示詞管理
 │   ├── button_config.py    # 按鈕配置
 │   ├── admin_config.py     # 管理員權限與暫停管理
 │   └── static_urls.py      # 靜態資源配置
-└── utils/                  # 工具函數
-    └── image_manager.py    # 圖片管理
+├── utils/                  # 工具函數
+│   ├── image_manager.py    # 圖片管理
+│   ├── mongodb_client.py   # MongoDB 連線與操作
+│   └── user_cache.py       # 記憶體快取（TTL）
+└── tools/                  # AI 工具
+    └── ai_tools.py         # AI Agent 工具函數
 
 multi_tool_agent/
 ├── agent.py                # AI 代理中控台
@@ -47,14 +51,11 @@ static/
 
 ### 技術堆疊
 
-- **Python 3.10** - 主要程式語言
-- **FastAPI** - 高效能異步 Web 框架
-- **LINE Messaging API** - LINE Bot 通訊
-- **Google ADK** - AI 代理開發框架
-- **Google Gemini 2.0 Flash** - 語言模型
-- **Docker** - 容器化部署
-- **Google Cloud Run** - 雲端託管
-- **Google Cloud Storage** - 靜態資源託管（可選）
+- **FastAPI** - 異步 API 框架
+- **LINE Messaging API** - Flex Message、Quick Reply、Postback
+- **Gemini + ADK** - AI 對話與工具調用
+- **MongoDB + TTL Cache** - 用戶偏好持久化與快取
+- **Google Cloud Run** - 容器化部署
 
 ## 🚀 快速開始
 
@@ -65,31 +66,6 @@ static/
 ```bash
 cp .env.example .env
 ```
-
-編輯 `.env` 檔案：
-
-```env
-# LINE Bot Configuration
-ChannelSecret=your_line_channel_secret_here
-ChannelAccessToken=your_line_channel_access_token_here
-
-# Google AI Configuration
-GOOGLE_API_KEY=your_google_ai_api_key_here
-
-# Google Cloud Project
-GOOGLE_CLOUD_PROJECT=your-project-id
-
-# Admin Configuration
-ADMIN_USER_IDS=Uxxx:Uyyy  # 管理員 LINE User ID (用 : 分隔)
-TIMEZONE=Asia/Taipei      # 時區設定 (預設 UTC+8)
-
-# Static Assets Base URL (可選)
-STATIC_BASE_URL=https://storage.googleapis.com/your-bucket
-```
-
-**說明：**
-- **ADMIN_USER_IDS**: 在日誌中查看或使用 LINE Developers Console 測試工具取得
-- **TIMEZONE**: 支援所有 IANA 時區名稱，例如 `Asia/Taipei`、`Asia/Tokyo`、`UTC` 等
 
 ### 2. 本地開發
 
@@ -120,19 +96,6 @@ gcloud services enable cloudbuild.googleapis.com
 ./deploy.sh
 ```
 
-### 4. 靜態資源部署（可選）
-
-使用 Google Cloud Storage 託管圖片：
-
-```bash
-# 創建 bucket
-gsutil mb -p your-project -c standard -l asia-east1 gs://your-bucket
-
-# 上傳圖片並設為公開
-gsutil -m cp -r static/images gs://your-bucket/
-gsutil -m acl ch -r -u AllUsers:R gs://your-bucket/images
-```
-
 ## 📱 LINE Bot 設定
 
 部署完成後，在 [LINE Developers Console](https://developers.line.biz/) 設定 Webhook URL：
@@ -143,11 +106,18 @@ https://your-service-url/webhook
 
 ### 可用端點
 
+#### Webhook 端點
+- `POST /webhook` - LINE Bot 訊息處理（LINE 平台專用）
+- `POST /callback` - 通用回調端點
 - `GET /` - 服務狀態
 - `GET /health` - 健康檢查
-- `POST /webhook` - LINE Bot 訊息處理
-- `POST /callback` - 通用回調端點
 - `GET /static/*` - 靜態檔案服務（如不使用 GCS）
+
+#### RESTful API 端點
+- `GET /api/users` - 列出所有用戶偏好設定
+- `GET /api/users/{user_id}/preferences` - 取得指定用戶的偏好設定
+- `PUT /api/users/{user_id}/preferences` - 更新用戶偏好設定
+- `DELETE /api/users/{user_id}/preferences` - 刪除用戶偏好設定（重置為預設）
 
 ## 🎵 產品功能
 
@@ -181,6 +151,137 @@ https://your-service-url/webhook
 - 🧠 13頻脈輪系統說明
 - ⚡ 40Hz γ波專注效果
 - 🔄 雙頻複合治療機制
+
+## 🔌 RESTful API 使用
+
+### API 基礎資訊
+
+Base URL: `https://your-service-url`
+
+所有 API 回應格式：
+```json
+{
+  "status": "success",
+  "data": { ... }
+}
+```
+
+### 1. 列出所有用戶偏好設定
+
+```bash
+GET /api/users
+```
+
+**回應範例：**
+```json
+{
+  "status": "success",
+  "count": 2,
+  "data": [
+    {
+      "userId": "U1234567890abcdef",
+      "aiReplyEnabled": true,
+      "lastUpdated": "2025-01-15T10:30:00Z"
+    },
+    {
+      "userId": "U9876543210fedcba",
+      "aiReplyEnabled": false,
+      "lastUpdated": "2025-01-15T11:45:00Z"
+    }
+  ]
+}
+```
+
+### 2. 取得指定用戶的偏好設定
+
+```bash
+GET /api/users/{user_id}/preferences
+```
+
+**範例：**
+```bash
+curl https://your-service-url/api/users/U1234567890abcdef/preferences
+```
+
+**回應範例：**
+```json
+{
+  "status": "success",
+  "data": {
+    "userId": "U1234567890abcdef",
+    "aiReplyEnabled": true
+  }
+}
+```
+
+### 3. 更新用戶偏好設定
+
+```bash
+PUT /api/users/{user_id}/preferences
+Content-Type: application/json
+
+{
+  "aiReplyEnabled": false
+}
+```
+
+**範例：**
+```bash
+curl -X PUT https://your-service-url/api/users/U1234567890abcdef/preferences \
+  -H "Content-Type: application/json" \
+  -d '{"aiReplyEnabled": false}'
+```
+
+**回應範例：**
+```json
+{
+  "status": "success",
+  "message": "User preferences updated successfully",
+  "data": {
+    "userId": "U1234567890abcdef",
+    "aiReplyEnabled": false
+  }
+}
+```
+
+### 4. 刪除用戶偏好設定（重置為預設）
+
+```bash
+DELETE /api/users/{user_id}/preferences
+```
+
+**範例：**
+```bash
+curl -X DELETE https://your-service-url/api/users/U1234567890abcdef/preferences
+```
+
+**回應範例：**
+```json
+{
+  "status": "success",
+  "message": "User preferences deleted (deleted 1 document)",
+  "data": {
+    "userId": "U1234567890abcdef",
+    "deletedCount": 1
+  }
+}
+```
+
+### API 錯誤處理
+
+API 錯誤會返回適當的 HTTP 狀態碼：
+
+- `400 Bad Request` - 請求參數錯誤
+- `404 Not Found` - 資源不存在
+- `500 Internal Server Error` - 伺服器錯誤
+- `503 Service Unavailable` - MongoDB 未連線
+
+**錯誤回應範例：**
+```json
+{
+  "detail": "aiReplyEnabled field is required"
+}
+```
 
 ## 👤 管理員功能
 
@@ -234,29 +335,6 @@ gcloud run services list --region=asia-east1
 gcloud run services delete old-service-name --region=asia-east1
 ```
 
-## 🔐 安全性
-
-- 使用環境變數管理敏感資訊
-- LINE Bot Webhook 使用簽名驗證
-- Cloud Run 服務預設使用 HTTPS
-- 靜態資源支援 CDN 加速
-
-## 📈 擴展性
-
-### 新增功能模組
-
-1. **新增產品線** - 在配置檔案中添加新產品資訊
-2. **新增互動方式** - 擴展 Quick Reply 或 Postback 功能
-3. **API 整合** - 透過工具模組整合外部服務
-
-### 效能優化
-
-- Docker Layer Caching 減少建構時間
-- Cloud Run 自動擴縮容
-- GCS 靜態資源託管降低服務負載
-- 異步處理提升回應速度
-
-
 ## 📄 授權
 
 本專案採用 MIT 授權條款。
@@ -264,4 +342,3 @@ gcloud run services delete old-service-name --region=asia-east1
 ---
 
 🚀 **快速部署**: 執行 `./deploy.sh` 立即部署到 Google Cloud Run！
-🎵 **產品展示**: 專業商品設備，波形純淨、失真度低、磁場強度足！
