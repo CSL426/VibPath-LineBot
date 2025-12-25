@@ -57,7 +57,7 @@ class MessageHandler:
         """
         messages = [
             TextSendMessage(
-                text="🤖 歡迎使用 VibPath 智能客服！\n\n🎵 專業商品服務\n🏢 企業諮詢服務\n💬 智能對話助手"
+                text="👋 您好！歡迎使用 VibPath 智能客服！\n\n我是 AI 客服阿弦，可以為您介紹產品、公司資訊或顯示服務選單。\n\n💡 提醒：若不需要 AI 回覆，可點選下方「🤖 AI開關」或輸入「AI開關」來開啟/關閉。"
                 # Removed quick_reply from welcome message
             ),
             self.create_service_menu()
