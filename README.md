@@ -51,7 +51,6 @@ static/
 
 ### 技術堆疊
 
-- **FastAPI** - 異步 API 框架
 - **LINE Messaging API** - Flex Message、Quick Reply、Postback
 - **Gemini + ADK** - AI 對話與工具調用
 - **MongoDB + TTL Cache** - 用戶偏好持久化與快取

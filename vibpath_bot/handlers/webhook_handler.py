@@ -151,6 +151,10 @@ class WebhookHandler:
             reply_msg = self.message_handler.create_company_introduction(request_host)
             # Add quick reply to flex message
             reply_msg.quick_reply = self.message_handler.create_quick_reply_basic()
+        elif message_type == "manual":
+            reply_msg = self.message_handler.create_manual_download_card(request_host)
+            # Add quick reply to flex message
+            reply_msg.quick_reply = self.message_handler.create_quick_reply_basic()
         elif not is_ai_enabled:
             # AI is disabled and no keyword match - don't reply
             logger.info(f"AI disabled and no keyword match for '{msg}' - not replying")

@@ -22,8 +22,7 @@ class BusinessTemplates:
         bubble = BubbleContainer(
             hero={
                 "type": "image",
-                # "url": static_url_manager.get_image_url("business/HomePage.png", request_host),
-                "url": "https://csl426.github.io/VibPath-LineBot/images/business/HomePage.png",
+                "url": static_url_manager.get_image_url("business/HomePage.png", request_host),
                 "size": "full",
                 "aspectRatio": "20:13",
                 "aspectMode": "cover"

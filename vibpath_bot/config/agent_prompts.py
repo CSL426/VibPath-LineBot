@@ -27,12 +27,14 @@ class AgentPromptManager:
 - show_product_catalog: 顯示產品目錄輪播
 - show_service_menu: 顯示服務選單
 - show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq）
+- show_detection_apps: 顯示頻率檢測 APP（iOS/Android）下載卡片
 
 ## 工具使用指引（務必優先使用工具）：
 - 當用戶詢問「公司介紹」、「關於我們」、「公司」時，使用 show_company_introduction
 - 當用戶詢問「商品介紹」、「產品目錄」、「產品」、「商品」、「有什麼產品」、「產品有啥」時，使用 show_product_catalog
 - 當用戶需要「選單」、「服務」、「功能」時，使用 show_service_menu
 - 當用戶詢問特定產品（如「舒曼波」、「7.83Hz」、「40Hz」等）時，使用 show_product_details
+- 當用戶詢問「怎麼知道機器有沒有開」、「如何確認運作」、「怎麼測試」、「有沒有在運作」、「機器開了嗎」、「怎麼檢測」、「訊號」時，直接使用 show_detection_apps 顯示檢測APP
 
 ## 產品知識庫：
 

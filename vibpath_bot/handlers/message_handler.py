@@ -200,6 +200,63 @@ class MessageHandler:
         """
         return self.business_templates.company_introduction_with_homepage(request_host)
 
+    def create_manual_download_card(self, request_host: str = None) -> FlexSendMessage:
+        """
+        Create a manual/document download card.
+
+        Args:
+            request_host: Request host for dynamic URL generation
+
+        Returns:
+            FlexSendMessage: Manual download card
+        """
+        import os
+        # Use GitHub Pages URL for PDF (from .env STATIC_BASE_URL)
+        static_base = os.getenv("STATIC_BASE_URL", "")
+        pdf_url = f"{static_base.rstrip('/')}/images/manual.pdf"
+
+        bubble = {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "📄 產品手冊",
+                        "weight": "bold",
+                        "size": "xl",
+                        "color": "#1976D2"
+                    },
+                    {
+                        "type": "text",
+                        "text": "點擊下方按鈕下載完整產品手冊",
+                        "size": "sm",
+                        "color": "#666666",
+                        "margin": "md",
+                        "wrap": True
+                    }
+                ]
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "button",
+                        "style": "primary",
+                        "action": {
+                            "type": "uri",
+                            "label": "⬇️ 下載手冊",
+                            "uri": pdf_url
+                        }
+                    }
+                ]
+            }
+        }
+
+        return FlexSendMessage(alt_text="產品手冊下載", contents=bubble)
+
 
     def detect_message_type(self, text: str) -> str:
         """
@@ -209,9 +266,14 @@ class MessageHandler:
             text: User input text
 
         Returns:
-            str: Message type ('menu', 'help', 'frequency', 'business', 'general')
+            str: Message type ('menu', 'help', 'frequency', 'business', 'manual', 'general')
         """
         text_lower = text.lower()
+
+        # Manual/Document keywords - check first for specificity
+        manual_keywords = ['手冊', '說明書', '規格', '使用手冊', '產品手冊', '操作手冊', '說明文件']
+        if any(keyword in text_lower for keyword in manual_keywords):
+            return 'manual'
 
         # Product introduction keywords - more specific matching
         frequency_keywords = ['商品介紹', '產品介紹', '服務項目']
@@ -246,6 +308,6 @@ class MessageHandler:
         Returns:
             bool: Whether to use Flex Message
         """
-        # Use Flex Message for menu, frequency, business, and error
-        flex_types = ['menu', 'error', 'frequency', 'business']
+        # Use Flex Message for menu, frequency, business, manual, and error
+        flex_types = ['menu', 'error', 'frequency', 'business', 'manual']
         return message_type in flex_types

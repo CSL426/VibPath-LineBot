@@ -61,6 +61,17 @@ class KeywordsConfig:
         '企業'
     ])
 
+    # Manual/Document related keywords
+    manual_keywords: List[str] = field(default_factory=lambda: [
+        '手冊',
+        '說明書',
+        '規格',
+        '使用手冊',
+        '產品手冊',
+        '操作手冊',
+        '說明文件'
+    ])
+
     def contains_ai_keyword(self, message: str) -> bool:
         """
         Check if message contains any AI-related keyword
@@ -93,6 +104,11 @@ class KeywordsConfig:
         """Check if message contains company keyword"""
         msg_lower = message.lower()
         return any(keyword.lower() in msg_lower for keyword in self.company_keywords)
+
+    def contains_manual_keyword(self, message: str) -> bool:
+        """Check if message contains manual/document keyword"""
+        msg_lower = message.lower()
+        return any(keyword.lower() in msg_lower for keyword in self.manual_keywords)
 
 
 # Global instance (frozen dataclass ensures immutability)

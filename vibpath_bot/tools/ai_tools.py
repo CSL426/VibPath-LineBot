@@ -66,6 +66,136 @@ def show_service_menu(request_host: Optional[str] = None) -> Dict[str, Any]:
     }
 
 
+def show_detection_apps() -> Dict[str, Any]:
+    """
+    Tool for AI to show frequency detection APP cards.
+    Use when user asks about checking if device is working/running.
+
+    Returns:
+        Dict with flex_message type and carousel content for iOS and Android apps
+    """
+    import os
+    static_base = os.getenv("STATIC_BASE_URL", "")
+
+    carousel = {
+        "type": "carousel",
+        "contents": [
+            {
+                "type": "bubble",
+                "hero": {
+                    "type": "image",
+                    "url": f"{static_base}/images/app/ios.jpg",
+                    "size": "full",
+                    "aspectRatio": "20:13",
+                    "aspectMode": "cover"
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "🍎 iOS 檢測 APP",
+                            "weight": "bold",
+                            "size": "lg",
+                            "color": "#2C3E50"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Sonic Tools SVM",
+                            "size": "sm",
+                            "color": "#7F8C8D",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "text",
+                            "text": "可檢測機器發出的頻率訊號，確認設備是否正常運作",
+                            "size": "xs",
+                            "color": "#888888",
+                            "margin": "md",
+                            "wrap": True
+                        }
+                    ]
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "action": {
+                                "type": "uri",
+                                "label": "前往 App Store",
+                                "uri": "https://apps.apple.com/tw/app/sonic-tools-svm/id1245046029"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "bubble",
+                "hero": {
+                    "type": "image",
+                    "url": f"{static_base}/images/app/android.jpg",
+                    "size": "full",
+                    "aspectRatio": "20:13",
+                    "aspectMode": "cover"
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "🤖 Android 檢測 APP",
+                            "weight": "bold",
+                            "size": "lg",
+                            "color": "#2C3E50"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Ultimate EMF Detector",
+                            "size": "sm",
+                            "color": "#7F8C8D",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "text",
+                            "text": "可檢測機器發出的電磁場訊號，確認設備是否正常運作",
+                            "size": "xs",
+                            "color": "#888888",
+                            "margin": "md",
+                            "wrap": True
+                        }
+                    ]
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "action": {
+                                "type": "uri",
+                                "label": "前往 Google Play",
+                                "uri": "https://play.google.com/store/apps/details?id=com.mreprogramming.ultimateemfdetector"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+    return {
+        "type": "flex_message",
+        "content": carousel,
+        "alt_text": "頻率檢測 APP 下載"
+    }
+
+
 def show_product_details(product_type: str) -> Dict[str, Any]:
     """
     Tool for AI to show specific product details.
@@ -114,5 +244,6 @@ AI_TOOLS = {
     "show_company_introduction": show_company_introduction,
     "show_product_catalog": show_product_catalog,
     "show_service_menu": show_service_menu,
-    "show_product_details": show_product_details
+    "show_product_details": show_product_details,
+    "show_detection_apps": show_detection_apps
 }
