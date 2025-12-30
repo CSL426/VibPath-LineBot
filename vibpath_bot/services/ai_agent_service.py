@@ -2,12 +2,13 @@
 AI Agent Service
 Manages Gemini AI agent initialization, session management, and query execution
 """
+import os
 import json
 from google.adk.agents import Agent
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
-from vibpath_bot.tools.ai_tools import show_company_introduction, show_product_catalog, show_service_menu, show_product_details
+from vibpath_bot.tools.ai_tools import show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download
 from vibpath_bot.config.agent_prompts import get_agent_instruction
 from vibpath_bot.utils.logger import ai_logger as logger
 from vibpath_bot.utils.exceptions import AIAgentError, ToolExecutionError, SessionError
@@ -19,12 +20,13 @@ class AIAgentService:
     def __init__(self):
         """Initialize AI agent service"""
         # Initialize ADK client with AI tools
+        ai_model = os.getenv("GOOGLE_AI_MODEL", "gemini-3.0-flash")
         self.root_agent = Agent(
             name="vibpath_agent",
-            model="gemini-2.0-flash",
+            model=ai_model,
             description="VibPath智能客服",
             instruction=get_agent_instruction("vibpath_customer_service"),
-            tools=[show_company_introduction, show_product_catalog, show_service_menu, show_product_details],
+            tools=[show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download],
         )
         logger.info(f"Agent '{self.root_agent.name}' created successfully")
 
@@ -204,6 +206,11 @@ class AIAgentService:
                 logger.error(f"Agent execution error: {str(e)}", exc_info=True)
                 raise AIAgentError("Agent execution failed", detail=str(e))
         except Exception as e:
+            error_str = str(e).lower()
+            # Check for rate limit (429) errors
+            if "429" in error_str or "rate limit" in error_str or "quota" in error_str or "resource exhausted" in error_str:
+                logger.warning(f"Rate limit (429) error for user '{user_id}': {str(e)}")
+                return "⚠️ AI 服務目前繁忙中（429 錯誤），請稍後再試或聯絡技術人員。"
             logger.error(f"Unexpected error during agent execution: {str(e)}", exc_info=True)
             raise AIAgentError("Unexpected agent error", detail=str(e))
 

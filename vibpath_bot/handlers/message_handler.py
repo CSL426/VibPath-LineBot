@@ -202,60 +202,105 @@ class MessageHandler:
 
     def create_manual_download_card(self, request_host: str = None) -> FlexSendMessage:
         """
-        Create a manual/document download card.
+        Create manual download cards carousel.
 
         Args:
             request_host: Request host for dynamic URL generation
 
         Returns:
-            FlexSendMessage: Manual download card
+            FlexSendMessage: Manual download carousel with two cards
         """
         import os
         # Use GitHub Pages URL for PDF (from .env STATIC_BASE_URL)
         static_base = os.getenv("STATIC_BASE_URL", "")
-        pdf_url = f"{static_base.rstrip('/')}/images/manual.pdf"
+        pdf_url_13feqs = f"{static_base.rstrip('/')}/images/manual_13feqs.pdf"
+        pdf_url_others = f"{static_base.rstrip('/')}/images/manual_others.pdf"
 
-        bubble = {
-            "type": "bubble",
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "📄 產品手冊",
-                        "weight": "bold",
-                        "size": "xl",
-                        "color": "#1976D2"
+        carousel = {
+            "type": "carousel",
+            "contents": [
+                {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "📄 13頻脈輪機手冊",
+                                "weight": "bold",
+                                "size": "xl",
+                                "color": "#1976D2"
+                            },
+                            {
+                                "type": "text",
+                                "text": "13頻脈輪機產品說明書",
+                                "size": "sm",
+                                "color": "#666666",
+                                "margin": "md",
+                                "wrap": True
+                            }
+                        ]
                     },
-                    {
-                        "type": "text",
-                        "text": "點擊下方按鈕下載完整產品手冊",
-                        "size": "sm",
-                        "color": "#666666",
-                        "margin": "md",
-                        "wrap": True
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "button",
+                                "style": "primary",
+                                "action": {
+                                    "type": "uri",
+                                    "label": "⬇️ 下載手冊",
+                                    "uri": pdf_url_13feqs
+                                }
+                            }
+                        ]
                     }
-                ]
-            },
-            "footer": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "button",
-                        "style": "primary",
-                        "action": {
-                            "type": "uri",
-                            "label": "⬇️ 下載手冊",
-                            "uri": pdf_url
-                        }
+                },
+                {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "📄 其他產品手冊",
+                                "weight": "bold",
+                                "size": "xl",
+                                "color": "#1976D2"
+                            },
+                            {
+                                "type": "text",
+                                "text": "舒曼波/40Hz/雙頻機說明書",
+                                "size": "sm",
+                                "color": "#666666",
+                                "margin": "md",
+                                "wrap": True
+                            }
+                        ]
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "button",
+                                "style": "primary",
+                                "action": {
+                                    "type": "uri",
+                                    "label": "⬇️ 下載手冊",
+                                    "uri": pdf_url_others
+                                }
+                            }
+                        ]
                     }
-                ]
-            }
+                }
+            ]
         }
 
-        return FlexSendMessage(alt_text="產品手冊下載", contents=bubble)
+        return FlexSendMessage(alt_text="產品手冊下載", contents=carousel)
 
 
     def detect_message_type(self, text: str) -> str:

@@ -66,6 +66,110 @@ def show_service_menu(request_host: Optional[str] = None) -> Dict[str, Any]:
     }
 
 
+def show_manual_download() -> Dict[str, Any]:
+    """
+    Tool for AI to show product manual download cards.
+    Use when user asks about manual, documentation, specifications, or user guide.
+
+    Returns:
+        Dict with flex_message type and carousel with two manual download cards
+    """
+    import os
+    static_base = os.getenv("STATIC_BASE_URL", "")
+    pdf_url_13feqs = f"{static_base.rstrip('/')}/images/manual_13feqs.pdf"
+    pdf_url_others = f"{static_base.rstrip('/')}/images/manual_others.pdf"
+
+    carousel = {
+        "type": "carousel",
+        "contents": [
+            {
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "📄 13頻脈輪機手冊",
+                            "weight": "bold",
+                            "size": "xl",
+                            "color": "#1976D2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "13頻脈輪機產品說明書",
+                            "size": "sm",
+                            "color": "#666666",
+                            "margin": "md",
+                            "wrap": True
+                        }
+                    ]
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "action": {
+                                "type": "uri",
+                                "label": "⬇️ 下載手冊",
+                                "uri": pdf_url_13feqs
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "📄 其他產品手冊",
+                            "weight": "bold",
+                            "size": "xl",
+                            "color": "#1976D2"
+                        },
+                        {
+                            "type": "text",
+                            "text": "舒曼波/40Hz/雙頻機說明書",
+                            "size": "sm",
+                            "color": "#666666",
+                            "margin": "md",
+                            "wrap": True
+                        }
+                    ]
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "action": {
+                                "type": "uri",
+                                "label": "⬇️ 下載手冊",
+                                "uri": pdf_url_others
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+    return {
+        "type": "flex_message",
+        "content": carousel,
+        "alt_text": "產品手冊下載"
+    }
+
+
 def show_detection_apps() -> Dict[str, Any]:
     """
     Tool for AI to show frequency detection APP cards.
@@ -245,5 +349,6 @@ AI_TOOLS = {
     "show_product_catalog": show_product_catalog,
     "show_service_menu": show_service_menu,
     "show_product_details": show_product_details,
-    "show_detection_apps": show_detection_apps
+    "show_detection_apps": show_detection_apps,
+    "show_manual_download": show_manual_download
 }

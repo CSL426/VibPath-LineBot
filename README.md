@@ -5,11 +5,10 @@
 ## 🌟 功能特色
 
 - 🎵 **商品展示** - Flex Message 輪播 4 款產品
-- 🤖 **AI 客服** - Gemini 2.0 Flash + 工具調用
+- 🤖 **AI 客服** - Google ADK
 - 🔘 **AI 開關** - 用戶可關閉 AI 自動回覆
 - ⚡ **兩層快速回覆** - 基本/產品選單切換
 - 👤 **管理員暫停** - 可設定時間暫停 Bot
-- 💾 **MongoDB + Cache** - 10 分鐘 TTL 快取
 
 ## 🛠️ 技術架構
 
@@ -49,13 +48,6 @@ static/
 └── rich_menu/              # Rich Menu 圖片
 ```
 
-### 技術堆疊
-
-- **LINE Messaging API** - Flex Message、Quick Reply、Postback
-- **Gemini + ADK** - AI 對話與工具調用
-- **MongoDB + TTL Cache** - 用戶偏好持久化與快取
-- **Google Cloud Run** - 容器化部署
-
 ## 🚀 快速開始
 
 ### 1. 環境設定
@@ -72,7 +64,7 @@ cp .env.example .env
 
 ```bash
 # 啟動開發環境
-docker-compose up --build
+docker compose up --build
 
 # 測試端點
 curl http://localhost:8080/health

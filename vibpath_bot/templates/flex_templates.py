@@ -19,20 +19,13 @@ class FlexMessageTemplates:
             FlexSendMessage: Service menu card
         """
         bubble = BubbleContainer(
-            hero={
-                "type": "image",
-                "url": "https://via.placeholder.com/1024x640/4CAF50/FFFFFF?text=VibPath+Services",
-                "size": "full",
-                "aspectRatio": "20:13",
-                "aspectMode": "cover"
-            },
             body={
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
                     {
                         "type": "text",
-                        "text": "🤖 VibPath 智能客服",
+                        "text": "VibPath 智能客服 - 阿弦",
                         "weight": "bold",
                         "size": "xl",
                         "color": "#1976D2"
