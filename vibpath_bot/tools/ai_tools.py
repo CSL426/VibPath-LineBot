@@ -66,222 +66,271 @@ def show_service_menu(request_host: Optional[str] = None) -> Dict[str, Any]:
     }
 
 
-def show_manual_download() -> Dict[str, Any]:
+def show_manual_download(product_type: str = "all") -> Dict[str, Any]:
     """
     Tool for AI to show product manual download cards.
     Use when user asks about manual, documentation, specifications, or user guide.
 
+    Args:
+        product_type: Which manual to show. Options:
+            - "13freq" or "13頻" or "脈輪": Show only 13頻脈輪機 manual
+            - "others" or "舒曼波" or "γ波" or "雙頻": Show only 舒曼波/γ波/雙頻機 manual
+            - "all" (default): Show both manuals
+
     Returns:
-        Dict with flex_message type and carousel with two manual download cards
+        Dict with flex_message type and manual download card(s)
     """
     import os
     static_base = os.getenv("STATIC_BASE_URL", "")
     pdf_url_13feqs = f"{static_base.rstrip('/')}/images/manual_13feqs.pdf"
     pdf_url_others = f"{static_base.rstrip('/')}/images/manual_others.pdf"
 
-    carousel = {
-        "type": "carousel",
-        "contents": [
-            {
-                "type": "bubble",
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "📄 13頻脈輪機",
-                            "weight": "bold",
-                            "size": "xl",
-                            "color": "#1976D2"
-                        }
-                    ]
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "action": {
-                                "type": "uri",
-                                "label": "⬇️ 下載手冊",
-                                "uri": pdf_url_13feqs
-                            }
-                        }
-                    ]
+    bubble_13freq = {
+        "type": "bubble",
+        "size": "micro",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "13頻脈輪機",
+                    "weight": "bold",
+                    "size": "md",
+                    "color": "#1976D2",
+                    "align": "center"
                 }
-            },
-            {
-                "type": "bubble",
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "📄 舒曼波/γ波/雙頻機",
-                            "weight": "bold",
-                            "size": "xl",
-                            "color": "#1976D2"
-                        }
-                    ]
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "action": {
-                                "type": "uri",
-                                "label": "⬇️ 下載手冊",
-                                "uri": pdf_url_others
-                            }
-                        }
-                    ]
+            ]
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "action": {
+                        "type": "uri",
+                        "label": "下載手冊",
+                        "uri": pdf_url_13feqs
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
 
-    return {
-        "type": "flex_message",
-        "content": carousel,
-        "alt_text": "產品手冊下載"
+    bubble_others = {
+        "type": "bubble",
+        "size": "micro",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "舒曼波/γ波/雙頻機",
+                    "weight": "bold",
+                    "size": "md",
+                    "color": "#1976D2",
+                    "align": "center",
+                    "wrap": True
+                }
+            ]
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "action": {
+                        "type": "uri",
+                        "label": "下載手冊",
+                        "uri": pdf_url_others
+                    }
+                }
+            ]
+        }
     }
 
+    # Determine which bubble(s) to show
+    product_lower = product_type.lower()
+    if product_lower in ["13freq", "13頻", "脈輪"]:
+        return {
+            "type": "flex_message",
+            "content": bubble_13freq,
+            "alt_text": "13頻脈輪機手冊下載"
+        }
+    elif product_lower in ["others", "舒曼波", "γ波", "雙頻", "40hz", "7.83hz"]:
+        return {
+            "type": "flex_message",
+            "content": bubble_others,
+            "alt_text": "產品手冊下載"
+        }
+    else:
+        # Show both
+        carousel = {
+            "type": "carousel",
+            "contents": [bubble_13freq, bubble_others]
+        }
+        return {
+            "type": "flex_message",
+            "content": carousel,
+            "alt_text": "產品手冊下載"
+        }
 
-def show_detection_apps() -> Dict[str, Any]:
+
+def show_detection_apps(platform: str = "all") -> Dict[str, Any]:
     """
     Tool for AI to show frequency detection APP cards.
     Use when user asks about checking if device is working/running.
 
+    Args:
+        platform: Which platform app to show. Options:
+            - "ios" or "iphone" or "蘋果": Show only iOS app
+            - "android" or "安卓": Show only Android app
+            - "all" (default): Show both apps
+
     Returns:
-        Dict with flex_message type and carousel content for iOS and Android apps
+        Dict with flex_message type and app download card(s)
     """
     import os
     static_base = os.getenv("STATIC_BASE_URL", "")
 
-    carousel = {
-        "type": "carousel",
-        "contents": [
-            {
-                "type": "bubble",
-                "hero": {
-                    "type": "image",
-                    "url": f"{static_base}/images/app/ios.jpg",
-                    "size": "full",
-                    "aspectRatio": "20:13",
-                    "aspectMode": "cover"
+    bubble_ios = {
+        "type": "bubble",
+        "hero": {
+            "type": "image",
+            "url": f"{static_base}/images/app/ios.jpg",
+            "size": "full",
+            "aspectRatio": "20:13",
+            "aspectMode": "cover"
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "iOS 檢測 APP",
+                    "weight": "bold",
+                    "size": "lg",
+                    "color": "#2C3E50"
                 },
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "🍎 iOS 檢測 APP",
-                            "weight": "bold",
-                            "size": "lg",
-                            "color": "#2C3E50"
-                        },
-                        {
-                            "type": "text",
-                            "text": "Sonic Tools SVM",
-                            "size": "sm",
-                            "color": "#7F8C8D",
-                            "margin": "sm"
-                        },
-                        {
-                            "type": "text",
-                            "text": "可檢測機器發出的頻率訊號，確認設備是否正常運作",
-                            "size": "xs",
-                            "color": "#888888",
-                            "margin": "md",
-                            "wrap": True
-                        }
-                    ]
+                {
+                    "type": "text",
+                    "text": "Sonic Tools SVM",
+                    "size": "sm",
+                    "color": "#7F8C8D",
+                    "margin": "sm"
                 },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "action": {
-                                "type": "uri",
-                                "label": "前往 App Store",
-                                "uri": "https://apps.apple.com/tw/app/sonic-tools-svm/id1245046029"
-                            }
-                        }
-                    ]
+                {
+                    "type": "text",
+                    "text": "可檢測機器發出的頻率訊號，確認設備是否正常運作",
+                    "size": "xs",
+                    "color": "#888888",
+                    "margin": "md",
+                    "wrap": True
                 }
-            },
-            {
-                "type": "bubble",
-                "hero": {
-                    "type": "image",
-                    "url": f"{static_base}/images/app/android.jpg",
-                    "size": "full",
-                    "aspectRatio": "20:13",
-                    "aspectMode": "cover"
-                },
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "🤖 Android 檢測 APP",
-                            "weight": "bold",
-                            "size": "lg",
-                            "color": "#2C3E50"
-                        },
-                        {
-                            "type": "text",
-                            "text": "Ultimate EMF Detector",
-                            "size": "sm",
-                            "color": "#7F8C8D",
-                            "margin": "sm"
-                        },
-                        {
-                            "type": "text",
-                            "text": "可檢測機器發出的電磁場訊號，確認設備是否正常運作",
-                            "size": "xs",
-                            "color": "#888888",
-                            "margin": "md",
-                            "wrap": True
-                        }
-                    ]
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "action": {
-                                "type": "uri",
-                                "label": "前往 Google Play",
-                                "uri": "https://play.google.com/store/apps/details?id=com.mreprogramming.ultimateemfdetector"
-                            }
-                        }
-                    ]
+            ]
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "action": {
+                        "type": "uri",
+                        "label": "前往 App Store",
+                        "uri": "https://apps.apple.com/tw/app/sonic-tools-svm/id1245046029"
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
 
-    return {
-        "type": "flex_message",
-        "content": carousel,
-        "alt_text": "頻率檢測 APP 下載"
+    bubble_android = {
+        "type": "bubble",
+        "hero": {
+            "type": "image",
+            "url": f"{static_base}/images/app/android.jpg",
+            "size": "full",
+            "aspectRatio": "20:13",
+            "aspectMode": "cover"
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "Android 檢測 APP",
+                    "weight": "bold",
+                    "size": "lg",
+                    "color": "#2C3E50"
+                },
+                {
+                    "type": "text",
+                    "text": "Ultimate EMF Detector",
+                    "size": "sm",
+                    "color": "#7F8C8D",
+                    "margin": "sm"
+                },
+                {
+                    "type": "text",
+                    "text": "可檢測機器發出的電磁場訊號，確認設備是否正常運作",
+                    "size": "xs",
+                    "color": "#888888",
+                    "margin": "md",
+                    "wrap": True
+                }
+            ]
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "action": {
+                        "type": "uri",
+                        "label": "前往 Google Play",
+                        "uri": "https://play.google.com/store/apps/details?id=com.mreprogramming.ultimateemfdetector"
+                    }
+                }
+            ]
+        }
     }
+
+    # Determine which bubble(s) to show
+    platform_lower = platform.lower()
+    if platform_lower in ["ios", "iphone", "蘋果", "apple"]:
+        return {
+            "type": "flex_message",
+            "content": bubble_ios,
+            "alt_text": "iOS 檢測 APP 下載"
+        }
+    elif platform_lower in ["android", "安卓"]:
+        return {
+            "type": "flex_message",
+            "content": bubble_android,
+            "alt_text": "Android 檢測 APP 下載"
+        }
+    else:
+        # Show both
+        carousel = {
+            "type": "carousel",
+            "contents": [bubble_ios, bubble_android]
+        }
+        return {
+            "type": "flex_message",
+            "content": carousel,
+            "alt_text": "頻率檢測 APP 下載"
+        }
 
 
 def show_product_details(product_type: str) -> Dict[str, Any]:
