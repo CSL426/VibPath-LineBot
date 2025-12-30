@@ -90,18 +90,10 @@ def show_manual_download() -> Dict[str, Any]:
                     "contents": [
                         {
                             "type": "text",
-                            "text": "📄 13頻脈輪機手冊",
+                            "text": "📄 13頻脈輪機",
                             "weight": "bold",
                             "size": "xl",
                             "color": "#1976D2"
-                        },
-                        {
-                            "type": "text",
-                            "text": "13頻脈輪機產品說明書",
-                            "size": "sm",
-                            "color": "#666666",
-                            "margin": "md",
-                            "wrap": True
                         }
                     ]
                 },
@@ -129,18 +121,10 @@ def show_manual_download() -> Dict[str, Any]:
                     "contents": [
                         {
                             "type": "text",
-                            "text": "📄 其他產品手冊",
+                            "text": "📄 舒曼波/γ波/雙頻機",
                             "weight": "bold",
                             "size": "xl",
                             "color": "#1976D2"
-                        },
-                        {
-                            "type": "text",
-                            "text": "舒曼波/40Hz/雙頻機說明書",
-                            "size": "sm",
-                            "color": "#666666",
-                            "margin": "md",
-                            "wrap": True
                         }
                     ]
                 },

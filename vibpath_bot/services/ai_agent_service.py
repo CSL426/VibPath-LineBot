@@ -20,7 +20,7 @@ class AIAgentService:
     def __init__(self):
         """Initialize AI agent service"""
         # Initialize ADK client with AI tools
-        ai_model = os.getenv("GOOGLE_AI_MODEL", "gemini-3.0-flash")
+        ai_model = os.getenv("GOOGLE_AI_MODEL", "gemini-2.5-flash")
         self.root_agent = Agent(
             name="vibpath_agent",
             model=ai_model,
