@@ -37,8 +37,18 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="蝦皮首頁",
-                        uri="https://shopee.tw/baba1018"  # 你可以之後修改
+                        label="蝦皮賣場",
+                        uri="https://shopee.tw/baba1018"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="全家好賣+",
+                        uri="https://famistore.famiport.com.tw/users/5806400"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="7-11 IOpen Mall",
+                        uri="https://mall.iopenmall.tw/099753/"
                     ),
                     ButtonAction(
                         type="postback",
@@ -67,8 +77,18 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="商品蝦皮連結",
+                        label="蝦皮購買",
                         uri="https://tw.shp.ee/1d1RBDe"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="全家好賣+",
+                        uri="https://famistore.famiport.com.tw/users/5806400/merchandise/4060258"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="7-11 IOpen Mall",
+                        uri="https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544882"
                     ),
                     ButtonAction(
                         type="postback",
@@ -82,8 +102,18 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="商品蝦皮連結",
+                        label="蝦皮購買",
                         uri="https://tw.shp.ee/jm7cdmq"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="全家好賣+",
+                        uri="https://famistore.famiport.com.tw/users/5806400/merchandise/4060309"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="7-11 IOpen Mall",
+                        uri="https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544847"
                     ),
                     ButtonAction(
                         type="postback",
@@ -97,8 +127,18 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="商品蝦皮連結",
+                        label="蝦皮購買",
                         uri="https://tw.shp.ee/GJc8Yru"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="全家好賣+",
+                        uri="https://famistore.famiport.com.tw/users/5806400/merchandise/4060293"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="7-11 IOpen Mall",
+                        uri="https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544673"
                     ),
                     ButtonAction(
                         type="postback",
@@ -112,8 +152,18 @@ class ButtonConfigManager:
                 buttons=[
                     ButtonAction(
                         type="uri",
-                        label="商品蝦皮連結",
+                        label="蝦皮購買",
                         uri="https://tw.shp.ee/ciUiZfy"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="全家好賣+",
+                        uri="https://famistore.famiport.com.tw/users/5806400/merchandise/4060278"
+                    ),
+                    ButtonAction(
+                        type="uri",
+                        label="7-11 IOpen Mall",
+                        uri="https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544545"
                     ),
                     ButtonAction(
                         type="postback",
