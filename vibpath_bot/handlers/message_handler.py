@@ -6,11 +6,12 @@ import logging
 from typing import Union, List, Optional
 from linebot.models import (
     TextSendMessage, FlexSendMessage, QuickReply, QuickReplyButton,
-    MessageAction, PostbackAction, URIAction
+    PostbackAction
 )
 from ..templates.flex_templates import FlexMessageTemplates
 from ..templates.custom_templates import BusinessTemplates
 from ..utils.image_manager import default_flex_builder
+from ..config.keywords_config import keywords_config
 
 logger = logging.getLogger(__name__)
 
@@ -58,91 +59,43 @@ class MessageHandler:
         messages = [
             TextSendMessage(
                 text="👋 您好！歡迎使用 VibPath 智能客服！\n\n我是 AI 客服阿弦，可以為您介紹產品、公司資訊或顯示服務選單。\n\n💡 提醒：若不需要 AI 回覆，可點選下方「🤖 AI開關」或輸入「AI開關」來開啟/關閉。"
-                # Removed quick_reply from welcome message
             ),
             self.create_service_menu()
         ]
         return messages
 
 
-    def create_quick_reply_basic(self) -> QuickReply:
-        """
-        Create basic quick reply with general options (公司介紹、AI開關等).
-
-        Returns:
-            QuickReply: Basic quick reply buttons
-        """
-        services = [
-            {"label": "🏢 公司介紹", "action_type": "postback", "data": "show_company_intro"},
-            {"label": "🛒 查看產品", "action_type": "postback", "data": "show_frequency_products"},
-            {"label": "📋 選單", "action_type": "postback", "data": "show_service_menu"},
-            {"label": "🤖 AI開關", "action_type": "postback", "data": "toggle_ai_reply"},
-            {"label": "📖 更多產品", "action_type": "postback", "data": "show_product_details"}
+    def _create_quick_reply_from_items(self, items: list) -> QuickReply:
+        """Create QuickReply from a list of (label, data) tuples."""
+        buttons = [
+            QuickReplyButton(action=PostbackAction(label=label, data=data))
+            for label, data in items
         ]
+        return QuickReply(items=buttons)
 
-        quick_reply_buttons = []
-        for service in services:
-            if service["action_type"] == "postback":
-                quick_reply_buttons.append(
-                    QuickReplyButton(
-                        action=PostbackAction(
-                            label=service["label"],
-                            data=service["data"]
-                        )
-                    )
-                )
-            elif service["action_type"] == "message":
-                quick_reply_buttons.append(
-                    QuickReplyButton(
-                        action=MessageAction(
-                            label=service["label"],
-                            text=service["text"]
-                        )
-                    )
-                )
-
-        return QuickReply(items=quick_reply_buttons)
+    def create_quick_reply_basic(self) -> QuickReply:
+        """Create basic quick reply with general options."""
+        items = [
+            ("🏢 公司介紹", "show_company_intro"),
+            ("🛒 查看產品", "show_frequency_products"),
+            ("📋 選單", "show_service_menu"),
+            ("🤖 AI開關", "toggle_ai_reply"),
+            ("📖 更多產品", "show_product_details"),
+        ]
+        return self._create_quick_reply_from_items(items)
 
     def create_quick_reply_products(self) -> QuickReply:
-        """
-        Create product-focused quick reply (產品細節).
-
-        Returns:
-            QuickReply: Product detail quick reply buttons
-        """
-        services = [
-            {"label": "🎵 商品原理", "action_type": "postback", "data": "explain_frequency"},
-            {"label": "🌍 舒曼波", "action_type": "postback", "data": "explain_7_83hz"},
-            {"label": "🕉️ 13頻脈輪", "action_type": "postback", "data": "explain_13Freq"},
-            {"label": "⚡ γ波40Hz", "action_type": "postback", "data": "explain_40hz"},
-            {"label": "🔄 α/θ雙頻", "action_type": "postback", "data": "explain_double_freq"},
-            {"label": "🤖 AI開關", "action_type": "postback", "data": "toggle_ai_reply"},
-            {"label": "◀️ 返回基本", "action_type": "postback", "data": "show_basic_menu"}
+        """Create product-focused quick reply."""
+        items = [
+            ("🎵 商品原理", "explain_frequency"),
+            ("🌍 舒曼波", "explain_7_83hz"),
+            ("🕉️ 13頻脈輪", "explain_13Freq"),
+            ("⚡ γ波40Hz", "explain_40hz"),
+            ("🔄 α/θ雙頻", "explain_double_freq"),
+            ("🤖 AI開關", "toggle_ai_reply"),
+            ("◀️ 返回基本", "show_basic_menu"),
         ]
-
-        quick_reply_buttons = []
-        for service in services:
-            if service["action_type"] == "postback":
-                quick_reply_buttons.append(
-                    QuickReplyButton(
-                        action=PostbackAction(
-                            label=service["label"],
-                            data=service["data"]
-                        )
-                    )
-                )
-
-        return QuickReply(items=quick_reply_buttons)
-
-    def create_quick_reply_detailed(self) -> QuickReply:
-        """
-        Create detailed quick reply with more postback options.
-        (保留此方法作為預設，使用基本版)
-
-        Returns:
-            QuickReply: Quick reply with detailed service explanations
-        """
-        return self.create_quick_reply_basic()
+        return self._create_quick_reply_from_items(items)
 
     def create_help_message(self) -> TextSendMessage:
         """
@@ -173,7 +126,7 @@ class MessageHandler:
 
         return TextSendMessage(
             text=help_text,
-            quick_reply=self.create_quick_reply_detailed()
+            quick_reply=self.create_quick_reply_basic()
         )
 
     def create_frequency_services_carousel(self, request_host: str = None) -> FlexSendMessage:
@@ -225,46 +178,19 @@ class MessageHandler:
         Returns:
             str: Message type ('menu', 'help', 'frequency', 'business', 'manual', 'general')
         """
-        text_lower = text.lower()
-
-        # Manual/Document keywords - check first for specificity
-        manual_keywords = ['手冊', '說明書', '規格', '使用手冊', '產品手冊', '操作手冊', '說明文件']
-        if any(keyword in text_lower for keyword in manual_keywords):
+        # Check keywords in order of specificity
+        if keywords_config.contains_manual_keyword(text):
             return 'manual'
-
-        # Product introduction keywords - more specific matching
-        frequency_keywords = ['商品介紹', '產品介紹', '服務項目']
-        if any(keyword in text_lower for keyword in frequency_keywords):
+        if keywords_config.contains_product_keyword(text):
             return 'frequency'
-
-        # Business introduction keywords
-        business_keywords = ['公司介紹', '關於我們', '企業簡介', '主業', '業務介紹', '公司']
-        if any(keyword in text_lower for keyword in business_keywords):
+        if keywords_config.contains_company_keyword(text):
             return 'business'
-
-        # Menu keywords
-        menu_keywords = ['選單', 'menu', '服務', '功能']
-        if any(keyword in text_lower for keyword in menu_keywords):
+        if keywords_config.contains_menu_keyword(text):
             return 'menu'
-
-        # Help keywords
-        help_keywords = ['幫助', 'help', '說明', '使用方法', '怎麼用']
-        if any(keyword in text_lower for keyword in help_keywords):
+        if keywords_config.contains_help_keyword(text):
             return 'help'
-
-        # Default to general conversation
         return 'general'
 
     def should_use_flex_message(self, message_type: str) -> bool:
-        """
-        Determine whether to use Flex Message for response.
-
-        Args:
-            message_type: Type of message
-
-        Returns:
-            bool: Whether to use Flex Message
-        """
-        # Use Flex Message for menu, frequency, business, manual, and error
-        flex_types = ['menu', 'error', 'frequency', 'business', 'manual']
-        return message_type in flex_types
+        """Determine whether to use Flex Message for response."""
+        return message_type in {'menu', 'error', 'frequency', 'business', 'manual'}

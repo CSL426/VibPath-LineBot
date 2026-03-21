@@ -72,43 +72,34 @@ class KeywordsConfig:
         '說明文件'
     ])
 
-    def contains_ai_keyword(self, message: str) -> bool:
-        """
-        Check if message contains any AI-related keyword
-
-        Args:
-            message: User message text
-
-        Returns:
-            bool: True if contains AI keyword
-        """
+    def _contains_keyword(self, message: str, keywords: List[str]) -> bool:
+        """Check if message contains any keyword from the list"""
         msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.ai_keywords)
+        return any(keyword in msg_lower for keyword in keywords)
+
+    def contains_ai_keyword(self, message: str) -> bool:
+        """Check if message contains any AI-related keyword"""
+        return self._contains_keyword(message, self.ai_keywords)
 
     def contains_menu_keyword(self, message: str) -> bool:
         """Check if message contains menu keyword"""
-        msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.menu_keywords)
+        return self._contains_keyword(message, self.menu_keywords)
 
     def contains_help_keyword(self, message: str) -> bool:
         """Check if message contains help keyword"""
-        msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.help_keywords)
+        return self._contains_keyword(message, self.help_keywords)
 
     def contains_product_keyword(self, message: str) -> bool:
         """Check if message contains product keyword"""
-        msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.product_keywords)
+        return self._contains_keyword(message, self.product_keywords)
 
     def contains_company_keyword(self, message: str) -> bool:
         """Check if message contains company keyword"""
-        msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.company_keywords)
+        return self._contains_keyword(message, self.company_keywords)
 
     def contains_manual_keyword(self, message: str) -> bool:
         """Check if message contains manual/document keyword"""
-        msg_lower = message.lower()
-        return any(keyword.lower() in msg_lower for keyword in self.manual_keywords)
+        return self._contains_keyword(message, self.manual_keywords)
 
 
 # Global instance (frozen dataclass ensures immutability)

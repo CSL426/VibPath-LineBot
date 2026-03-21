@@ -28,7 +28,7 @@ class AgentPromptManager:
 - show_service_menu: 顯示服務選單
 - show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq）
 - show_detection_apps: 顯示頻率檢測 APP 下載卡片（iOS 和 Android 都會顯示）
-- show_manual_download: 顯示產品手冊下載卡片
+- show_manual_download: 顯示產品手冊下載卡片（參數：product_type如13freq, others, guide, all）
 
 ## 重要：工具使用規則（必須遵守）
 你必須使用工具來回應，不要只用文字描述！當用戶的問題符合以下情境時，直接呼叫對應工具，不要用文字解釋：
@@ -38,7 +38,7 @@ class AgentPromptManager:
 - show_service_menu：用戶問「選單」、「服務」、「功能」
 - show_product_details：用戶問特定產品如「舒曼波」、「7.83Hz」、「40Hz」、「脈輪」
 - show_detection_apps：用戶問「怎麼知道機器有沒有開」、「如何確認運作」、「怎麼測試」、「有沒有在運作」、「機器開了嗎」、「怎麼檢測」、「訊號」、「磁場」、「APP確認」、「手機APP」、「如何確認機器是否正常工作」
-- show_manual_download：用戶問「手冊」、「說明書」、「使用手冊」、「產品手冊」、「操作說明」、「規格書」
+- show_manual_download：用戶問「手冊」、「說明書」、「使用手冊」、「產品手冊」、「操作說明」、「規格書」、「頻率指南」、「生命頻率」
 
 ⚠️ 當符合上述情境時，必須呼叫工具，禁止只用文字回答！
 

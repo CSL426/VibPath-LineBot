@@ -111,7 +111,7 @@ class WebhookHandler:
                     elif agent_response.get("type") == "text_with_quick_reply":
                         reply_msg = TextSendMessage(
                             text=agent_response["content"],
-                            quick_reply=self.message_handler.create_quick_reply_detailed()
+                            quick_reply=self.message_handler.create_quick_reply_basic()
                         )
                         await self.line_bot_api.reply_message(event.reply_token, reply_msg)
                         return
@@ -120,7 +120,7 @@ class WebhookHandler:
                 if isinstance(agent_response, str) and agent_response.strip():
                     reply_msg = TextSendMessage(
                         text=agent_response,
-                        quick_reply=self.message_handler.create_quick_reply_detailed()
+                        quick_reply=self.message_handler.create_quick_reply_basic()
                     )
                     await self.line_bot_api.reply_message(event.reply_token, reply_msg)
                     return
@@ -163,7 +163,7 @@ class WebhookHandler:
             # AI is enabled but no keyword match - show error
             reply_msg = TextSendMessage(
                 text="抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。",
-                quick_reply=self.message_handler.create_quick_reply_detailed()
+                quick_reply=self.message_handler.create_quick_reply_basic()
             )
 
         if reply_msg:
