@@ -57,7 +57,7 @@ done
 
 # Check optional but recommended environment variables
 echo -e "${YELLOW}📋 Checking optional environment variables...${NC}"
-OPTIONAL_VARS=("STATIC_BASE_URL" "ADMIN_USER_IDS" "TIMEZONE")
+OPTIONAL_VARS=("STATIC_BASE_URL" "ADMIN_USER_IDS" "TIMEZONE" "GOOGLE_API_KEY_FALLBACK")
 for var in "${OPTIONAL_VARS[@]}"; do
     if [ -z "${!var}" ]; then
         echo -e "${YELLOW}⚠️  $var is not set (will use default)${NC}"
@@ -94,6 +94,7 @@ gcloud run deploy "$SERVICE_NAME" \
     --set-env-vars="ChannelSecret=${ChannelSecret}" \
     --set-env-vars="ChannelAccessToken=${ChannelAccessToken}" \
     --set-env-vars="GOOGLE_API_KEY=${GOOGLE_API_KEY}" \
+    --set-env-vars="GOOGLE_API_KEY_FALLBACK=${GOOGLE_API_KEY_FALLBACK}" \
     --set-env-vars="STATIC_BASE_URL=${STATIC_BASE_URL}" \
     --set-env-vars="ADMIN_USER_IDS=${ADMIN_USER_IDS}" \
     --set-env-vars="TIMEZONE=${TIMEZONE}" \

@@ -11,8 +11,20 @@ from google.adk.runners import Runner
 from google.genai import types
 from vibpath_bot.tools.ai_tools import show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download
 from vibpath_bot.config.agent_prompts import get_agent_instruction
+from vibpath_bot.config.env_config import settings
 from vibpath_bot.utils.logger import ai_logger as logger
 from vibpath_bot.utils.exceptions import AIAgentError, ToolExecutionError, SessionError
+
+# Shared tool mapping — single source of truth for both execution paths
+TOOL_MAP = {
+    'show_company_introduction': show_company_introduction,
+    'show_product_catalog': show_product_catalog,
+    'show_service_menu': show_service_menu,
+    'show_product_details': show_product_details,
+    'show_detection_apps': show_detection_apps,
+    'show_manual_download': show_manual_download,
+}
+TOOLS_WITH_HOST = {'show_company_introduction', 'show_product_catalog'}
 
 
 class AIAgentService:
@@ -88,36 +100,8 @@ class AIAgentService:
             Tool execution result (dict or None)
         """
         tool_name = tool_call.function.name
-
-        # Parse tool arguments
         args = json.loads(tool_call.function.arguments) if tool_call.function.arguments else {}
-
-        # Add request_host if the tool accepts it
-        if tool_name in ['show_company_introduction', 'show_product_catalog']:
-            args['request_host'] = request_host
-
-        # Tool mapping
-        tool_map = {
-            'show_company_introduction': show_company_introduction,
-            'show_product_catalog': show_product_catalog,
-            'show_service_menu': show_service_menu,
-            'show_product_details': show_product_details,
-            'show_detection_apps': show_detection_apps,
-            'show_manual_download': show_manual_download
-        }
-
-        if tool_name in tool_map:
-            logger.info(f"Executing tool: {tool_name}")
-            try:
-                result = tool_map[tool_name](**args)
-                logger.debug(f"Tool '{tool_name}' executed successfully")
-                return result
-            except Exception as e:
-                logger.error(f"Tool '{tool_name}' execution failed: {str(e)}", exc_info=True)
-                raise ToolExecutionError(f"Failed to execute tool '{tool_name}'", detail=str(e))
-
-        logger.warning(f"Unknown tool requested: {tool_name}")
-        return None
+        return self._invoke_tool(tool_name, args, request_host)
 
     def _clean_markdown(self, text: str) -> str:
         """
@@ -199,39 +183,20 @@ class AIAgentService:
         return final_response
 
     def _execute_tool_from_function_call(self, function_call, request_host: str = None):
-        """
-        Execute a tool from a function_call object in content parts
-
-        Args:
-            function_call: Function call object from content part
-            request_host: Request host for dynamic URL generation
-
-        Returns:
-            Tool execution result (dict or None)
-        """
+        """Execute a tool from a function_call object in content parts."""
         tool_name = function_call.name
-
-        # Parse tool arguments
         args = dict(function_call.args) if function_call.args else {}
+        return self._invoke_tool(tool_name, args, request_host)
 
-        # Add request_host if the tool accepts it
-        if tool_name in ['show_company_introduction', 'show_product_catalog']:
+    def _invoke_tool(self, tool_name: str, args: dict, request_host: str = None):
+        """Shared tool invocation logic."""
+        if tool_name in TOOLS_WITH_HOST:
             args['request_host'] = request_host
 
-        # Tool mapping
-        tool_map = {
-            'show_company_introduction': show_company_introduction,
-            'show_product_catalog': show_product_catalog,
-            'show_service_menu': show_service_menu,
-            'show_product_details': show_product_details,
-            'show_detection_apps': show_detection_apps,
-            'show_manual_download': show_manual_download
-        }
-
-        if tool_name in tool_map:
-            logger.info(f"Executing tool from function_call: {tool_name}")
+        if tool_name in TOOL_MAP:
+            logger.info(f"Executing tool: {tool_name}")
             try:
-                result = tool_map[tool_name](**args)
+                result = TOOL_MAP[tool_name](**args)
                 logger.debug(f"Tool '{tool_name}' executed successfully")
                 return result
             except Exception as e:
@@ -240,6 +205,14 @@ class AIAgentService:
 
         logger.warning(f"Unknown tool requested: {tool_name}")
         return None
+
+    async def _run_and_process(self, user_id: str, session_id: str,
+                               content, request_host: str = None):
+        """Run agent and process events (single execution path)."""
+        events = self.runner.run_async(
+            user_id=user_id, session_id=session_id, new_message=content
+        )
+        return await self._process_events(events, request_host)
 
     async def call_agent(self, query: str, user_id: str, request_host: str = None):
         """
@@ -265,28 +238,21 @@ class AIAgentService:
             # Prepare the user's message in ADK format
             content = types.Content(role="user", parts=[types.Part(text=query)])
 
-            # Execute the agent logic and process events
-            events = self.runner.run_async(
-                user_id=user_id, session_id=session_id, new_message=content
+            final_response = await self._run_and_process(
+                user_id, session_id, content, request_host
             )
-            final_response = await self._process_events(events, request_host)
 
         except ValueError as e:
-            # Handle errors, especially session not found
             logger.warning(f"ValueError during agent execution: {str(e)}")
 
-            # Recreate session if it was lost
             if "Session not found" in str(e):
                 logger.info(f"Recreating lost session for user '{user_id}'")
                 self.active_sessions.pop(user_id, None)
                 session_id = await self.get_or_create_session(user_id)
-
-                # Retry with the new session
                 try:
-                    events = self.runner.run_async(
-                        user_id=user_id, session_id=session_id, new_message=content
+                    final_response = await self._run_and_process(
+                        user_id, session_id, content, request_host
                     )
-                    final_response = await self._process_events(events, request_host)
                 except Exception as e2:
                     logger.error(f"Retry failed: {str(e2)}", exc_info=True)
                     raise AIAgentError("Agent execution failed after retry", detail=str(e2))
@@ -295,12 +261,27 @@ class AIAgentService:
                 raise AIAgentError("Agent execution failed", detail=str(e))
         except Exception as e:
             error_str = str(e).lower()
-            # Check for rate limit (429) errors
             if "429" in error_str or "rate limit" in error_str or "quota" in error_str or "resource exhausted" in error_str:
                 logger.warning(f"Rate limit (429) error for user '{user_id}': {str(e)}")
                 return "⚠️ AI 服務目前繁忙中（429 錯誤），請稍後再試或聯絡技術人員。"
-            logger.error(f"Unexpected error during agent execution: {str(e)}", exc_info=True)
-            raise AIAgentError("Unexpected agent error", detail=str(e))
+            if "api key" in error_str and ("invalid" in error_str or "expired" in error_str):
+                fallback_key = settings.google_api_key_fallback
+                if fallback_key and os.getenv("GOOGLE_API_KEY") != fallback_key:
+                    logger.warning(f"API key invalid/expired, switching to fallback key for user '{user_id}'")
+                    os.environ["GOOGLE_API_KEY"] = fallback_key
+                    try:
+                        final_response = await self._run_and_process(
+                            user_id, session_id, content, request_host
+                        )
+                    except Exception as e2:
+                        logger.error(f"Fallback key also failed: {str(e2)}", exc_info=True)
+                        raise AIAgentError("Agent execution failed with both API keys", detail=str(e2))
+                else:
+                    logger.error(f"API key invalid and no fallback available: {str(e)}")
+                    return "⚠️ AI 服務的 API 金鑰已失效，請聯絡技術人員更新。"
+            else:
+                logger.error(f"Unexpected error during agent execution: {str(e)}", exc_info=True)
+                raise AIAgentError("Unexpected agent error", detail=str(e))
 
         logger.info(f"Agent response for '{user_id}': {str(final_response)[:50]}...")
         return final_response

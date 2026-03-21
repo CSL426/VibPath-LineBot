@@ -17,6 +17,7 @@ class Settings(BaseSettings):
 
     # Google AI Configuration
     google_api_key: str = Field(..., alias="GOOGLE_API_KEY", description="Google AI API Key")
+    google_api_key_fallback: Optional[str] = Field(None, alias="GOOGLE_API_KEY_FALLBACK", description="Fallback Google AI API Key")
 
     # MongoDB Configuration
     mongodb_uri: Optional[str] = Field(None, alias="MONGODB_URI", description="Complete MongoDB URI")
