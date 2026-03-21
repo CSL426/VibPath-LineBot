@@ -31,7 +31,6 @@ fi
 PROJECT_ID=${GOOGLE_CLOUD_PROJECT}
 REGION="asia-east1"
 SERVICE_NAME=${SERVICE_NAME:-"linebot-adk"}  # 可透過環境變數覆蓋
-IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
 
 echo -e "${YELLOW}📋 Service Name: ${SERVICE_NAME}${NC}"
 

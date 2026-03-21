@@ -23,11 +23,13 @@ if [ -z "$PROJECT_ID" ]; then
     exit 1
 fi
 
-IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
+# Artifact Registry path used by `gcloud run deploy --source .`
+AR_REPO="${REGION}-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/${SERVICE_NAME}"
 
 echo -e "${GREEN}🧹 Starting cleanup for Cloud Run service: ${SERVICE_NAME}${NC}"
 echo -e "${YELLOW}   Project: ${PROJECT_ID}${NC}"
 echo -e "${YELLOW}   Region: ${REGION}${NC}"
+echo -e "${YELLOW}   AR Repo: ${AR_REPO}${NC}"
 echo ""
 
 # ========================================
@@ -71,51 +73,46 @@ echo ""
 # Clean up old Docker images
 # ========================================
 echo -e "${YELLOW}🐳 Cleaning up old Docker images in Artifact Registry...${NC}"
+echo -e "${YELLOW}   Registry: ${AR_REPO}${NC}"
 
-if [[ $IMAGE_NAME == gcr.io/* ]]; then
-    echo -e "${YELLOW}   Registry: gcr.io${NC}"
+# List all image digests (sorted by creation time, newest first)
+IMAGE_DIGESTS=$(gcloud artifacts docker images list "$AR_REPO" \
+    --format="get(version)" \
+    --sort-by=~UPDATE_TIME 2>/dev/null)
 
-    # List all image digests (sorted by creation time, newest first)
-    IMAGE_DIGESTS=$(gcloud container images list-tags "$IMAGE_NAME" \
-        --format="get(digest)" \
-        --sort-by=~timestamp 2>/dev/null)
-
-    if [ -z "$IMAGE_DIGESTS" ]; then
-        echo -e "${GREEN}   ✨ No images found in registry.${NC}"
-    else
-        TOTAL_IMAGES=$(echo "$IMAGE_DIGESTS" | wc -l)
-        echo -e "${YELLOW}   Found $TOTAL_IMAGES image(s) in registry${NC}"
-
-        # Keep the latest 2 images, delete the rest
-        KEEP_COUNT=2
-        IMAGES_TO_DELETE=$(echo "$IMAGE_DIGESTS" | tail -n +$((KEEP_COUNT + 1)))
-
-        if [ -z "$IMAGES_TO_DELETE" ]; then
-            echo -e "${GREEN}   ✨ No old images to clean up (keeping latest $KEEP_COUNT)${NC}"
-        else
-            DELETE_COUNT=$(echo "$IMAGES_TO_DELETE" | wc -l)
-            echo -e "${YELLOW}   Deleting $DELETE_COUNT old image(s) (keeping latest $KEEP_COUNT)...${NC}"
-
-            echo "$IMAGES_TO_DELETE" | while read digest; do
-                if [ ! -z "$digest" ]; then
-                    IMAGE_WITH_DIGEST="${IMAGE_NAME}@${digest}"
-                    echo -e "${YELLOW}   - Deleting image: $digest...${NC}"
-
-                    DELETE_OUTPUT=$(gcloud container images delete "$IMAGE_WITH_DIGEST" \
-                        --quiet 2>&1)
-
-                    if [ $? -eq 0 ]; then
-                        echo -e "${GREEN}     ✓ Successfully deleted${NC}"
-                    else
-                        echo -e "${RED}     ✗ Failed to delete: $DELETE_OUTPUT${NC}"
-                    fi
-                fi
-            done
-            echo -e "${GREEN}   ✅ Image cleanup complete${NC}"
-        fi
-    fi
+if [ -z "$IMAGE_DIGESTS" ]; then
+    echo -e "${GREEN}   ✨ No images found in registry.${NC}"
 else
-    echo -e "${YELLOW}   Non-gcr.io registry detected, skipping cleanup${NC}"
+    TOTAL_IMAGES=$(echo "$IMAGE_DIGESTS" | wc -l)
+    echo -e "${YELLOW}   Found $TOTAL_IMAGES image(s) in registry${NC}"
+
+    # Keep the latest 2 images, delete the rest
+    KEEP_COUNT=2
+    IMAGES_TO_DELETE=$(echo "$IMAGE_DIGESTS" | tail -n +$((KEEP_COUNT + 1)))
+
+    if [ -z "$IMAGES_TO_DELETE" ]; then
+        echo -e "${GREEN}   ✨ No old images to clean up (keeping latest $KEEP_COUNT)${NC}"
+    else
+        DELETE_COUNT=$(echo "$IMAGES_TO_DELETE" | wc -l)
+        echo -e "${YELLOW}   Deleting $DELETE_COUNT old image(s) (keeping latest $KEEP_COUNT)...${NC}"
+
+        echo "$IMAGES_TO_DELETE" | while read digest; do
+            if [ ! -z "$digest" ]; then
+                IMAGE_WITH_DIGEST="${AR_REPO}@${digest}"
+                echo -e "${YELLOW}   - Deleting: ${digest:0:20}...${NC}"
+
+                DELETE_OUTPUT=$(gcloud artifacts docker images delete "$IMAGE_WITH_DIGEST" \
+                    --quiet --delete-tags 2>&1)
+
+                if [ $? -eq 0 ]; then
+                    echo -e "${GREEN}     ✓ Successfully deleted${NC}"
+                else
+                    echo -e "${RED}     ✗ Failed to delete: $DELETE_OUTPUT${NC}"
+                fi
+            fi
+        done
+        echo -e "${GREEN}   ✅ Image cleanup complete${NC}"
+    fi
 fi
 
 echo ""
