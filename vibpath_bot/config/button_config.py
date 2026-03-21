@@ -4,6 +4,7 @@ Centralized system for managing buttons, links, and postback actions.
 """
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+from .static_urls import PLATFORM_URLS, build_platform_product_url
 
 
 @dataclass
@@ -22,27 +23,6 @@ class ButtonGroup:
     template_id: str
     buttons: List[ButtonAction]
 
-
-# =============================================================================
-# Platform Configuration
-# =============================================================================
-
-PLATFORM_CONFIG = {
-    "shopee": {
-        "label": "蝦皮購買",
-        "store_label": "蝦皮賣場",
-        "base_url": "https://shopee.tw/baba1018",
-    },
-    "familymart": {
-        "label": "全家好賣+",
-        "base_url": "https://famistore.famiport.com.tw/users/5806400",
-    },
-    "seven_eleven": {
-        "label": "7-11 IOpen Mall",
-        "base_url": "https://mall.iopenmall.tw/099753/",
-        "product_url_template": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no={product_id}",
-    },
-}
 
 # =============================================================================
 # Product Registry
@@ -92,34 +72,17 @@ PRODUCT_REGISTRY = {
 # Helper Functions
 # =============================================================================
 
-def build_platform_url(platform: str, product_path: str) -> str:
-    """Build full URL for a platform and product."""
-    if platform not in PLATFORM_CONFIG:
-        raise ValueError(f"Unknown platform: {platform}")
-
-    config = PLATFORM_CONFIG[platform]
-
-    if platform == "shopee":
-        return product_path
-    elif platform == "familymart":
-        return f"{config['base_url']}/{product_path}"
-    elif platform == "seven_eleven":
-        return config["product_url_template"].format(product_id=product_path)
-
-    raise ValueError(f"No URL build rule for platform: {platform}")
-
-
 def create_platform_buttons(product_urls: Dict[str, str]) -> List[ButtonAction]:
     """Create platform purchase buttons for a product."""
     buttons = []
-    for platform in ["shopee", "familymart", "seven_eleven"]:
+    for platform in PLATFORM_URLS:
         if platform in product_urls:
-            config = PLATFORM_CONFIG[platform]
+            config = PLATFORM_URLS[platform]
             buttons.append(
                 ButtonAction(
                     type="uri",
-                    label=config["label"],
-                    uri=build_platform_url(platform, product_urls[platform])
+                    label=config["product_label"],
+                    uri=build_platform_product_url(platform, product_urls[platform])
                 )
             )
     return buttons
@@ -144,19 +107,10 @@ def create_store_buttons() -> List[ButtonAction]:
     return [
         ButtonAction(
             type="uri",
-            label=PLATFORM_CONFIG["shopee"]["store_label"],
-            uri=PLATFORM_CONFIG["shopee"]["base_url"]
-        ),
-        ButtonAction(
-            type="uri",
-            label=PLATFORM_CONFIG["familymart"]["label"],
-            uri=PLATFORM_CONFIG["familymart"]["base_url"]
-        ),
-        ButtonAction(
-            type="uri",
-            label=PLATFORM_CONFIG["seven_eleven"]["label"],
-            uri=PLATFORM_CONFIG["seven_eleven"]["base_url"]
-        ),
+            label=PLATFORM_URLS[platform]["store_label"],
+            uri=PLATFORM_URLS[platform]["store_url"]
+        )
+        for platform in PLATFORM_URLS
     ]
 
 

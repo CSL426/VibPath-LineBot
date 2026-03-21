@@ -4,6 +4,7 @@ Provides tools for AI to return Flex Messages and structured responses.
 """
 from typing import Dict, Any, Optional
 from linebot.models import FlexSendMessage
+from ..templates.bubble_templates import BubbleTemplates
 
 
 def show_company_introduction(request_host: Optional[str] = None) -> Dict[str, Any]:
@@ -66,51 +67,6 @@ def show_service_menu(request_host: Optional[str] = None) -> Dict[str, Any]:
     }
 
 
-def _make_pdf_bubble(title: str, button_label: str, pdf_url: str, wrap: bool = False) -> dict:
-    """Create a micro bubble with a title and PDF download button."""
-    text_node = {
-        "type": "text", "text": title, "weight": "bold",
-        "size": "md", "color": "#1976D2", "align": "center"
-    }
-    if wrap:
-        text_node["wrap"] = True
-    return {
-        "type": "bubble", "size": "micro",
-        "body": {"type": "box", "layout": "vertical", "contents": [text_node]},
-        "footer": {"type": "box", "layout": "vertical", "contents": [
-            {"type": "button", "style": "primary",
-             "action": {"type": "uri", "label": button_label, "uri": pdf_url}}
-        ]}
-    }
-
-
-def _make_app_bubble(image_url: str, title: str, app_name: str,
-                     description: str, button_label: str, store_url: str) -> dict:
-    """Create a bubble with hero image, app info, and store download button."""
-    return {
-        "type": "bubble",
-        "hero": {
-            "type": "image", "url": image_url, "size": "full",
-            "aspectRatio": "20:13", "aspectMode": "cover"
-        },
-        "body": {
-            "type": "box", "layout": "vertical",
-            "contents": [
-                {"type": "text", "text": title, "weight": "bold", "size": "lg", "color": "#2C3E50"},
-                {"type": "text", "text": app_name, "size": "sm", "color": "#7F8C8D", "margin": "sm"},
-                {"type": "text", "text": description, "size": "xs", "color": "#888888", "margin": "md", "wrap": True}
-            ]
-        },
-        "footer": {
-            "type": "box", "layout": "vertical",
-            "contents": [
-                {"type": "button", "style": "primary",
-                 "action": {"type": "uri", "label": button_label, "uri": store_url}}
-            ]
-        }
-    }
-
-
 def show_manual_download(product_type: str = "all") -> Dict[str, Any]:
     """
     Tool for AI to show product manual download cards.
@@ -126,39 +82,32 @@ def show_manual_download(product_type: str = "all") -> Dict[str, Any]:
     Returns:
         Dict with flex_message type and manual download card(s)
     """
-    import os
-    base = os.getenv("STATIC_BASE_URL", "").rstrip('/')
+    from ..config.env_config import settings
+    base = (settings.static_base_url or "").rstrip('/')
 
     product_lower = product_type.lower()
     if product_lower in ["13freq", "13頻", "脈輪"]:
         return {
             "type": "flex_message",
-            "content": _make_pdf_bubble("13頻脈輪機", "下載手冊", f"{base}/images/manual_13feqs.pdf"),
+            "content": BubbleTemplates.pdf_download("13頻脈輪機", "下載手冊", f"{base}/images/manual_13feqs.pdf"),
             "alt_text": "13頻脈輪機手冊下載"
         }
     elif product_lower in ["others", "舒曼波", "γ波", "雙頻", "40hz", "7.83hz"]:
         return {
             "type": "flex_message",
-            "content": _make_pdf_bubble("舒曼波/γ波/雙頻機", "下載手冊", f"{base}/images/manual_others.pdf", wrap=True),
+            "content": BubbleTemplates.pdf_download("舒曼波/γ波/雙頻機", "下載手冊", f"{base}/images/manual_others.pdf", wrap=True),
             "alt_text": "產品手冊下載"
         }
     elif product_lower in ["guide", "頻率指南", "指南", "生命頻率"]:
         return {
             "type": "flex_message",
-            "content": _make_pdf_bubble("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
+            "content": BubbleTemplates.pdf_download("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
             "alt_text": "生命頻率指南下載"
         }
     else:
         return {
             "type": "flex_message",
-            "content": {
-                "type": "carousel",
-                "contents": [
-                    _make_pdf_bubble("13頻脈輪機", "下載手冊", f"{base}/images/manual_13feqs.pdf"),
-                    _make_pdf_bubble("舒曼波/γ波/雙頻機", "下載手冊", f"{base}/images/manual_others.pdf", wrap=True),
-                    _make_pdf_bubble("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
-                ]
-            },
+            "content": BubbleTemplates.build_manual_carousel(),
             "alt_text": "產品手冊下載"
         }
 
@@ -177,10 +126,10 @@ def show_detection_apps(platform: str = "all") -> Dict[str, Any]:
     Returns:
         Dict with flex_message type and app download card(s)
     """
-    import os
-    static_base = os.getenv("STATIC_BASE_URL", "")
+    from ..config.env_config import settings
+    static_base = (settings.static_base_url or "").rstrip('/')
 
-    bubble_ios = _make_app_bubble(
+    bubble_ios = BubbleTemplates.app_download(
         image_url=f"{static_base}/images/app/ios.jpg",
         title="iOS 檢測 APP",
         app_name="Sonic Tools SVM",
@@ -189,7 +138,7 @@ def show_detection_apps(platform: str = "all") -> Dict[str, Any]:
         store_url="https://apps.apple.com/tw/app/sonic-tools-svm/id1245046029"
     )
 
-    bubble_android = _make_app_bubble(
+    bubble_android = BubbleTemplates.app_download(
         image_url=f"{static_base}/images/app/android.jpg",
         title="Android 檢測 APP",
         app_name="Ultimate EMF Detector",

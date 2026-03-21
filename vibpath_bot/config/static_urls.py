@@ -148,6 +148,49 @@ class StaticURLManager:
 static_url_manager = StaticURLManager()
 
 
+# =============================================================================
+# E-commerce Platform URLs
+# =============================================================================
+
+PLATFORM_URLS = {
+    "shopee": {
+        "store_url": "https://shopee.tw/baba1018",
+        "store_label": "蝦皮賣場",
+        "product_label": "蝦皮購買",
+    },
+    "familymart": {
+        "store_url": "https://famistore.famiport.com.tw/users/5806400",
+        "store_label": "全家好賣+",
+        "product_label": "全家好賣+",
+    },
+    "seven_eleven": {
+        "store_url": "https://mall.iopenmall.tw/099753/",
+        "store_label": "7-11 IOpen Mall",
+        "product_label": "7-11 IOpen Mall",
+        "product_url_template": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no={product_id}",
+    },
+}
+
+
+def build_platform_product_url(platform: str, product_path: str) -> str:
+    """Build full product URL for a platform.
+
+    - shopee: product_path is already a full URL
+    - familymart: product_path is appended to store_url
+    - seven_eleven: product_path is a product ID inserted into template
+    """
+    if platform not in PLATFORM_URLS:
+        raise ValueError(f"Unknown platform: {platform}")
+
+    config = PLATFORM_URLS[platform]
+
+    if "product_url_template" in config:
+        return config["product_url_template"].format(product_id=product_path)
+    if product_path.startswith("http"):
+        return product_path
+    return f"{config['store_url'].rstrip('/')}/{product_path}"
+
+
 # Convenience functions
 def get_weather_background_url(condition: str = "default") -> str:
     """Get weather background image URL"""

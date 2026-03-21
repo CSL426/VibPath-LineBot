@@ -3,14 +3,11 @@ LINE Bot message handler for different types of responses.
 Handles text, flex messages, quick replies, and other LINE-specific features.
 """
 import logging
-from typing import Union, List, Optional
-from linebot.models import (
-    TextSendMessage, FlexSendMessage, QuickReply, QuickReplyButton,
-    PostbackAction
-)
+from typing import Union, List
+from linebot.models import TextSendMessage, FlexSendMessage
 from ..templates.flex_templates import FlexMessageTemplates
 from ..templates.custom_templates import BusinessTemplates
-from ..utils.image_manager import default_flex_builder
+from .quick_reply import QuickReplyTemplates
 from ..config.keywords_config import keywords_config
 
 logger = logging.getLogger(__name__)
@@ -65,37 +62,27 @@ class MessageHandler:
         return messages
 
 
-    def _create_quick_reply_from_items(self, items: list) -> QuickReply:
-        """Create QuickReply from a list of (label, data) tuples."""
-        buttons = [
-            QuickReplyButton(action=PostbackAction(label=label, data=data))
-            for label, data in items
-        ]
-        return QuickReply(items=buttons)
-
-    def create_quick_reply_basic(self) -> QuickReply:
+    def create_quick_reply_basic(self):
         """Create basic quick reply with general options."""
-        items = [
-            ("🏢 公司介紹", "show_company_intro"),
-            ("🛒 查看產品", "show_frequency_products"),
-            ("📋 選單", "show_service_menu"),
-            ("🤖 AI開關", "toggle_ai_reply"),
-            ("📖 更多產品", "show_product_details"),
-        ]
-        return self._create_quick_reply_from_items(items)
+        return QuickReplyTemplates.custom_quick_reply([
+            {"label": "🏢 公司介紹", "action": "postback", "value": "show_company_intro"},
+            {"label": "🛒 查看產品", "action": "postback", "value": "show_frequency_products"},
+            {"label": "📋 選單", "action": "postback", "value": "show_service_menu"},
+            {"label": "🤖 AI開關", "action": "postback", "value": "toggle_ai_reply"},
+            {"label": "📖 更多產品", "action": "postback", "value": "show_product_details"},
+        ])
 
-    def create_quick_reply_products(self) -> QuickReply:
+    def create_quick_reply_products(self):
         """Create product-focused quick reply."""
-        items = [
-            ("🎵 商品原理", "explain_frequency"),
-            ("🌍 舒曼波", "explain_7_83hz"),
-            ("🕉️ 13頻脈輪", "explain_13Freq"),
-            ("⚡ γ波40Hz", "explain_40hz"),
-            ("🔄 α/θ雙頻", "explain_double_freq"),
-            ("🤖 AI開關", "toggle_ai_reply"),
-            ("◀️ 返回基本", "show_basic_menu"),
-        ]
-        return self._create_quick_reply_from_items(items)
+        return QuickReplyTemplates.custom_quick_reply([
+            {"label": "🎵 商品原理", "action": "postback", "value": "explain_frequency"},
+            {"label": "🌍 舒曼波", "action": "postback", "value": "explain_7_83hz"},
+            {"label": "🕉️ 13頻脈輪", "action": "postback", "value": "explain_13Freq"},
+            {"label": "⚡ γ波40Hz", "action": "postback", "value": "explain_40hz"},
+            {"label": "🔄 α/θ雙頻", "action": "postback", "value": "explain_double_freq"},
+            {"label": "🤖 AI開關", "action": "postback", "value": "toggle_ai_reply"},
+            {"label": "◀️ 返回基本", "action": "postback", "value": "show_basic_menu"},
+        ])
 
     def create_help_message(self) -> TextSendMessage:
         """
@@ -161,11 +148,13 @@ class MessageHandler:
             request_host: Request host for dynamic URL generation
 
         Returns:
-            FlexSendMessage: Manual download carousel with two cards
+            FlexSendMessage: Manual download carousel with all manual cards
         """
-        from vibpath_bot.tools.ai_tools import show_manual_download
-        result = show_manual_download()
-        return FlexSendMessage(alt_text=result["alt_text"], contents=result["content"])
+        from ..templates.bubble_templates import BubbleTemplates
+        return FlexSendMessage(
+            alt_text="產品手冊下載",
+            contents=BubbleTemplates.build_manual_carousel()
+        )
 
 
     def detect_message_type(self, text: str) -> str:
