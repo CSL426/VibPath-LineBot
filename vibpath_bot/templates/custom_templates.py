@@ -112,11 +112,16 @@ class BusinessTemplates:
                 "name": "雙頻 α/θ波",
                 "description": "多頻率組合\n全方位體驗",
                 "image": "services/DoubleFreq.jpg"
+            },
+            {
+                "name": "客製頻率 脈衝產生器",
+                "description": "11頻率可選\n客製燒錄 · 精準穩定",
+                "image": "services/PulseGen.jpg"
             }
         ]
 
         bubbles = []
-        service_ids = ["service_7_83hz", "service_13Freq", "service_40hz", "service_double_freq"]
+        service_ids = ["service_7_83hz", "service_13Freq", "service_40hz", "service_double_freq", "service_pulse_gen"]
 
         for i, service in enumerate(services):
             bubble = BubbleContainer(

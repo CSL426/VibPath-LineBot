@@ -65,6 +65,15 @@ PRODUCT_REGISTRY = {
             "seven_eleven": "P9975313544545",
         },
     },
+    "pulse_gen": {
+        "template_id": "service_pulse_gen",
+        "explain_data": "explain_pulse_gen",
+        "urls": {
+            "shopee": "https://shopee.tw/product/15192070/44379328891/",
+            "familymart": "merchandise/4217824",
+            "seven_eleven": "P9975314571867",
+        },
+    },
 }
 
 

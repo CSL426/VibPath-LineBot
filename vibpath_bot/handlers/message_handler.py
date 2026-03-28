@@ -80,6 +80,7 @@ class MessageHandler:
             {"label": "🕉️ 13頻脈輪", "action": "postback", "value": "explain_13Freq"},
             {"label": "⚡ γ波40Hz", "action": "postback", "value": "explain_40hz"},
             {"label": "🔄 α/θ雙頻", "action": "postback", "value": "explain_double_freq"},
+            {"label": "🔧 客製頻率", "action": "postback", "value": "explain_pulse_gen"},
             {"label": "🤖 AI開關", "action": "postback", "value": "toggle_ai_reply"},
             {"label": "◀️ 返回基本", "action": "postback", "value": "show_basic_menu"},
         ])

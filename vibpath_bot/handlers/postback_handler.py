@@ -128,7 +128,38 @@ class PostbackHandler:
 ⚡ 技術特色：
 • 波形都很漂亮，總諧波失真度都很低
 • 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範
-• 不只修行人輔助好用，一般人用也都很好"""
+• 不只修行人輔助好用，一般人用也都很好""",
+
+            "explain_pulse_gen": """🔧 客製頻率 脈衝產生器
+
+程式修改客製頻率，目前已完成共11頻率可選：
+(選一個頻率進行燒寫，一台機器固定一個頻率，不能切換)
+
+📋 可選頻率：
+• 0.1Hz：Sub-Delta Wave
+• 0.5Hz：Delta Wave
+• 4.0Hz：Theta Wave
+• 8.0Hz：Alpha Wave
+• 10.0Hz：Middle Alpha Wave
+• 12.0Hz：Low Beta Wave
+• 25.0Hz：Beta Wave
+• 40.0Hz：Gamma Wave
+• 111Hz：Angel Frequency
+• 128Hz：Grounding Frequency (Otto 128)
+• 136.1Hz：OM Frequency
+（亦可依需求重新設計新頻率）
+
+⚡ 機器特色：
+• 出貨前重新燒錄新頻率程式，可微調至誤差0.5%以內
+• 波形維持超低總失真度(THD)小於1%
+• 磁場強度維持銅線加強版
+• 使用有效距離約5公分以內
+
+⚠️ 安全距離：
+• 40Hz以下：10公分
+• 40Hz以上：15公分
+
+機器皆以舒曼波機重新編寫、燒錄新程式碼達成。"""
         }
 
     def handle_postback(self, postback_data: str, user_id: str, request_host: str = None, with_quick_reply: bool = True):
@@ -217,7 +248,7 @@ class PostbackHandler:
                     handler = MessageHandler()
 
                     # Use product quick reply for product explanations
-                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_frequency"]
+                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_pulse_gen", "explain_frequency"]
                     if postback_data in product_postbacks:
                         quick_reply = handler.create_quick_reply_products()
                     else:

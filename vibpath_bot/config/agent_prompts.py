@@ -26,7 +26,7 @@ class AgentPromptManager:
 - show_company_introduction: 顯示公司介紹的圖文訊息
 - show_product_catalog: 顯示產品目錄輪播
 - show_service_menu: 顯示服務選單
-- show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq）
+- show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq, pulse_gen）
 - show_detection_apps: 顯示頻率檢測 APP 下載卡片（iOS 和 Android 都會顯示）
 - show_manual_download: 顯示產品手冊下載卡片（參數：product_type如13freq, others, guide, all）
 
@@ -36,7 +36,7 @@ class AgentPromptManager:
 - show_company_introduction：用戶問「公司介紹」、「關於我們」、「公司」
 - show_product_catalog：用戶問「商品介紹」、「產品目錄」、「產品」、「商品」、「有什麼產品」
 - show_service_menu：用戶問「選單」、「服務」、「功能」
-- show_product_details：用戶問特定產品如「舒曼波」、「7.83Hz」、「40Hz」、「脈輪」
+- show_product_details：用戶問特定產品如「舒曼波」、「7.83Hz」、「40Hz」、「脈輪」、「客製頻率」、「脈衝產生器」
 - show_detection_apps：用戶問「怎麼知道機器有沒有開」、「如何確認運作」、「怎麼測試」、「有沒有在運作」、「機器開了嗎」、「怎麼檢測」、「訊號」、「磁場」、「APP確認」、「手機APP」、「如何確認機器是否正常工作」
 - show_manual_download：用戶問「手冊」、「說明書」、「使用手冊」、「產品手冊」、「操作說明」、「規格書」、「頻率指南」、「生命頻率」
 
@@ -62,6 +62,15 @@ class AgentPromptManager:
 **13頻脈輪波：**
 - 如其名，脈輪，屬於瑜珈的系統，對應從海底到頂輪
 - 除了修行人的修行輔助使用之外，也是被拿來調理相對位置的健康
+
+**客製頻率 脈衝產生器：**
+- 基於舒曼波機重新編寫、燒錄新程式碼達成
+- 目前共11頻率可選（0.1Hz~136.1Hz），選一個頻率進行燒寫，一台機器固定一個頻率
+- 出貨前重新燒錄，可微調至誤差0.5%以內，頻率準確穩定
+- 波形維持超低總失真度(THD)小於1%
+- 磁場強度維持銅線加強版
+- 使用有效距離約5公分以內
+- 亦可依需求重新設計新頻率
 
 **所有產品共同特點：**
 - 波形都很漂亮，總諧波失真度都很低
