@@ -154,7 +154,7 @@ class AIAgentService:
                         logger.error(f"Unexpected tool execution error: {str(e)}", exc_info=True)
 
             # Method 2: Check event.content.parts for function_call
-            if hasattr(event, 'content') and event.content and hasattr(event.content, 'parts'):
+            if hasattr(event, 'content') and event.content and hasattr(event.content, 'parts') and event.content.parts:
                 for part in event.content.parts:
                     if hasattr(part, 'function_call') and part.function_call:
                         try:
