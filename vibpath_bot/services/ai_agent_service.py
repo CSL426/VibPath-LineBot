@@ -136,7 +136,7 @@ class AIAgentService:
         Returns:
             Final response (string or dict)
         """
-        final_response = "Agent did not produce a final response."
+        final_response = "抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。"
 
         async for event in events:
             # Check for tool calls in multiple locations
@@ -261,13 +261,14 @@ class AIAgentService:
                 raise AIAgentError("Agent execution failed", detail=str(e))
         except Exception as e:
             error_str = str(e).lower()
-            if "429" in error_str or "rate limit" in error_str or "quota" in error_str or "resource exhausted" in error_str:
-                logger.warning(f"Rate limit (429) error for user '{user_id}': {str(e)}")
-                return "⚠️ AI 服務目前繁忙中（429 錯誤），請稍後再試或聯絡技術人員。"
-            if "api key" in error_str and ("invalid" in error_str or "expired" in error_str):
+            is_rate_limit = "429" in error_str or "rate limit" in error_str or "quota" in error_str or "resource exhausted" in error_str
+            is_key_error = "api key" in error_str and ("invalid" in error_str or "expired" in error_str)
+
+            if is_rate_limit or is_key_error:
+                reason = "rate limit (429)" if is_rate_limit else "API key invalid/expired"
                 fallback_key = settings.google_api_key_fallback
                 if fallback_key and os.getenv("GOOGLE_API_KEY") != fallback_key:
-                    logger.warning(f"API key invalid/expired, switching to fallback key for user '{user_id}'")
+                    logger.warning(f"{reason}, switching to fallback key for user '{user_id}'")
                     os.environ["GOOGLE_API_KEY"] = fallback_key
                     try:
                         final_response = await self._run_and_process(
@@ -277,8 +278,8 @@ class AIAgentService:
                         logger.error(f"Fallback key also failed: {str(e2)}", exc_info=True)
                         raise AIAgentError("Agent execution failed with both API keys", detail=str(e2))
                 else:
-                    logger.error(f"API key invalid and no fallback available: {str(e)}")
-                    return "⚠️ AI 服務的 API 金鑰已失效，請聯絡技術人員更新。"
+                    logger.warning(f"{reason} and no fallback available for user '{user_id}': {str(e)}")
+                    return "⚠️ AI 服務目前繁忙中，請稍後再試。"
             else:
                 logger.error(f"Unexpected error during agent execution: {str(e)}", exc_info=True)
                 raise AIAgentError("Unexpected agent error", detail=str(e))
