@@ -202,6 +202,10 @@ def show_product_details(product_type: str) -> Dict[str, Any]:
         "theta": "explain_double_freq",
         "pulse_gen": "explain_pulse_gen",
         "客製頻率": "explain_pulse_gen",
+        "composite_freq": "explain_composite_freq",
+        "複合式": "explain_composite_freq",
+        "複合式頻率": "explain_composite_freq",
+        "0.5hz": "explain_composite_freq",
     }
 
     explanation_key = product_map.get(product_type.lower())

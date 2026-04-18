@@ -74,6 +74,15 @@ PRODUCT_REGISTRY = {
             "seven_eleven": "P9975314571867",
         },
     },
+    "composite_freq": {
+        "template_id": "service_composite_freq",
+        "explain_data": "explain_composite_freq",
+        "urls": {
+            "shopee": "https://shopee.tw/product/15192070/43580081153/",
+            "familymart": "merchandise/4291363",
+            "seven_eleven": "P9975314918938",
+        },
+    },
 }
 
 
@@ -151,6 +160,11 @@ class ButtonConfigManager:
                     type="postback",
                     label="詳細介紹",
                     data="explain_company"
+                ),
+                ButtonAction(
+                    type="postback",
+                    label="產品手冊",
+                    data="show_manual_download"
                 )
             ]
         )

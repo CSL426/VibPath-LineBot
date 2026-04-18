@@ -161,7 +161,25 @@ class PostbackHandler:
 • 12.0Hz：5公分
 • 25.0 / 40.0 / 111 / 128 / 136.1 Hz：7公分
 
-機器皆以舒曼波機重新編寫、燒錄新程式碼達成。"""
+機器皆以舒曼波機重新編寫、燒錄新程式碼達成。""",
+
+            "explain_composite_freq": """🎛️ 複合式頻率產生器 (0.5Hz + 8.0Hz)
+
+同一台機器同時產出 0.5Hz 與 8.0Hz 兩組極低頻電磁波，複合式共振體驗。
+
+🧠 頻率原理：
+• 0.5Hz (Delta Wave)：深層睡眠腦波，幫助深度放鬆、修復
+• 8.0Hz (Alpha Wave)：大腦靜下來後的狀態，放鬆、助眠、身心平衡
+• 兩頻同時作用，兼顧深層修復與身心平衡
+
+⚡ 技術特色：
+• 波形都很漂亮，總諧波失真度都很低
+• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範
+• 銅線加強版，磁場穩定
+• 每一台機器都經過精密調校
+
+🎯 適用：深層助眠、放鬆、修復共振
+"""
         }
 
     def handle_postback(self, postback_data: str, user_id: str, request_host: str = None, with_quick_reply: bool = True):
@@ -231,6 +249,13 @@ class PostbackHandler:
                 flex_msg.quick_reply = handler.create_quick_reply_basic()
                 return flex_msg
 
+            elif postback_data == "show_manual_download":
+                from .message_handler import MessageHandler
+                handler = MessageHandler()
+                flex_msg = handler.create_manual_download_card(request_host)
+                flex_msg.quick_reply = handler.create_quick_reply_basic()
+                return flex_msg
+
             elif postback_data == "show_service_menu":
                 # Import here to avoid circular import
                 from ..templates.flex_templates import FlexMessageTemplates
@@ -250,7 +275,7 @@ class PostbackHandler:
                     handler = MessageHandler()
 
                     # Use product quick reply for product explanations
-                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_pulse_gen", "explain_frequency"]
+                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_pulse_gen", "explain_composite_freq", "explain_frequency"]
                     if postback_data in product_postbacks:
                         quick_reply = handler.create_quick_reply_products()
                     else:
