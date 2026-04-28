@@ -66,6 +66,10 @@ docker-compose.yml
 deploy.sh
 .env.example
 
+# Static images & manuals are served from gh-pages via STATIC_BASE_URL
+static/images/
+static/*.pdf
+
 # Cloud and IDE specific
 .claude/
 

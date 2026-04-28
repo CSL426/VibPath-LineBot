@@ -262,10 +262,16 @@ class AIAgentService:
         except Exception as e:
             error_str = str(e).lower()
             is_rate_limit = "429" in error_str or "rate limit" in error_str or "quota" in error_str or "resource exhausted" in error_str
+            is_overloaded = "503" in error_str or "unavailable" in error_str or "high demand" in error_str
             is_key_error = "api key" in error_str and ("invalid" in error_str or "expired" in error_str)
 
-            if is_rate_limit or is_key_error:
-                reason = "rate limit (429)" if is_rate_limit else "API key invalid/expired"
+            if is_rate_limit or is_overloaded or is_key_error:
+                if is_rate_limit:
+                    reason = "rate limit (429)"
+                elif is_overloaded:
+                    reason = "model overloaded (503)"
+                else:
+                    reason = "API key invalid/expired"
                 fallback_key = settings.google_api_key_fallback
                 if fallback_key and os.getenv("GOOGLE_API_KEY") != fallback_key:
                     logger.warning(f"{reason}, switching to fallback key for user '{user_id}'")
@@ -276,6 +282,8 @@ class AIAgentService:
                         )
                     except Exception as e2:
                         logger.error(f"Fallback key also failed: {str(e2)}", exc_info=True)
+                        if is_overloaded:
+                            return "⚠️ AI 服務目前繁忙中，請稍後再試。"
                         raise AIAgentError("Agent execution failed with both API keys", detail=str(e2))
                 else:
                     logger.warning(f"{reason} and no fallback available for user '{user_id}': {str(e)}")
