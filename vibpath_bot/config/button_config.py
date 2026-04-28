@@ -83,6 +83,15 @@ PRODUCT_REGISTRY = {
             "seven_eleven": "P9975314918938",
         },
     },
+    "ten_freq": {
+        "template_id": "service_ten_freq",
+        "explain_data": "explain_ten_freq",
+        "urls": {
+            "shopee": "https://shopee.tw/product/15192070/56159529196/",
+            "familymart": "merchandise/4313856",
+            "seven_eleven": "P9975315173580",
+        },
+    },
 }
 
 

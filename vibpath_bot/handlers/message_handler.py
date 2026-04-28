@@ -82,6 +82,7 @@ class MessageHandler:
             {"label": "🔄 α/θ雙頻", "action": "postback", "value": "explain_double_freq"},
             {"label": "🔧 客製頻率", "action": "postback", "value": "explain_pulse_gen"},
             {"label": "🎛️ 複合式頻率", "action": "postback", "value": "explain_composite_freq"},
+            {"label": "🎚️ 十頻儀", "action": "postback", "value": "explain_ten_freq"},
             {"label": "🤖 AI開關", "action": "postback", "value": "toggle_ai_reply"},
             {"label": "◀️ 返回基本", "action": "postback", "value": "show_basic_menu"},
         ])

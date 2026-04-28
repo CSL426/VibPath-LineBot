@@ -179,6 +179,44 @@ class PostbackHandler:
 • 每一台機器都經過精密調校
 
 🎯 適用：深層助眠、放鬆、修復共振
+""",
+
+            "explain_ten_freq": """🎚️ 十頻儀 (0.1Hz~136.1Hz)
+
+PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側按切換鍵即時切換，OLED 螢幕顯示當前頻率資訊。
+
+📋 內建 10 頻率：
+• 0.1Hz：Sub-Delta Wave
+• 0.5Hz：Deep Delta Wave
+• 4.0Hz：Theta Wave
+• 8.0Hz：Low Alpha Wave
+• 10.0Hz：Middle Alpha Wave
+• 12.0Hz：Low Beta Wave
+• 40.0Hz：Gamma Wave
+• 111Hz：Angel Frequency
+• 128Hz：Grounding Frequency (Otto 128)
+• 136.1Hz：OM Frequency
+
+⚡ 機器特色：
+• 側按頻率切換鍵，免重新燒錄即可切換頻率
+• OLED 螢幕即時顯示當前頻率與波型資訊
+• 3A 大電晶體驅動，磁場強度充足
+• LED 呼吸燈，運作狀態一目了然
+• Type-C (USB-C) 供電，接線方便
+• 銅線加強版線圈，波形純淨、總諧波失真度低
+• 每一台皆單獨確認頻率精度，微調至誤差 0.3% 以內
+• 100% 台灣設計製造，符合國家(極)低頻電磁波暴露規範
+
+📏 使用距離：
+• 有效距離約 5 公尺以內，3 公尺以內效果佳
+
+⚠️ 與人體安全距離：
+• 0.1 / 0.5 / 4.0 Hz：0 公分，可貼身使用
+• 8.0Hz：4 公分
+• 12.0Hz：5 公分
+• 40.0 / 111 / 128 / 136.1 Hz：7 公分
+
+🎯 適用：助眠、放鬆、專注提升、修行輔助、健康調理
 """
         }
 
@@ -275,7 +313,7 @@ class PostbackHandler:
                     handler = MessageHandler()
 
                     # Use product quick reply for product explanations
-                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_pulse_gen", "explain_composite_freq", "explain_frequency"]
+                    product_postbacks = ["explain_7_83hz", "explain_13Freq", "explain_40hz", "explain_double_freq", "explain_pulse_gen", "explain_composite_freq", "explain_ten_freq", "explain_frequency"]
                     if postback_data in product_postbacks:
                         quick_reply = handler.create_quick_reply_products()
                     else:

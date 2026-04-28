@@ -206,6 +206,13 @@ def show_product_details(product_type: str) -> Dict[str, Any]:
         "複合式": "explain_composite_freq",
         "複合式頻率": "explain_composite_freq",
         "0.5hz": "explain_composite_freq",
+        "ten_freq": "explain_ten_freq",
+        "十頻": "explain_ten_freq",
+        "十頻儀": "explain_ten_freq",
+        "整合十頻": "explain_ten_freq",
+        "整合十頻機": "explain_ten_freq",
+        "10頻": "explain_ten_freq",
+        "pemf": "explain_ten_freq",
     }
 
     explanation_key = product_map.get(product_type.lower())

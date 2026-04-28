@@ -26,7 +26,7 @@ class AgentPromptManager:
 - show_company_introduction: 顯示公司介紹的圖文訊息
 - show_product_catalog: 顯示產品目錄輪播
 - show_service_menu: 顯示服務選單
-- show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq, pulse_gen, composite_freq）
+- show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq, pulse_gen, composite_freq, ten_freq）
 - show_detection_apps: 顯示頻率檢測 APP 下載卡片（iOS 和 Android 都會顯示）
 - show_manual_download: 顯示產品手冊下載卡片（參數：product_type如13freq, others, guide, all）
 
@@ -36,7 +36,7 @@ class AgentPromptManager:
 - show_company_introduction：用戶問「公司介紹」、「關於我們」、「公司」
 - show_product_catalog：用戶問「商品介紹」、「產品目錄」、「產品」、「商品」、「有什麼產品」
 - show_service_menu：用戶問「選單」、「服務」、「功能」
-- show_product_details：用戶問特定產品如「舒曼波」、「7.83Hz」、「40Hz」、「脈輪」、「客製頻率」、「脈衝產生器」、「複合式頻率」、「0.5Hz+8Hz」
+- show_product_details：用戶問特定產品如「舒曼波」、「7.83Hz」、「40Hz」、「脈輪」、「客製頻率」、「脈衝產生器」、「複合式頻率」、「0.5Hz+8Hz」、「十頻儀」、「整合十頻機」、「十頻」、「PEMF」
 - show_detection_apps：用戶問「怎麼知道機器有沒有開」、「如何確認運作」、「怎麼測試」、「有沒有在運作」、「機器開了嗎」、「怎麼檢測」、「訊號」、「磁場」、「APP確認」、「手機APP」、「如何確認機器是否正常工作」
 - show_manual_download：用戶問「手冊」、「說明書」、「使用手冊」、「產品手冊」、「操作說明」、「規格書」、「頻率指南」、「生命頻率」
 
@@ -69,6 +69,15 @@ class AgentPromptManager:
 - 8.0Hz 對應大腦靜下狀態，放鬆、助眠、身心平衡
 - 兩頻同時作用，兼顧深層修復與身心平衡
 - 銅線加強版磁場，波形失真度低
+
+**十頻儀 (PEMF 0.1Hz~136.1Hz)：**
+- 一台機器整合 10 種頻率，側按切換鍵即時切換，無需重新燒錄
+- OLED 螢幕即時顯示當前頻率資訊，3A 大電晶體驅動，LED 呼吸燈狀態指示
+- Type-C (USB-C) 供電，銅線加強版線圈
+- 內建 10 頻率：0.1Hz、0.5Hz、4.0Hz、8.0Hz、10.0Hz、12.0Hz、40.0Hz、111Hz、128Hz、136.1Hz
+- 每一台皆單獨確認頻率精度，微調至誤差 0.3% 以內
+- 有效距離約 5 公尺以內，3 公尺以內效果佳
+- 100% 台灣設計製造
 
 **客製頻率 脈衝產生器：**
 - 基於舒曼波機重新編寫、燒錄新程式碼達成
