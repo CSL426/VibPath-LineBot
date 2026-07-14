@@ -4,6 +4,15 @@
 # Usage: ./deploy.sh [--no-cleanup]  # --no-cleanup skips cleanup after deployment
 set -e
 
+# Bypass pyenv-win shims on Windows to avoid "--sort-by was unexpected at this time" errors
+if command -v pyenv >/dev/null 2>&1; then
+    REAL_PYTHON=$(pyenv which python 2>/dev/null | tr '\\' '/')
+    if [ -n "$REAL_PYTHON" ]; then
+        export CLOUDSDK_PYTHON="$REAL_PYTHON"
+    fi
+fi
+
+
 # Parse command line arguments
 SKIP_CLEANUP=false
 if [[ "$1" == "--no-cleanup" ]]; then
@@ -104,7 +113,30 @@ gcloud run deploy "$SERVICE_NAME" \
     --set-env-vars="MONGODB_APP_NAME=${MONGODB_APP_NAME}"
 
 # Get the service URL
-SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
+# Note: gcloud's value()/table() output formats print nothing under Git Bash (MSYS),
+# so parse the JSON output instead
+SERVICE_URL=$(gcloud run services describe "$SERVICE_NAME" --region="$REGION" --format=json | sed -n 's/.*"url": *"\(https:[^"]*\)".*/\1/p' | head -1)
+
+# Keepalive: Cloud Scheduler pings /health every 5 minutes to keep the instance warm
+# (background tasks inside the container can't do this - CPU is throttled when idle)
+if [ -z "$SERVICE_URL" ]; then
+    echo -e "${RED}⚠️  Could not determine service URL; skipping keepalive setup${NC}"
+else
+    echo -e "${YELLOW}⏰ Setting up keepalive scheduler job...${NC}"
+    gcloud services enable cloudscheduler.googleapis.com
+    KEEPALIVE_JOB="${SERVICE_NAME}-keepalive"
+    if gcloud scheduler jobs describe "$KEEPALIVE_JOB" --location="$REGION" >/dev/null 2>&1; then
+        SCHEDULER_ACTION="update"
+    else
+        SCHEDULER_ACTION="create"
+    fi
+    gcloud scheduler jobs "$SCHEDULER_ACTION" http "$KEEPALIVE_JOB" \
+        --location="$REGION" \
+        --schedule="*/5 * * * *" \
+        --uri="${SERVICE_URL}/health" \
+        --http-method=GET
+    echo -e "${GREEN}✅ Keepalive job '${KEEPALIVE_JOB}' pings ${SERVICE_URL}/health every 5 minutes${NC}"
+fi
 
 # Clean up old resources (default behavior)
 if [ "$SKIP_CLEANUP" = false ]; then

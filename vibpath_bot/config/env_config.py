@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     # Google AI Configuration
     google_api_key: str = Field(..., alias="GOOGLE_API_KEY", description="Google AI API Key")
-    google_api_key_fallback: Optional[str] = Field(None, alias="GOOGLE_API_KEY_FALLBACK", description="Fallback Google AI API Key")
+    google_api_key_fallback: Optional[str] = Field(None, alias="GOOGLE_API_KEY_FALLBACK", description="Fallback Google AI API Key(s), semicolon-separated, tried in order")
 
     # MongoDB Configuration
     mongodb_uri: Optional[str] = Field(None, alias="MONGODB_URI", description="Complete MongoDB URI")
@@ -66,6 +66,20 @@ class Settings(BaseSettings):
         if not v or v.strip() == "":
             raise ValueError("GOOGLE_API_KEY cannot be empty")
         return v
+
+    def get_fallback_keys(self) -> list[str]:
+        """
+        Get fallback Google AI API keys as an ordered list
+
+        GOOGLE_API_KEY_FALLBACK accepts multiple keys separated by semicolons
+        (semicolon instead of comma because gcloud --set-env-vars splits on commas)
+
+        Returns:
+            list: Fallback API keys in priority order, empty if none configured
+        """
+        if not self.google_api_key_fallback:
+            return []
+        return [k.strip() for k in self.google_api_key_fallback.split(";") if k.strip()]
 
     def get_mongodb_uri(self) -> Optional[str]:
         """

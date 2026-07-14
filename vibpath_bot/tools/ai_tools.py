@@ -112,31 +112,17 @@ def show_manual_download(product_type: str = "all") -> Dict[str, Any]:
         }
 
 
-def show_detection_apps(platform: str = "all") -> Dict[str, Any]:
+def show_detection_apps() -> Dict[str, Any]:
     """
-    Tool for AI to show frequency detection APP cards.
+    Tool for AI to show frequency detection APP card.
     Use when user asks about checking if device is working/running.
 
-    Args:
-        platform: Which platform app to show. Options:
-            - "ios" or "iphone" or "蘋果": Show only iOS app
-            - "android" or "安卓": Show only Android app
-            - "all" (default): Show both apps
-
     Returns:
-        Dict with flex_message type and app download card(s)
+        Dict with flex_message type and Android app download card
+        (iOS app is currently unavailable)
     """
     from ..config.env_config import settings
     static_base = (settings.static_base_url or "").rstrip('/')
-
-    bubble_ios = BubbleTemplates.app_download(
-        image_url=f"{static_base}/images/app/ios.jpg",
-        title="iOS 檢測 APP",
-        app_name="Sonic Tools SVM",
-        description="可檢測機器發出的頻率訊號，確認設備是否正常運作",
-        button_label="前往 App Store",
-        store_url="https://apps.apple.com/tw/app/sonic-tools-svm/id1245046029"
-    )
 
     bubble_android = BubbleTemplates.app_download(
         image_url=f"{static_base}/images/app/android.jpg",
@@ -147,31 +133,11 @@ def show_detection_apps(platform: str = "all") -> Dict[str, Any]:
         store_url="https://play.google.com/store/apps/details?id=com.mreprogramming.ultimateemfdetector"
     )
 
-    # Determine which bubble(s) to show
-    platform_lower = platform.lower()
-    if platform_lower in ["ios", "iphone", "蘋果", "apple"]:
-        return {
-            "type": "flex_message",
-            "content": bubble_ios,
-            "alt_text": "iOS 檢測 APP 下載"
-        }
-    elif platform_lower in ["android", "安卓"]:
-        return {
-            "type": "flex_message",
-            "content": bubble_android,
-            "alt_text": "Android 檢測 APP 下載"
-        }
-    else:
-        # Show both
-        carousel = {
-            "type": "carousel",
-            "contents": [bubble_ios, bubble_android]
-        }
-        return {
-            "type": "flex_message",
-            "content": carousel,
-            "alt_text": "頻率檢測 APP 下載"
-        }
+    return {
+        "type": "flex_message",
+        "content": bubble_android,
+        "alt_text": "Android 檢測 APP 下載"
+    }
 
 
 def show_product_details(product_type: str) -> Dict[str, Any]:

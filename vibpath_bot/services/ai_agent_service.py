@@ -26,6 +26,9 @@ TOOL_MAP = {
 }
 TOOLS_WITH_HOST = {'show_company_introduction', 'show_product_catalog'}
 
+# User-facing reply when the AI service is rate-limited or overloaded
+BUSY_MESSAGE = "⚠️ AI 服務目前繁忙中，請稍後再試。"
+
 
 class AIAgentService:
     """Service for managing AI agent and sessions"""
@@ -272,22 +275,31 @@ class AIAgentService:
                     reason = "model overloaded (503)"
                 else:
                     reason = "API key invalid/expired"
-                fallback_key = settings.google_api_key_fallback
-                if fallback_key and os.getenv("GOOGLE_API_KEY") != fallback_key:
-                    logger.warning(f"{reason}, switching to fallback key for user '{user_id}'")
-                    os.environ["GOOGLE_API_KEY"] = fallback_key
-                    try:
-                        final_response = await self._run_and_process(
-                            user_id, session_id, content, request_host
+                current_key = os.getenv("GOOGLE_API_KEY")
+                untried_keys = [k for k in settings.get_fallback_keys() if k != current_key]
+                if untried_keys:
+                    last_error = None
+                    for i, fallback_key in enumerate(untried_keys, start=1):
+                        logger.warning(
+                            f"{reason}, switching to fallback key {i}/{len(untried_keys)} for user '{user_id}'"
                         )
-                    except Exception as e2:
-                        logger.error(f"Fallback key also failed: {str(e2)}", exc_info=True)
+                        os.environ["GOOGLE_API_KEY"] = fallback_key
+                        try:
+                            final_response = await self._run_and_process(
+                                user_id, session_id, content, request_host
+                            )
+                            break
+                        except Exception as e2:
+                            logger.warning(f"Fallback key {i}/{len(untried_keys)} also failed: {str(e2)}")
+                            last_error = e2
+                    else:
+                        logger.error(f"All API keys exhausted for user '{user_id}': {str(last_error)}", exc_info=True)
                         if is_overloaded:
-                            return "⚠️ AI 服務目前繁忙中，請稍後再試。"
-                        raise AIAgentError("Agent execution failed with both API keys", detail=str(e2))
+                            return BUSY_MESSAGE
+                        raise AIAgentError("Agent execution failed with all API keys", detail=str(last_error))
                 else:
                     logger.warning(f"{reason} and no fallback available for user '{user_id}': {str(e)}")
-                    return "⚠️ AI 服務目前繁忙中，請稍後再試。"
+                    return BUSY_MESSAGE
             else:
                 logger.error(f"Unexpected error during agent execution: {str(e)}", exc_info=True)
                 raise AIAgentError("Unexpected agent error", detail=str(e))

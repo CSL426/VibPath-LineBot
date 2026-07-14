@@ -6,6 +6,14 @@
 
 set -e
 
+# Bypass pyenv-win shims on Windows to avoid "--sort-by was unexpected at this time" errors
+if command -v pyenv >/dev/null 2>&1; then
+    REAL_PYTHON=$(pyenv which python 2>/dev/null | tr '\\' '/')
+    if [ -n "$REAL_PYTHON" ]; then
+        export CLOUDSDK_PYTHON="$REAL_PYTHON"
+    fi
+fi
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -78,7 +86,7 @@ echo -e "${YELLOW}   Registry: ${AR_REPO}${NC}"
 # List all image digests (sorted by creation time, newest first)
 IMAGE_DIGESTS=$(gcloud artifacts docker images list "$AR_REPO" \
     --format="get(version)" \
-    --sort-by=~UPDATE_TIME 2>/dev/null)
+    --sort-by=~UPDATE_TIME)
 
 if [ -z "$IMAGE_DIGESTS" ]; then
     echo -e "${GREEN}   ✨ No images found in registry.${NC}"
@@ -114,6 +122,41 @@ else
         echo -e "${GREEN}   ✅ Image cleanup complete${NC}"
     fi
 fi
+# ========================================
+# Clean up old source zip files in Cloud Storage
+# ========================================
+echo -e "${YELLOW}📦 Cleaning up old source zip files in Cloud Storage...${NC}"
+GCS_BUCKET="gs://run-sources-${PROJECT_ID}-${REGION}"
+GCS_PATH="${GCS_BUCKET}/services/${SERVICE_NAME}"
+
+# List all source zips, sorted (oldest first because of timestamp prefix)
+ZIP_LIST=$(gcloud storage ls "${GCS_PATH}/*.zip" 2>/dev/null | sort)
+
+if [ -z "$ZIP_LIST" ]; then
+    echo -e "${GREEN}   ✨ No source zip files found in GCS.${NC}"
+else
+    TOTAL_ZIPS=$(echo "$ZIP_LIST" | wc -l)
+    echo -e "${YELLOW}   Found $TOTAL_ZIPS source zip file(s) in GCS${NC}"
+
+    # Keep the latest 2 zip files, delete the rest
+    KEEP_ZIPS_COUNT=2
+    if [ "$TOTAL_ZIPS" -gt "$KEEP_ZIPS_COUNT" ]; then
+        ZIPS_TO_DELETE=$(echo "$ZIP_LIST" | head -n -$KEEP_ZIPS_COUNT)
+        DELETE_ZIP_COUNT=$(echo "$ZIPS_TO_DELETE" | wc -l)
+        echo -e "${YELLOW}   Deleting $DELETE_ZIP_COUNT old zip file(s) (keeping latest $KEEP_ZIPS_COUNT)...${NC}"
+
+        echo "$ZIPS_TO_DELETE" | while read zip_file; do
+            if [ -n "$zip_file" ]; then
+                echo -e "${YELLOW}   - Deleting: $(basename "$zip_file")...${NC}"
+                gcloud storage rm "$zip_file" >/dev/null 2>&1 || gsutil rm "$zip_file" >/dev/null 2>&1
+            fi
+        done
+        echo -e "${GREEN}   ✅ Cloud Storage cleanup complete${NC}"
+    else
+        echo -e "${GREEN}   ✨ No old zip files to clean up (keeping latest $KEEP_ZIPS_COUNT)${NC}"
+    fi
+fi
 
 echo ""
 echo -e "${GREEN}✅ Cleanup completed successfully!${NC}"
+

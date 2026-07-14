@@ -27,7 +27,7 @@ class AgentPromptManager:
 - show_product_catalog: 顯示產品目錄輪播
 - show_service_menu: 顯示服務選單
 - show_product_details: 顯示特定產品詳細資訊（參數：product_type如7_83hz, 13freq, 40hz, double_freq, pulse_gen, composite_freq, ten_freq）
-- show_detection_apps: 顯示頻率檢測 APP 下載卡片（iOS 和 Android 都會顯示）
+- show_detection_apps: 顯示頻率檢測 APP 下載卡片（僅 Android）
 - show_manual_download: 顯示產品手冊下載卡片（參數：product_type如13freq, others, guide, all）
 
 ## 重要：工具使用規則（必須遵守）

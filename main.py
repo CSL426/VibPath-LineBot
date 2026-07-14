@@ -5,6 +5,8 @@ import sys
 from dotenv import load_dotenv
 load_dotenv()
 
+from contextlib import asynccontextmanager
+
 import aiohttp
 from fastapi import Request, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -20,23 +22,39 @@ from vibpath_bot.handlers.webhook_handler import WebhookHandler
 from vibpath_bot.api.user_preferences_api import router as user_preferences_router
 from vibpath_bot.config.env_config import settings
 
+# LINE Bot API objects that require a running event loop
+# (aiohttp.ClientSession must be created inside the lifespan handler)
+session = None
+line_bot_api = None
+webhook_handler = None
+
+parser = WebhookParser(settings.channel_secret)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global session, line_bot_api, webhook_handler
+
+    session = aiohttp.ClientSession()
+    async_http_client = AiohttpAsyncHttpClient(session)
+    line_bot_api = AsyncLineBotApi(settings.channel_access_token, async_http_client)
+
+    # Set LINE Bot API instance for utilities
+    set_line_bot_api(line_bot_api)
+
+    # Initialize webhook handler
+    webhook_handler = WebhookHandler(line_bot_api)
+
+    yield
+
+    await session.close()
+
+
 # Initialize the FastAPI app for LINEBot
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-# Initialize LINE Bot API
-session = aiohttp.ClientSession()
-async_http_client = AiohttpAsyncHttpClient(session)
-line_bot_api = AsyncLineBotApi(settings.channel_access_token, async_http_client)
-parser = WebhookParser(settings.channel_secret)
-
-# Set LINE Bot API instance for utilities
-set_line_bot_api(line_bot_api)
-
-# Initialize webhook handler
-webhook_handler = WebhookHandler(line_bot_api)
 
 # Include API routers
 app.include_router(user_preferences_router)
