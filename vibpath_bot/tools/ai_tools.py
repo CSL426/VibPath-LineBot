@@ -72,44 +72,24 @@ def show_manual_download(product_type: str = "all") -> Dict[str, Any]:
     Tool for AI to show product manual download cards.
     Use when user asks about manual, documentation, specifications, or user guide.
 
+    NOTE: 13頻脈輪機 and 舒曼波/γ波/雙頻機 manuals are temporarily delisted.
+    Only 生命頻率指南 is currently available for download.
+
     Args:
-        product_type: Which manual to show. Options:
-            - "13freq" or "13頻" or "脈輪": Show only 13頻脈輪機 manual
-            - "others" or "舒曼波" or "γ波" or "雙頻": Show only 舒曼波/γ波/雙頻機 manual
-            - "guide" or "頻率指南" or "指南": Show only 生命頻率指南
-            - "all" (default): Show all manuals
+        product_type: Which manual to show. Currently ignored — only
+            生命頻率指南 is available regardless of the value passed.
 
     Returns:
-        Dict with flex_message type and manual download card(s)
+        Dict with flex_message type and manual download card
     """
     from ..config.env_config import settings
     base = (settings.static_base_url or "").rstrip('/')
 
-    product_lower = product_type.lower()
-    if product_lower in ["13freq", "13頻", "脈輪"]:
-        return {
-            "type": "flex_message",
-            "content": BubbleTemplates.pdf_download("13頻脈輪機", "下載手冊", f"{base}/images/manual_13feqs.pdf"),
-            "alt_text": "13頻脈輪機手冊下載"
-        }
-    elif product_lower in ["others", "舒曼波", "γ波", "雙頻", "40hz", "7.83hz"]:
-        return {
-            "type": "flex_message",
-            "content": BubbleTemplates.pdf_download("舒曼波/γ波/雙頻機", "下載手冊", f"{base}/images/manual_others.pdf", wrap=True),
-            "alt_text": "產品手冊下載"
-        }
-    elif product_lower in ["guide", "頻率指南", "指南", "生命頻率"]:
-        return {
-            "type": "flex_message",
-            "content": BubbleTemplates.pdf_download("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
-            "alt_text": "生命頻率指南下載"
-        }
-    else:
-        return {
-            "type": "flex_message",
-            "content": BubbleTemplates.build_manual_carousel(),
-            "alt_text": "產品手冊下載"
-        }
+    return {
+        "type": "flex_message",
+        "content": BubbleTemplates.pdf_download("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
+        "alt_text": "生命頻率指南下載"
+    }
 
 
 def show_detection_apps() -> Dict[str, Any]:

@@ -9,17 +9,17 @@ class BubbleTemplates:
 
     @staticmethod
     def build_manual_carousel() -> dict:
-        """Build the all-manuals carousel dict (single source of truth)."""
+        """Build the manuals bubble dict (single source of truth).
+
+        13頻脈輪機 and 舒曼波/γ波/雙頻機 manuals are temporarily delisted;
+        only 生命頻率指南 remains available for download.
+        """
         from ..config.env_config import settings
         base = (settings.static_base_url or "").rstrip('/')
-        return {
-            "type": "carousel",
-            "contents": [
-                BubbleTemplates.pdf_download("13頻脈輪機", "下載手冊", f"{base}/images/manual_13feqs.pdf"),
-                BubbleTemplates.pdf_download("舒曼波/γ波/雙頻機", "下載手冊", f"{base}/images/manual_others.pdf", wrap=True),
-                BubbleTemplates.pdf_download("生命頻率指南", "下載指南", f"{base}/images/manual_frequency_guide.pdf"),
-            ]
-        }
+        return BubbleTemplates.pdf_download(
+            "生命頻率指南", "下載指南",
+            f"{base}/images/manual_frequency_guide.pdf"
+        )
 
     @staticmethod
     def pdf_download(title: str, button_label: str, pdf_url: str, wrap: bool = False) -> dict:
