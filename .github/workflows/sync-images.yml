@@ -1,0 +1,46 @@
+name: Sync images to gh-pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "static/images/**"
+  workflow_dispatch:
+
+# 與 gh-pages 的其他推送串行，避免非 fast-forward 被拒
+concurrency:
+  group: sync-images
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      # 只新增/覆蓋、不刪除：gh-pages 上可能有 main 沒有的圖（例如 PulseGen.jpg）
+      - name: Copy images
+        run: rsync -a main/static/images/ pages/images/
+
+      - name: Commit and push
+        working-directory: pages
+        run: |
+          git add -A images
+          if git diff --cached --quiet; then
+            echo "No image changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync images from main@${GITHUB_SHA::7}"
+          git push origin gh-pages
