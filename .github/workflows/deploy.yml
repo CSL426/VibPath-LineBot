@@ -1,0 +1,66 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "static/**"
+  workflow_dispatch:
+
+# 同一時間只跑一個部署，避免 Cloud Build 並行互踩
+concurrency:
+  group: deploy-cloud-run
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write # WIF 需要發 OIDC token
+
+env:
+  PROJECT_ID: vibpath
+  REGION: asia-east1
+  SERVICE_NAME: linebot-adk
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          project_id: ${{ env.PROJECT_ID }}
+          source: .
+          flags: >-
+            --allow-unauthenticated
+            --port=8080
+            --memory=1Gi
+            --cpu=1
+            --max-instances=10
+          env_vars: |
+            ChannelSecret=${{ secrets.CHANNEL_SECRET }}
+            ChannelAccessToken=${{ secrets.CHANNEL_ACCESS_TOKEN }}
+            GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+            GOOGLE_API_KEY_FALLBACK=${{ secrets.GOOGLE_API_KEY_FALLBACK }}
+            STATIC_BASE_URL=${{ secrets.STATIC_BASE_URL }}
+            ADMIN_USER_IDS=${{ secrets.ADMIN_USER_IDS }}
+            TIMEZONE=${{ secrets.TIMEZONE }}
+            MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }}
+            MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}
+            MONGODB_CLUSTER=${{ secrets.MONGODB_CLUSTER }}
+            MONGODB_DATABASE=${{ secrets.MONGODB_DATABASE }}
+            MONGODB_APP_NAME=${{ secrets.MONGODB_APP_NAME }}
+            DECISION_API_URL=${{ secrets.DECISION_API_URL }}
+
+      - name: Health check
+        run: curl --fail --retry 5 --retry-delay 10 "${{ steps.deploy.outputs.url }}/health"
