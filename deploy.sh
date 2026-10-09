@@ -86,6 +86,15 @@ else
     echo -e "${YELLOW}⚠️  MongoDB not configured (AI toggle feature will be disabled)${NC}"
 fi
 
+# Decision API settings are optional: only pass the ones defined in .env so the code defaults apply otherwise
+# (the decision API stays disabled unless DECISION_API_URL is set)
+DECISION_ENV_ARGS=()
+for var in DECISION_API_URL DECISION_MODEL DECISION_MIN_CONFIDENCE DECISION_ACTION_MIN_CONFIDENCE DECISION_TIMEOUT_SECONDS; do
+    if [ -n "${!var+x}" ]; then
+        DECISION_ENV_ARGS+=("--set-env-vars=${var}=${!var}")
+    fi
+done
+
 # Build and deploy
 echo -e "${YELLOW}🏗️  Building and deploying to Cloud Run...${NC}"
 echo -e "${YELLOW}📋 Passing environment variables via --set-env-vars${NC}"
@@ -110,7 +119,8 @@ gcloud run deploy "$SERVICE_NAME" \
     --set-env-vars="MONGODB_PASSWORD=${MONGODB_PASSWORD}" \
     --set-env-vars="MONGODB_CLUSTER=${MONGODB_CLUSTER}" \
     --set-env-vars="MONGODB_DATABASE=${MONGODB_DATABASE}" \
-    --set-env-vars="MONGODB_APP_NAME=${MONGODB_APP_NAME}"
+    --set-env-vars="MONGODB_APP_NAME=${MONGODB_APP_NAME}" \
+    "${DECISION_ENV_ARGS[@]}"
 
 # Get the service URL
 # Note: gcloud's value()/table() output formats print nothing under Git Bash (MSYS),

@@ -68,106 +68,101 @@ class WebhookHandler:
             # Don't reply anything during pause
             return
 
-        # Check if user wants to toggle AI reply
-        if msg.strip().lower() in ['ai開關', 'ai設定']:
-            reply_msg = ai_toggle_handler.handle_toggle(user_id)
-            await self.line_bot_api.reply_message(event.reply_token, reply_msg)
-            return
-
-        # Check if user wants to check AI status
-        if msg.strip().lower() in ['ai狀態', 'ai status']:
-            reply_msg = ai_toggle_handler.get_status(user_id)
-            await self.line_bot_api.reply_message(event.reply_token, reply_msg)
-            return
-
-        # Detect message type for appropriate handling
-        message_type = self.message_handler.detect_message_type(msg)
-
         # Check if AI reply is enabled for this user
         is_ai_enabled = user_preference_service.is_ai_reply_enabled(user_id)
         logger.debug(f"AI reply status for {user_id}: {'Enabled' if is_ai_enabled else 'Disabled'}")
 
-        # Show loading animation while processing (only if AI enabled)
-        if is_ai_enabled:
-            try:
-                await before_reply_display_loading_animation(user_id, loading_seconds=60)
-            except Exception as e:
-                logger.warning(f"Failed to display loading animation: {e}")
+        # First-layer intent routing (exact keyword → decision model).
+        # Substring keywords are only used when no AI is there to catch their misfires.
+        message_type = await self.message_handler.classify_message_type(
+            msg, keyword_fallback=not is_ai_enabled
+        )
+        logger.debug(f"Message type for '{msg[:30]}': {message_type}")
 
-        # Try AI agent first with tools (only if AI enabled)
-        if is_ai_enabled:
-            try:
-                agent_response = await ai_agent_service.call_agent(msg, user_id, request_host)
+        intent_reply = self._build_intent_reply(message_type, request_host, user_id)
+        if intent_reply:
+            await self.line_bot_api.reply_message(event.reply_token, intent_reply)
+            return
 
-                # Check if agent returned a structured response
-                if isinstance(agent_response, dict):
-                    if agent_response.get("type") == "flex_message":
-                        reply_msg = FlexSendMessage(
-                            alt_text=agent_response.get("alt_text", "VibPath 服務"),
-                            contents=agent_response["content"]
-                        )
-                        await self.line_bot_api.reply_message(event.reply_token, reply_msg)
-                        return
-                    elif agent_response.get("type") == "text_with_quick_reply":
-                        reply_msg = TextSendMessage(
-                            text=agent_response["content"],
-                            quick_reply=self.message_handler.create_quick_reply_basic()
-                        )
-                        await self.line_bot_api.reply_message(event.reply_token, reply_msg)
-                        return
+        if not is_ai_enabled:
+            # AI is disabled and no recognized intent - don't reply
+            logger.info(f"AI disabled and no intent match for '{msg}' - not replying")
+            return
 
-                # If agent returned regular text, use it
-                if isinstance(agent_response, str) and agent_response.strip():
+        # General message: hand over to the AI agent
+        try:
+            await before_reply_display_loading_animation(user_id, loading_seconds=60)
+        except Exception as e:
+            logger.warning(f"Failed to display loading animation: {e}")
+
+        try:
+            agent_response = await ai_agent_service.call_agent(msg, user_id, request_host)
+
+            # Check if agent returned a structured response
+            if isinstance(agent_response, dict):
+                if agent_response.get("type") == "flex_message":
+                    reply_msg = FlexSendMessage(
+                        alt_text=agent_response.get("alt_text", "VibPath 服務"),
+                        contents=agent_response["content"]
+                    )
+                    await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+                    return
+                elif agent_response.get("type") == "text_with_quick_reply":
                     reply_msg = TextSendMessage(
-                        text=agent_response,
+                        text=agent_response["content"],
                         quick_reply=self.message_handler.create_quick_reply_basic()
                     )
                     await self.line_bot_api.reply_message(event.reply_token, reply_msg)
                     return
 
-            except AIAgentError as e:
-                logger.error(f"AI Agent failed: {e.message}", exc_info=True)
-                # Fall through to keyword detection
-            except Exception as e:
-                logger.error(f"Unexpected error in AI agent: {str(e)}", exc_info=True)
-                # Fall through to keyword detection
+            # If agent returned regular text, use it
+            if isinstance(agent_response, str) and agent_response.strip():
+                reply_msg = TextSendMessage(
+                    text=agent_response,
+                    quick_reply=self.message_handler.create_quick_reply_basic()
+                )
+                await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+                return
 
-        # Fallback to keyword detection (only for specific keywords)
-        # When AI is disabled, only respond to specific menu keywords
-        logger.debug(f"Checking keyword detection for: {msg}")
-        reply_msg = None
+        except AIAgentError as e:
+            logger.error(f"AI Agent failed: {e.message}", exc_info=True)
+        except Exception as e:
+            logger.error(f"Unexpected error in AI agent: {str(e)}", exc_info=True)
 
-        if message_type == "menu":
+        # AI failed: fall back to substring keywords, then a generic error
+        reply_msg = self._build_intent_reply(
+            self.message_handler.detect_message_type(msg), request_host
+        ) or TextSendMessage(
+            text="抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。",
+            quick_reply=self.message_handler.create_quick_reply_basic()
+        )
+        await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+
+    def _build_intent_reply(self, message_type: str, request_host: str = None, user_id: str = None):
+        """Build the reply for a routed intent, or None for 'general'."""
+        if message_type == "ai_toggle" and user_id:
+            reply_msg = ai_toggle_handler.handle_toggle(user_id)
+        elif message_type in ("ai_on", "ai_off") and user_id:
+            reply_msg = ai_toggle_handler.handle_set(user_id, message_type == "ai_on")
+        elif message_type == "ai_status" and user_id:
+            reply_msg = ai_toggle_handler.get_status(user_id)
+        elif message_type == "menu":
             reply_msg = self.message_handler.create_service_menu()
-            # Add quick reply to flex message
             reply_msg.quick_reply = self.message_handler.create_quick_reply_basic()
         elif message_type == "help":
             reply_msg = self.message_handler.create_help_message()
         elif message_type == "frequency":
             reply_msg = self.message_handler.create_frequency_services_carousel(request_host)
-            # Add quick reply to flex message
             reply_msg.quick_reply = self.message_handler.create_quick_reply_products()
         elif message_type == "business":
             reply_msg = self.message_handler.create_company_introduction(request_host)
-            # Add quick reply to flex message
             reply_msg.quick_reply = self.message_handler.create_quick_reply_basic()
         elif message_type == "manual":
             reply_msg = self.message_handler.create_manual_download_card(request_host)
-            # Add quick reply to flex message
             reply_msg.quick_reply = self.message_handler.create_quick_reply_basic()
-        elif not is_ai_enabled:
-            # AI is disabled and no keyword match - don't reply
-            logger.info(f"AI disabled and no keyword match for '{msg}' - not replying")
-            return
         else:
-            # AI is enabled but no keyword match - show error
-            reply_msg = TextSendMessage(
-                text="抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。",
-                quick_reply=self.message_handler.create_quick_reply_basic()
-            )
-
-        if reply_msg:
-            await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+            return None
+        return reply_msg
 
     async def handle_postback_event(self, event: PostbackEvent, request_host: str = None):
         """
@@ -196,9 +191,12 @@ class WebhookHandler:
         Returns:
             bool: True if command was handled, False otherwise
         """
-        # Check for pause command
-        pause_duration = admin_config.parse_pause_command(msg)
-        if pause_duration is not None:
+        command = await admin_config.classify_command(msg)
+        if command is None:
+            return False
+
+        if command == "pause":
+            pause_duration = admin_config.parse_pause_duration(msg)
             admin_config.pause_bot(pause_duration, event.source.user_id)
             pause_info = admin_config.get_pause_info()
             reply_text = f"✅ Bot 已暫停\n⏰ 暫停時間: {pause_duration} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
@@ -208,8 +206,7 @@ class WebhookHandler:
             )
             return True
 
-        # Check for resume command
-        if admin_config.parse_resume_command(msg):
+        if command == "resume":
             admin_config.resume_bot(event.source.user_id)
             reply_text = "✅ Bot 已恢復運作"
             await self.line_bot_api.reply_message(
@@ -218,8 +215,7 @@ class WebhookHandler:
             )
             return True
 
-        # Check for status command
-        if msg.strip().lower() in ['狀態', 'status']:
+        if command == "status":
             pause_info = admin_config.get_pause_info()
             if pause_info['paused']:
                 reply_text = f"⏸️ Bot 目前暫停中\n⏰ 剩餘時間: {pause_info['remaining_minutes']} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
@@ -231,8 +227,7 @@ class WebhookHandler:
             )
             return True
 
-        # Check for help command
-        if admin_config.parse_help_command(msg):
+        if command == "help":
             reply_text = admin_config.get_admin_help_message()
             await self.line_bot_api.reply_message(
                 event.reply_token,

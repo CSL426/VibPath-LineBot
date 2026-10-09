@@ -20,24 +20,33 @@ class AIToggleHandler:
         Returns:
             TextSendMessage: Response message with quick reply
         """
-        # Import here to avoid circular import
-        from .message_handler import MessageHandler
-
         # Toggle AI reply status
         new_status = user_preference_service.toggle_ai_reply(user_id)
+        return AIToggleHandler._status_changed_message(new_status)
+
+    @staticmethod
+    def handle_set(user_id: str, enabled: bool) -> TextSendMessage:
+        """Turn AI reply on or off (from natural-language requests)"""
+        user_preference_service.set_ai_reply_status(user_id, enabled)
+        return AIToggleHandler._status_changed_message(enabled)
+
+    @staticmethod
+    def _status_changed_message(new_status: bool) -> TextSendMessage:
+        # Import here to avoid circular import
+        from .message_handler import MessageHandler
 
         if new_status:
             message_text = (
                 "✅ AI 自動回覆已開啟\n\n"
                 "我會使用 AI 來回答您的問題。\n"
-                "如需關閉，請再次點擊此按鈕。"
+                "如需關閉，請點擊「🤖 AI開關」。"
             )
         else:
             message_text = (
                 "⏸️ AI 自動回覆已關閉\n\n"
                 "我將不會使用 AI 自動回答問題。\n"
                 "您仍然可以使用快速回覆按鈕查看服務資訊。\n"
-                "如需開啟，請再次點擊此按鈕。"
+                "如需開啟，請點擊「🤖 AI開關」。"
             )
 
         # Add quick reply buttons

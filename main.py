@@ -21,6 +21,7 @@ from vibpath_bot.utils.line_utils import set_line_bot_api
 from vibpath_bot.handlers.webhook_handler import WebhookHandler
 from vibpath_bot.api.user_preferences_api import router as user_preferences_router
 from vibpath_bot.config.env_config import settings
+from vibpath_bot.services.decision_service import decision_service
 
 # LINE Bot API objects that require a running event loop
 # (aiohttp.ClientSession must be created inside the lifespan handler)
@@ -48,6 +49,7 @@ async def lifespan(app: FastAPI):
     yield
 
     await session.close()
+    await decision_service.close()
 
 
 # Initialize the FastAPI app for LINEBot

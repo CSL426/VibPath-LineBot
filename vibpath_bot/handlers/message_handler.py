@@ -3,14 +3,19 @@ LINE Bot message handler for different types of responses.
 Handles text, flex messages, quick replies, and other LINE-specific features.
 """
 import logging
-from typing import Union, List
+from typing import Union, List, Optional
 from linebot.models import TextSendMessage, FlexSendMessage
 from ..templates.flex_templates import FlexMessageTemplates
 from ..templates.custom_templates import BusinessTemplates
 from .quick_reply import QuickReplyTemplates
 from ..config.keywords_config import keywords_config
+from ..config.env_config import settings
+from ..services.decision_service import decision_service
 
 logger = logging.getLogger(__name__)
+
+# Intents that change state need DECISION_ACTION_MIN_CONFIDENCE
+ACTION_INTENTS = {'ai_on', 'ai_off'}
 
 
 class MessageHandler:
@@ -182,6 +187,51 @@ class MessageHandler:
         if keywords_config.contains_help_keyword(text):
             return 'help'
         return 'general'
+
+    def match_exact_keyword(self, text: str) -> Optional[str]:
+        """Return message type when the whole message is a keyword (e.g. 「選單」)."""
+        msg = text.strip().lower()
+        if msg in ('ai開關', 'ai設定'):
+            return 'ai_toggle'
+        if msg in ('ai狀態', 'ai status'):
+            return 'ai_status'
+        for message_type, keywords in (
+            ('manual', keywords_config.manual_keywords),
+            ('frequency', keywords_config.product_keywords),
+            ('business', keywords_config.company_keywords),
+            ('menu', keywords_config.menu_keywords),
+            ('help', keywords_config.help_keywords),
+        ):
+            if msg in keywords:
+                return message_type
+        return None
+
+    async def classify_message_type(self, text: str, keyword_fallback: bool = True) -> str:
+        """
+        First-layer intent routing: exact keyword first, then the decision model.
+
+        Decision answers below DECISION_MIN_CONFIDENCE are treated as 'general' so that
+        uncertain messages go to the AI agent instead of a canned card.
+        If the decision API is unavailable, substring keywords are used when keyword_fallback
+        is True; otherwise the message is 'general'.
+        """
+        exact = self.match_exact_keyword(text)
+        if exact:
+            return exact
+
+        result = await decision_service.classify_intent(text)
+        if result is None:
+            return self.detect_message_type(text) if keyword_fallback else 'general'
+
+        intent, confidence = result
+        logger.info(f"Decision intent: {intent} ({confidence:.2f}) for '{text[:30]}'")
+        min_confidence = (
+            settings.decision_action_min_confidence if intent in ACTION_INTENTS
+            else settings.decision_min_confidence
+        )
+        if confidence < min_confidence:
+            return 'general'
+        return intent
 
     def should_use_flex_message(self, message_type: str) -> bool:
         """Determine whether to use Flex Message for response."""

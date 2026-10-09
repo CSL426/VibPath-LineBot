@@ -99,73 +99,62 @@ class AdminConfig:
             "paused_by": self.paused_by
         }
 
-    def parse_pause_command(self, text: str) -> Optional[int]:
-        """
-        Parse pause duration from command text.
+    # Matches a pause duration such as 30分鐘 / 15m / 2小時 / 2hr
+    _DURATION_RE = re.compile(r'(\d+)\s*(分鐘?|mins?|m(?!in)|小時?|hours?|hrs?|h(?!our|r))')
+    _PAUSE_RE = re.compile(r'暫停\s*(\d+\s*(分鐘?|mins?|m|小時?|hours?|hrs?|h))?')
+    _RESUME_KEYWORDS = {'恢復', '繼續', '啟動', 'resume', 'start'}
+    _STATUS_KEYWORDS = {'狀態', 'status'}
+    _HELP_KEYWORDS = {'指令', 'commands', 'admin'}
 
-        Args:
-            text: Command text
+    def match_exact_command(self, text: str) -> Optional[str]:
+        """Return command when the whole message is a command keyword."""
+        text = text.strip().lower()
+        if self._PAUSE_RE.fullmatch(text):
+            return "pause"
+        if text in self._RESUME_KEYWORDS:
+            return "resume"
+        if text in self._STATUS_KEYWORDS:
+            return "status"
+        if text in self._HELP_KEYWORDS:
+            return "help"
+        return None
+
+    async def classify_command(self, text: str) -> Optional[str]:
+        """
+        Classify an admin message: exact keyword first, then the decision model.
 
         Returns:
-            int: Duration in minutes, or None if not a pause command
+            'pause' / 'resume' / 'status' / 'help', or None if it is not a command
+            (including when the decision API is unavailable or not confident enough)
         """
-        text = text.strip().lower()
+        exact = self.match_exact_command(text)
+        if exact:
+            return exact
 
-        # Check if it's a pause command
-        if not text.startswith('暫停'):
+        # Import here to avoid circular import (decision_service imports env_config)
+        from ..services.decision_service import decision_service
+        from .env_config import settings
+
+        result = await decision_service.classify_admin_command(text)
+        if result is None:
             return None
+        command, confidence = result
+        if command == "none" or confidence < settings.decision_action_min_confidence:
+            return None
+        return command
 
-        # Default pause duration (1 hour)
-        if text == '暫停':
+    def parse_pause_duration(self, text: str) -> int:
+        """
+        Parse pause duration in minutes from command text (default 60).
+
+        Args:
+            text: Command text, e.g. 暫停30分鐘 / 先停兩小時 / 暫停2h
+        """
+        match = self._DURATION_RE.search(text.strip().lower())
+        if not match:
             return 60
-
-        # Parse duration with regex - support various formats
-        patterns = [
-            (r'暫停\s*(\d+)\s*分鐘?', 1),           # 分鐘/分
-            (r'暫停\s*(\d+)\s*mins?', 1),           # min/mins
-            (r'暫停\s*(\d+)\s*m(?!in)', 1),         # m (but not min)
-            (r'暫停\s*(\d+)\s*小時?', 60),          # 小時/小
-            (r'暫停\s*(\d+)\s*hours?', 60),         # hour/hours
-            (r'暫停\s*(\d+)\s*hrs?', 60),           # hr/hrs
-            (r'暫停\s*(\d+)\s*h(?!our|r)', 60),     # h (but not hour/hr)
-        ]
-
-        for pattern, multiplier in patterns:
-            match = re.match(pattern, text)
-            if match:
-                duration = int(match.group(1))
-                return duration * multiplier
-
-        # If no pattern matches, return default
-        return 60
-
-    def parse_resume_command(self, text: str) -> bool:
-        """
-        Check if text is a resume command.
-
-        Args:
-            text: Command text
-
-        Returns:
-            bool: True if it's a resume command
-        """
-        text = text.strip().lower()
-        resume_keywords = ['恢復', '繼續', '啟動', 'resume', 'start']
-        return any(keyword in text for keyword in resume_keywords)
-
-    def parse_help_command(self, text: str) -> bool:
-        """
-        Check if text is an admin help command.
-
-        Args:
-            text: Command text
-
-        Returns:
-            bool: True if it's a help command
-        """
-        text = text.strip().lower()
-        help_keywords = ['指令', 'commands', 'admin']
-        return any(keyword == text for keyword in help_keywords)
+        duration, unit = int(match.group(1)), match.group(2)
+        return duration * 60 if unit.startswith(('小', 'h')) else duration
 
     def get_admin_help_message(self) -> str:
         """Get admin help message"""

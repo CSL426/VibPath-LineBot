@@ -40,6 +40,13 @@ class Settings(BaseSettings):
     # Static Resources (optional)
     static_base_url: Optional[str] = Field(None, alias="STATIC_BASE_URL", description="Static resources base URL")
 
+    # Decision model for intent routing (optional; unset or empty URL disables it)
+    decision_api_url: Optional[str] = Field(default=None, alias="DECISION_API_URL", description="Decision API endpoint")
+    decision_model: Optional[str] = Field(default=None, alias="DECISION_MODEL", description="Decision model name (omitted from requests if unset)")
+    decision_min_confidence: float = Field(default=0.6, alias="DECISION_MIN_CONFIDENCE", description="Below this confidence, route to general")
+    decision_action_min_confidence: float = Field(default=0.8, alias="DECISION_ACTION_MIN_CONFIDENCE", description="Minimum confidence for state-changing intents (AI on/off, admin commands)")
+    decision_timeout_seconds: float = Field(default=3.0, alias="DECISION_TIMEOUT_SECONDS", description="Decision API request timeout")
+
     # Timezone (optional)
     timezone: str = Field(default="UTC", alias="TIMEZONE", description="Application timezone")
 
