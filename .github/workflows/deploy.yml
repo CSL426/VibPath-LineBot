@@ -20,7 +20,7 @@ permissions:
 env:
   PROJECT_ID: vibpath
   REGION: asia-east1
-  SERVICE_NAME: linebot-adk
+  SERVICE_NAME: vibpath
 
 jobs:
   deploy:
