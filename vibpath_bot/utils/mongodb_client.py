@@ -36,9 +36,10 @@ class MongoDBClient:
             self.client = MongoClient(
                 self.mongo_uri,
                 serverSelectionTimeoutMS=5000,
-                maxPoolSize=50,  # Connection pool size
-                minPoolSize=10,
-                maxIdleTimeMS=45000,  # 45 seconds idle cleanup
+                # minPoolSize 與 maxIdleTimeMS 並用會讓連線池每 45 秒整批重連
+                # (TLS 握手流量算 Cloud Run 對外費用)，所以不保留常駐連線
+                maxPoolSize=5,
+                minPoolSize=0,
                 retryWrites=True,
                 retryReads=True
             )
