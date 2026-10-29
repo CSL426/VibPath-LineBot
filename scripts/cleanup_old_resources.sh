@@ -21,7 +21,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Default values
-SERVICE_NAME=${1:-"linebot-adk"}
+SERVICE_NAME=${1:-"vibpath"}
 REGION=${2:-"asia-east1"}
 PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
 
