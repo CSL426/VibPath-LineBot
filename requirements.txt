@@ -1,4 +1,4 @@
-line-bot-sdk==3.19.1
+line-bot-sdk==3.27.0
 fastapi
 uvicorn[standard]
 google-adk
