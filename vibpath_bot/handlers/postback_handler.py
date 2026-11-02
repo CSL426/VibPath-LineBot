@@ -4,7 +4,7 @@ Handles postback actions from buttons and manages explanation responses.
 """
 import logging
 from typing import Dict, Any, Optional
-from linebot.models import TextSendMessage, FlexSendMessage, QuickReply
+from linebot.v3.messaging import TextMessage
 
 logger = logging.getLogger(__name__)
 
@@ -231,7 +231,7 @@ PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側�
             with_quick_reply: Whether to include quick reply buttons
 
         Returns:
-            TextSendMessage or FlexSendMessage: Response message with optional quick reply
+            TextMessage or FlexMessage: Response message with optional quick reply
         """
         try:
             logger.info(f"Handling postback: {postback_data} for user: {user_id}")
@@ -251,7 +251,7 @@ PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側�
                 # Show product details menu with product quick reply
                 from .message_handler import MessageHandler
                 handler = MessageHandler()
-                return TextSendMessage(
+                return TextMessage(
                     text="📖 產品詳細說明\n\n請選擇您想了解的產品：",
                     quick_reply=handler.create_quick_reply_products()
                 )
@@ -260,7 +260,7 @@ PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側�
                 # Return to basic menu
                 from .message_handler import MessageHandler
                 handler = MessageHandler()
-                return TextSendMessage(
+                return TextMessage(
                     text="◀️ 返回基本選單",
                     quick_reply=handler.create_quick_reply_basic()
                 )
@@ -319,16 +319,16 @@ PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側�
                     else:
                         quick_reply = handler.create_quick_reply_basic()
 
-                    message = TextSendMessage(text=explanation, quick_reply=quick_reply)
+                    message = TextMessage(text=explanation, quick_reply=quick_reply)
                 else:
-                    message = TextSendMessage(text=explanation)
+                    message = TextMessage(text=explanation)
                 return message
             else:
-                return TextSendMessage(text="抱歉，目前沒有相關說明資訊。請聯繫客服獲得更多幫助。")
+                return TextMessage(text="抱歉，目前沒有相關說明資訊。請聯繫客服獲得更多幫助。")
 
         except Exception as e:
             logger.error(f"Error handling postback {postback_data}: {e}")
-            return TextSendMessage(text="系統處理時發生錯誤，請稍後再試。")
+            return TextMessage(text="系統處理時發生錯誤，請稍後再試。")
 
     def add_explanation(self, key: str, content: str):
         """Add or update explanation content"""

@@ -4,7 +4,7 @@ Handles text, flex messages, quick replies, and other LINE-specific features.
 """
 import logging
 from typing import Union, List, Optional
-from linebot.models import TextSendMessage, FlexSendMessage
+from linebot.v3.messaging import FlexContainer, FlexMessage, TextMessage
 from ..templates.flex_templates import FlexMessageTemplates
 from ..templates.custom_templates import BusinessTemplates
 from .quick_reply import QuickReplyTemplates
@@ -26,16 +26,16 @@ class MessageHandler:
         self.business_templates = BusinessTemplates()
 
 
-    def create_service_menu(self) -> FlexSendMessage:
+    def create_service_menu(self) -> FlexMessage:
         """
         Create service menu message.
 
         Returns:
-            FlexSendMessage: Service menu
+            FlexMessage: Service menu
         """
         return self.flex_templates.service_menu()
 
-    def create_error_message(self, error_text: str, use_flex: bool = True) -> Union[TextSendMessage, FlexSendMessage]:
+    def create_error_message(self, error_text: str, use_flex: bool = True) -> Union[TextMessage, FlexMessage]:
         """
         Create error message.
 
@@ -49,9 +49,9 @@ class MessageHandler:
         if use_flex:
             return self.flex_templates.error_message(error_text)
         else:
-            return TextSendMessage(text=f"❌ {error_text}")
+            return TextMessage(text=f"❌ {error_text}")
 
-    def create_welcome_message(self) -> List[Union[TextSendMessage, FlexSendMessage]]:
+    def create_welcome_message(self) -> List[Union[TextMessage, FlexMessage]]:
         """
         Create welcome message sequence.
 
@@ -59,7 +59,7 @@ class MessageHandler:
             List of LINE messages
         """
         messages = [
-            TextSendMessage(
+            TextMessage(
                 text="👋 您好！歡迎使用 VibPath 智能客服！\n\n我是 AI 客服阿弦，可以為您介紹產品、公司資訊或顯示服務選單。\n\n💡 提醒：若不需要 AI 回覆，可點選下方「🤖 AI開關」或輸入「AI開關」來開啟/關閉。"
             ),
             self.create_service_menu()
@@ -92,12 +92,12 @@ class MessageHandler:
             {"label": "◀️ 返回基本", "action": "postback", "value": "show_basic_menu"},
         ])
 
-    def create_help_message(self) -> TextSendMessage:
+    def create_help_message(self) -> TextMessage:
         """
         Create help message.
 
         Returns:
-            TextSendMessage: Help message
+            TextMessage: Help message
         """
         help_text = """🤖 VibPath 智能客服使用說明
 
@@ -119,12 +119,12 @@ class MessageHandler:
 
 有任何問題都可以直接詢問我！"""
 
-        return TextSendMessage(
+        return TextMessage(
             text=help_text,
             quick_reply=self.create_quick_reply_basic()
         )
 
-    def create_frequency_services_carousel(self, request_host: str = None) -> FlexSendMessage:
+    def create_frequency_services_carousel(self, request_host: str = None) -> FlexMessage:
         """
         Create frequency therapy services carousel.
 
@@ -132,11 +132,11 @@ class MessageHandler:
             request_host: Request host for dynamic URL generation
 
         Returns:
-            FlexSendMessage: Frequency services carousel
+            FlexMessage: Frequency services carousel
         """
         return self.business_templates.frequency_services_carousel(request_host)
 
-    def create_company_introduction(self, request_host: str = None) -> FlexSendMessage:
+    def create_company_introduction(self, request_host: str = None) -> FlexMessage:
         """
         Create company introduction message.
 
@@ -144,11 +144,11 @@ class MessageHandler:
             request_host: Request host for dynamic URL generation
 
         Returns:
-            FlexSendMessage: Company introduction
+            FlexMessage: Company introduction
         """
         return self.business_templates.company_introduction_with_homepage(request_host)
 
-    def create_manual_download_card(self, request_host: str = None) -> FlexSendMessage:
+    def create_manual_download_card(self, request_host: str = None) -> FlexMessage:
         """
         Create manual download cards carousel.
 
@@ -156,12 +156,12 @@ class MessageHandler:
             request_host: Request host for dynamic URL generation
 
         Returns:
-            FlexSendMessage: Manual download carousel with all manual cards
+            FlexMessage: Manual download carousel with all manual cards
         """
         from ..templates.bubble_templates import BubbleTemplates
-        return FlexSendMessage(
+        return FlexMessage(
             alt_text="產品手冊下載",
-            contents=BubbleTemplates.build_manual_carousel()
+            contents=FlexContainer.from_dict(BubbleTemplates.build_manual_carousel())
         )
 
 

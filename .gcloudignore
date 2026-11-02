@@ -77,3 +77,7 @@ static/*.pdf
 .dockerignore
 Procfile
 runtime.txt
+# Tests are not needed at runtime
+tests/
+pytest.ini
+requirements-dev.txt

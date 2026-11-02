@@ -2,8 +2,14 @@
 Webhook Event Handler
 Handles LINE webhook events (message, postback, follow)
 """
-from linebot.models import MessageEvent, PostbackEvent, FollowEvent, TextSendMessage, FlexSendMessage
-from linebot import AsyncLineBotApi
+from linebot.v3.messaging import (
+    AsyncMessagingApi,
+    FlexContainer,
+    FlexMessage,
+    ReplyMessageRequest,
+    TextMessage,
+)
+from linebot.v3.webhooks import FollowEvent, MessageEvent, PostbackEvent
 from vibpath_bot.utils.line_utils import before_reply_display_loading_animation
 from vibpath_bot.handlers.message_handler import MessageHandler
 from vibpath_bot.handlers.postback_handler import postback_handler
@@ -18,7 +24,7 @@ from vibpath_bot.utils.exceptions import AIAgentError
 class WebhookHandler:
     """Handler for LINE webhook events"""
 
-    def __init__(self, line_bot_api: AsyncLineBotApi):
+    def __init__(self, line_bot_api: AsyncMessagingApi):
         """
         Initialize webhook handler
 
@@ -27,6 +33,14 @@ class WebhookHandler:
         """
         self.line_bot_api = line_bot_api
         self.message_handler = MessageHandler()
+
+    async def _reply(self, reply_token: str, messages):
+        """Send one message or a list of messages as a reply."""
+        if not isinstance(messages, list):
+            messages = [messages]
+        await self.line_bot_api.reply_message(
+            ReplyMessageRequest(reply_token=reply_token, messages=messages)
+        )
 
     async def handle_follow_event(self, event: FollowEvent):
         """
@@ -40,7 +54,7 @@ class WebhookHandler:
 
         # Send welcome message
         welcome_messages = self.message_handler.create_welcome_message()
-        await self.line_bot_api.reply_message(event.reply_token, welcome_messages)
+        await self._reply(event.reply_token, welcome_messages)
 
     async def handle_text_message(self, event: MessageEvent, request_host: str = None):
         """
@@ -81,7 +95,7 @@ class WebhookHandler:
 
         intent_reply = self._build_intent_reply(message_type, request_host, user_id)
         if intent_reply:
-            await self.line_bot_api.reply_message(event.reply_token, intent_reply)
+            await self._reply(event.reply_token, intent_reply)
             return
 
         if not is_ai_enabled:
@@ -101,27 +115,27 @@ class WebhookHandler:
             # Check if agent returned a structured response
             if isinstance(agent_response, dict):
                 if agent_response.get("type") == "flex_message":
-                    reply_msg = FlexSendMessage(
+                    reply_msg = FlexMessage(
                         alt_text=agent_response.get("alt_text", "VibPath 服務"),
-                        contents=agent_response["content"]
+                        contents=FlexContainer.from_dict(agent_response["content"])
                     )
-                    await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+                    await self._reply(event.reply_token, reply_msg)
                     return
                 elif agent_response.get("type") == "text_with_quick_reply":
-                    reply_msg = TextSendMessage(
+                    reply_msg = TextMessage(
                         text=agent_response["content"],
                         quick_reply=self.message_handler.create_quick_reply_basic()
                     )
-                    await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+                    await self._reply(event.reply_token, reply_msg)
                     return
 
             # If agent returned regular text, use it
             if isinstance(agent_response, str) and agent_response.strip():
-                reply_msg = TextSendMessage(
+                reply_msg = TextMessage(
                     text=agent_response,
                     quick_reply=self.message_handler.create_quick_reply_basic()
                 )
-                await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+                await self._reply(event.reply_token, reply_msg)
                 return
 
         except AIAgentError as e:
@@ -132,11 +146,11 @@ class WebhookHandler:
         # AI failed: fall back to substring keywords, then a generic error
         reply_msg = self._build_intent_reply(
             self.message_handler.detect_message_type(msg), request_host
-        ) or TextSendMessage(
+        ) or TextMessage(
             text="抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。",
             quick_reply=self.message_handler.create_quick_reply_basic()
         )
-        await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+        await self._reply(event.reply_token, reply_msg)
 
     def _build_intent_reply(self, message_type: str, request_host: str = None, user_id: str = None):
         """Build the reply for a routed intent, or None for 'general'."""
@@ -178,7 +192,7 @@ class WebhookHandler:
 
         # Process postback with handler
         reply_msg = postback_handler.handle_postback(postback_data, user_id, request_host)
-        await self.line_bot_api.reply_message(event.reply_token, reply_msg)
+        await self._reply(event.reply_token, reply_msg)
 
     async def _handle_admin_commands(self, event: MessageEvent, msg: str) -> bool:
         """
@@ -200,19 +214,13 @@ class WebhookHandler:
             admin_config.pause_bot(pause_duration, event.source.user_id)
             pause_info = admin_config.get_pause_info()
             reply_text = f"✅ Bot 已暫停\n⏰ 暫停時間: {pause_duration} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
-            await self.line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=reply_text)
-            )
+            await self._reply(event.reply_token, TextMessage(text=reply_text))
             return True
 
         if command == "resume":
             admin_config.resume_bot(event.source.user_id)
             reply_text = "✅ Bot 已恢復運作"
-            await self.line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=reply_text)
-            )
+            await self._reply(event.reply_token, TextMessage(text=reply_text))
             return True
 
         if command == "status":
@@ -221,18 +229,12 @@ class WebhookHandler:
                 reply_text = f"⏸️ Bot 目前暫停中\n⏰ 剩餘時間: {pause_info['remaining_minutes']} 分鐘\n📅 恢復時間: {pause_info['pause_until']}"
             else:
                 reply_text = "✅ Bot 目前正常運作"
-            await self.line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=reply_text)
-            )
+            await self._reply(event.reply_token, TextMessage(text=reply_text))
             return True
 
         if command == "help":
             reply_text = admin_config.get_admin_help_message()
-            await self.line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=reply_text)
-            )
+            await self._reply(event.reply_token, TextMessage(text=reply_text))
             return True
 
         return False

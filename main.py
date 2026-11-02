@@ -7,14 +7,18 @@ load_dotenv()
 
 from contextlib import asynccontextmanager
 
-import aiohttp
 from fastapi import Request, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
-from linebot.models import MessageEvent, PostbackEvent, FollowEvent
-from linebot.exceptions import InvalidSignatureError
-from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
-from linebot import AsyncLineBotApi, WebhookParser
+from linebot.v3.exceptions import InvalidSignatureError
+from linebot.v3.messaging import AsyncApiClient, AsyncMessagingApi, Configuration
+from linebot.v3.webhook import WebhookParser
+from linebot.v3.webhooks import (
+    FollowEvent,
+    MessageEvent,
+    PostbackEvent,
+    TextMessageContent,
+)
 
 # Import handlers and services
 from vibpath_bot.utils.line_utils import set_line_bot_api
@@ -24,8 +28,8 @@ from vibpath_bot.config.env_config import settings
 from vibpath_bot.services.decision_service import decision_service
 
 # LINE Bot API objects that require a running event loop
-# (aiohttp.ClientSession must be created inside the lifespan handler)
-session = None
+# (AsyncApiClient opens an aiohttp session, so it must be created inside the lifespan handler)
+api_client = None
 line_bot_api = None
 webhook_handler = None
 
@@ -34,11 +38,10 @@ parser = WebhookParser(settings.channel_secret)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global session, line_bot_api, webhook_handler
+    global api_client, line_bot_api, webhook_handler
 
-    session = aiohttp.ClientSession()
-    async_http_client = AiohttpAsyncHttpClient(session)
-    line_bot_api = AsyncLineBotApi(settings.channel_access_token, async_http_client)
+    api_client = AsyncApiClient(Configuration(access_token=settings.channel_access_token))
+    line_bot_api = AsyncMessagingApi(api_client)
 
     # Set LINE Bot API instance for utilities
     set_line_bot_api(line_bot_api)
@@ -48,7 +51,7 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    await session.close()
+    await api_client.close()
     await decision_service.close()
 
 
@@ -128,7 +131,7 @@ async def handle_callback(request: Request):
             # Handle follow event (user adds bot as friend)
             await webhook_handler.handle_follow_event(event)
 
-        elif isinstance(event, MessageEvent) and event.message.type == "text":
+        elif isinstance(event, MessageEvent) and isinstance(event.message, TextMessageContent):
             # Handle text message
             await webhook_handler.handle_text_message(event, request_host)
 
@@ -136,9 +139,6 @@ async def handle_callback(request: Request):
             # Handle postback events from buttons
             await webhook_handler.handle_postback_event(event, request_host)
 
-        elif isinstance(event, MessageEvent) and event.message.type == "image":
-            # Handle image messages if needed
-            continue
         else:
             # Skip other event types
             continue

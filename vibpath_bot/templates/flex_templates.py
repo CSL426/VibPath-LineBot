@@ -3,7 +3,7 @@ LINE Bot Flex Message templates for VibPath services.
 Provides reusable templates for service menus, error messages, etc.
 """
 from typing import Dict, Any, List, Optional
-from linebot.models import FlexSendMessage, BubbleContainer, CarouselContainer
+from linebot.v3.messaging import FlexContainer, FlexMessage
 
 
 class FlexMessageTemplates:
@@ -11,15 +11,16 @@ class FlexMessageTemplates:
 
 
     @staticmethod
-    def service_menu() -> FlexSendMessage:
+    def service_menu() -> FlexMessage:
         """
         Create a service menu Flex Message.
 
         Returns:
-            FlexSendMessage: Service menu card
+            FlexMessage: Service menu card
         """
-        bubble = BubbleContainer(
-            body={
+        bubble = {
+            "type": "bubble",
+            "body": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
@@ -156,7 +157,7 @@ class FlexMessageTemplates:
                     }
                 ]
             },
-            footer={
+            "footer": {
                 "type": "box",
                 "layout": "vertical",
                 "spacing": "sm",
@@ -181,12 +182,12 @@ class FlexMessageTemplates:
                     }
                 ]
             }
-        )
+        }
 
-        return FlexSendMessage(alt_text="VibPath 服務選單", contents=bubble)
+        return FlexMessage(alt_text="VibPath 服務選單", contents=FlexContainer.from_dict(bubble))
 
     @staticmethod
-    def error_message(error_text: str) -> FlexSendMessage:
+    def error_message(error_text: str) -> FlexMessage:
         """
         Create an error message Flex Message.
 
@@ -194,10 +195,11 @@ class FlexMessageTemplates:
             error_text: Error message to display
 
         Returns:
-            FlexSendMessage: Error message card
+            FlexMessage: Error message card
         """
-        bubble = BubbleContainer(
-            body={
+        bubble = {
+            "type": "bubble",
+            "body": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
@@ -218,7 +220,7 @@ class FlexMessageTemplates:
                     }
                 ]
             },
-            footer={
+            "footer": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
@@ -233,17 +235,17 @@ class FlexMessageTemplates:
                     }
                 ]
             }
-        )
+        }
 
-        return FlexSendMessage(alt_text="錯誤訊息", contents=bubble)
+        return FlexMessage(alt_text="錯誤訊息", contents=FlexContainer.from_dict(bubble))
 
     @staticmethod
-    def welcome_carousel() -> FlexSendMessage:
+    def welcome_carousel() -> FlexMessage:
         """
         Create a welcome carousel with VibPath services.
 
         Returns:
-            FlexSendMessage: Welcome carousel
+            FlexMessage: Welcome carousel
         """
         # TODO: 可實現歡迎輪播卡片
         # 可以包含：產品介紹、企業簡介、使用指南等

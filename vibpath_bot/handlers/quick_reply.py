@@ -3,9 +3,13 @@ Quick Reply utilities for LINE Bot.
 Provides various quick reply templates for different scenarios.
 """
 from typing import List, Dict, Any, Optional
-from linebot.models import (
-    QuickReply, QuickReplyButton, MessageAction, PostbackAction,
-    URIAction, LocationAction, CameraAction, CameraRollAction
+from linebot.v3.messaging import (
+    LocationAction,
+    MessageAction,
+    PostbackAction,
+    QuickReply,
+    QuickReplyItem,
+    URIAction,
 )
 
 
@@ -38,7 +42,7 @@ class QuickReplyTemplates:
             if city["name"] == "其他城市":
                 # Special button for custom city input
                 quick_reply_buttons.append(
-                    QuickReplyButton(
+                    QuickReplyItem(
                         action=MessageAction(
                             label=f"{city['emoji']} {city['name']}",
                             text="請輸入城市名稱"
@@ -47,7 +51,7 @@ class QuickReplyTemplates:
                 )
             else:
                 quick_reply_buttons.append(
-                    QuickReplyButton(
+                    QuickReplyItem(
                         action=MessageAction(
                             label=f"{city['emoji']} {city['name']}",
                             text=f"{city['name']}天氣"
@@ -75,7 +79,7 @@ class QuickReplyTemplates:
         quick_reply_buttons = []
         for item in menu_items:
             quick_reply_buttons.append(
-                QuickReplyButton(
+                QuickReplyItem(
                     action=MessageAction(
                         label=item["label"],
                         text=item["text"]
@@ -94,13 +98,13 @@ class QuickReplyTemplates:
             QuickReply: Yes/No options
         """
         quick_reply_buttons = [
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="✅ 是",
                     data="action=confirm&value=yes"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="❌ 否",
                     data="action=confirm&value=no"
@@ -133,7 +137,7 @@ class QuickReplyTemplates:
             if "data" in action:
                 # Use postback for actions that need data processing
                 quick_reply_buttons.append(
-                    QuickReplyButton(
+                    QuickReplyItem(
                         action=PostbackAction(
                             label=action["label"],
                             data=action["data"]
@@ -143,7 +147,7 @@ class QuickReplyTemplates:
             else:
                 # Use message action for simple text responses
                 quick_reply_buttons.append(
-                    QuickReplyButton(
+                    QuickReplyItem(
                         action=MessageAction(
                             label=action["label"],
                             text=action["text"]
@@ -162,16 +166,16 @@ class QuickReplyTemplates:
             QuickReply: Location sharing options
         """
         quick_reply_buttons = [
-            QuickReplyButton(
+            QuickReplyItem(
                 action=LocationAction(label="📍 分享位置")
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=MessageAction(
                     label="✏️ 手動輸入",
                     text="請輸入城市名稱"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=MessageAction(
                     label="🌍 熱門城市",
                     text="熱門城市"
@@ -190,19 +194,19 @@ class QuickReplyTemplates:
             QuickReply: Error recovery options
         """
         quick_reply_buttons = [
-            QuickReplyButton(
+            QuickReplyItem(
                 action=MessageAction(
                     label="🔄 重試",
                     text="重試"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=MessageAction(
                     label="🏠 回主選單",
                     text="選單"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=MessageAction(
                     label="❓ 說明",
                     text="幫助"
@@ -221,31 +225,31 @@ class QuickReplyTemplates:
             QuickReply: Feedback options
         """
         quick_reply_buttons = [
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="⭐⭐⭐⭐⭐ 很好",
                     data="action=feedback&rating=5"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="⭐⭐⭐⭐ 不錯",
                     data="action=feedback&rating=4"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="⭐⭐⭐ 普通",
                     data="action=feedback&rating=3"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="⭐⭐ 不佳",
                     data="action=feedback&rating=2"
                 )
             ),
-            QuickReplyButton(
+            QuickReplyItem(
                 action=PostbackAction(
                     label="⭐ 很差",
                     data="action=feedback&rating=1"
@@ -284,6 +288,6 @@ class QuickReplyTemplates:
                 # Default to message action
                 action = MessageAction(label=label, text=value)
 
-            quick_reply_buttons.append(QuickReplyButton(action=action))
+            quick_reply_buttons.append(QuickReplyItem(action=action))
 
         return QuickReply(items=quick_reply_buttons)

@@ -2,7 +2,7 @@
 AI Toggle Handler
 Handles AI reply on/off toggle requests from Quick Reply buttons
 """
-from linebot.models import TextSendMessage
+from linebot.v3.messaging import TextMessage
 from vibpath_bot.services.user_preference_service import user_preference_service
 
 
@@ -10,7 +10,7 @@ class AIToggleHandler:
     """Handler for AI reply toggle functionality"""
 
     @staticmethod
-    def handle_toggle(user_id: str) -> TextSendMessage:
+    def handle_toggle(user_id: str) -> TextMessage:
         """
         Handle AI reply toggle request
 
@@ -18,20 +18,20 @@ class AIToggleHandler:
             user_id: LINE user ID
 
         Returns:
-            TextSendMessage: Response message with quick reply
+            TextMessage: Response message with quick reply
         """
         # Toggle AI reply status
         new_status = user_preference_service.toggle_ai_reply(user_id)
         return AIToggleHandler._status_changed_message(new_status)
 
     @staticmethod
-    def handle_set(user_id: str, enabled: bool) -> TextSendMessage:
+    def handle_set(user_id: str, enabled: bool) -> TextMessage:
         """Turn AI reply on or off (from natural-language requests)"""
         user_preference_service.set_ai_reply_status(user_id, enabled)
         return AIToggleHandler._status_changed_message(enabled)
 
     @staticmethod
-    def _status_changed_message(new_status: bool) -> TextSendMessage:
+    def _status_changed_message(new_status: bool) -> TextMessage:
         # Import here to avoid circular import
         from .message_handler import MessageHandler
 
@@ -51,13 +51,13 @@ class AIToggleHandler:
 
         # Add quick reply buttons
         handler = MessageHandler()
-        return TextSendMessage(
+        return TextMessage(
             text=message_text,
             quick_reply=handler.create_quick_reply_basic()
         )
 
     @staticmethod
-    def get_status(user_id: str) -> TextSendMessage:
+    def get_status(user_id: str) -> TextMessage:
         """
         Get current AI reply status
 
@@ -65,7 +65,7 @@ class AIToggleHandler:
             user_id: LINE user ID
 
         Returns:
-            TextSendMessage: Status message with quick reply
+            TextMessage: Status message with quick reply
         """
         # Import here to avoid circular import
         from .message_handler import MessageHandler
@@ -87,7 +87,7 @@ class AIToggleHandler:
 
         # Add quick reply buttons
         handler = MessageHandler()
-        return TextSendMessage(
+        return TextMessage(
             text=message_text,
             quick_reply=handler.create_quick_reply_basic()
         )

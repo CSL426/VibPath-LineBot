@@ -3,14 +3,13 @@
 LINE Bot utility functions including loading animations and messaging helpers.
 """
 import logging
-import os
-import aiohttp
-from linebot import AsyncLineBotApi
+
+from linebot.v3.messaging import AsyncMessagingApi, ShowLoadingAnimationRequest
 
 logger = logging.getLogger(__name__)
 
 # Global variable to store LINE Bot API instance
-line_bot_api_instance: AsyncLineBotApi = None
+line_bot_api_instance: AsyncMessagingApi = None
 
 
 def set_line_bot_api(api_instance):
@@ -22,17 +21,15 @@ def set_line_bot_api(api_instance):
 
 async def display_loading_animation(user_id: str, loading_seconds: int = 20):
     """
-    Displays a loading animation in the chat using direct API call.
+    Displays a loading animation in the chat.
     This feature is only available for one-on-one chats.
 
     Args:
         user_id (str): The user's ID for the one-on-one chat.
         loading_seconds (int): The duration of the animation in seconds (5-60).
     """
-    # Get channel access token from environment
-    channel_access_token = os.getenv("ChannelAccessToken")
-    if not channel_access_token:
-        logger.warning("Channel access token not found, skipping loading animation.")
+    if line_bot_api_instance is None:
+        logger.warning("LINE Bot API not initialized, skipping loading animation.")
         return
 
     # Ensure loading_seconds is within the allowed range (5-60 seconds)
@@ -40,25 +37,10 @@ async def display_loading_animation(user_id: str, loading_seconds: int = 20):
 
     try:
         logger.info(f"Displaying loading animation for user {user_id} for {validated_seconds} seconds.")
-
-        # Direct API call to LINE Messaging API
-        url = "https://api.line.me/v2/bot/chat/loading/start"
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {channel_access_token}"
-        }
-        data = {
-            "chatId": user_id,
-            "loadingSeconds": validated_seconds
-        }
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=data, headers=headers) as response:
-                if response.status == 200:
-                    logger.info(f"Loading animation started successfully for user {user_id}")
-                else:
-                    error_text = await response.text()
-                    logger.error(f"Failed to start loading animation: {response.status} - {error_text}")
+        await line_bot_api_instance.show_loading_animation(
+            ShowLoadingAnimationRequest(chat_id=user_id, loading_seconds=validated_seconds)
+        )
+        logger.info(f"Loading animation started successfully for user {user_id}")
 
     except Exception as e:
         logger.error(f"An unexpected error occurred while displaying loading animation: {e}")

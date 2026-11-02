@@ -3,7 +3,7 @@ Custom Flex Message templates for VibPath frequency therapy business.
 Includes company introduction and frequency therapy services carousel.
 """
 from typing import List, Dict, Any
-from linebot.models import FlexSendMessage, BubbleContainer, CarouselContainer
+from linebot.v3.messaging import FlexContainer, FlexMessage
 from ..config.static_urls import static_url_manager
 from ..config.button_config import button_config_manager
 
@@ -12,22 +12,23 @@ class BusinessTemplates:
     """VibPath frequency therapy business templates"""
 
     @staticmethod
-    def company_introduction_with_homepage(request_host: str = None) -> FlexSendMessage:
+    def company_introduction_with_homepage(request_host: str = None) -> FlexMessage:
         """
         Create company introduction using HomePage.png.
 
         Returns:
-            FlexSendMessage: Company introduction card
+            FlexMessage: Company introduction card
         """
-        bubble = BubbleContainer(
-            hero={
+        bubble = {
+            "type": "bubble",
+            "hero": {
                 "type": "image",
                 "url": static_url_manager.get_image_url("business/HomePage.png", request_host),
                 "size": "full",
                 "aspectRatio": "20:13",
                 "aspectMode": "cover"
             },
-            body={
+            "body": {
                 "type": "box",
                 "layout": "vertical",
                 "contents": [
@@ -79,18 +80,18 @@ class BusinessTemplates:
                     }
                 ]
             },
-            footer=button_config_manager.get_footer_box("company_introduction")
-        )
+            "footer": button_config_manager.get_footer_box("company_introduction")
+        }
 
-        return FlexSendMessage(alt_text="VibPath 公司介紹", contents=bubble)
+        return FlexMessage(alt_text="VibPath 公司介紹", contents=FlexContainer.from_dict(bubble))
 
     @staticmethod
-    def frequency_services_carousel(request_host: str = None) -> FlexSendMessage:
+    def frequency_services_carousel(request_host: str = None) -> FlexMessage:
         """
         Create frequency therapy services carousel with 4 services.
 
         Returns:
-            FlexSendMessage: Frequency services carousel
+            FlexMessage: Frequency services carousel
         """
         services = [
             {
@@ -134,15 +135,16 @@ class BusinessTemplates:
         service_ids = ["service_7_83hz", "service_13Freq", "service_40hz", "service_double_freq", "service_pulse_gen", "service_composite_freq", "service_ten_freq"]
 
         for i, service in enumerate(services):
-            bubble = BubbleContainer(
-                hero={
+            bubble = {
+                "type": "bubble",
+                "hero": {
                     "type": "image",
                     "url": static_url_manager.get_image_url(service["image"], request_host),
                     "size": "full",
                     "aspectRatio": "20:13",
                     "aspectMode": "cover"
                 },
-                body={
+                "body": {
                     "type": "box",
                     "layout": "vertical",
                     "contents": [
@@ -163,9 +165,9 @@ class BusinessTemplates:
                         }
                     ]
                 },
-                footer=button_config_manager.get_footer_box(service_ids[i])
-            )
+                "footer": button_config_manager.get_footer_box(service_ids[i])
+            }
             bubbles.append(bubble)
 
-        carousel = CarouselContainer(contents=bubbles)
-        return FlexSendMessage(alt_text="VibPath 商品服務", contents=carousel)
+        carousel = {"type": "carousel", "contents": bubbles}
+        return FlexMessage(alt_text="VibPath 商品服務", contents=FlexContainer.from_dict(carousel))

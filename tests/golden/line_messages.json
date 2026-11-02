@@ -1,0 +1,4902 @@
+{
+ "company_intro": {
+  "altText": "VibPath 公司介紹",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "color": "#2C3E50",
+      "size": "xl",
+      "text": "VibPath 商品介紹",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#7F8C8D",
+      "margin": "md",
+      "size": "sm",
+      "text": "專業產品服務 · 身心靈平衡體驗",
+      "type": "text"
+     },
+     {
+      "margin": "lg",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🎵 專業產品技術",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🔬 科學驗證頻率配方",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "✨ 身心靈全面平衡",
+        "type": "text"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "lg",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "蝦皮賣場",
+       "type": "uri",
+       "uri": "https://shopee.tw/baba1018"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "全家好賣+",
+       "type": "uri",
+       "uri": "https://famistore.famiport.com.tw/users/5806400"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "7-11 IOpen Mall",
+       "type": "uri",
+       "uri": "https://mall.iopenmall.tw/099753/"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_frequency_products",
+       "label": "產品介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "explain_company",
+       "label": "詳細介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_manual_download",
+       "label": "產品手冊",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "hero": {
+    "animated": false,
+    "aspectMode": "cover",
+    "aspectRatio": "20:13",
+    "size": "full",
+    "type": "image",
+    "url": "https://csl426.github.io/VibPath-LineBot/images/business/HomePage.png"
+   },
+   "type": "bubble"
+  },
+  "type": "flex"
+ },
+ "error_flex": {
+  "altText": "錯誤訊息",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "color": "#E53E3E",
+      "size": "xl",
+      "text": "❌ 發生錯誤",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#666666",
+      "margin": "md",
+      "size": "md",
+      "text": "測試錯誤",
+      "type": "text",
+      "wrap": true
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "🔄 重試",
+       "text": "重試",
+       "type": "message"
+      },
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "type": "bubble"
+  },
+  "type": "flex"
+ },
+ "error_text": {
+  "text": "❌ 測試錯誤",
+  "type": "text"
+ },
+ "frequency_carousel": {
+  "altText": "VibPath 商品服務",
+  "contents": {
+   "contents": [
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "7.83Hz 舒曼波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "地球基礎頻率\n放鬆身心 · 減壓體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/1d1RBDe"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060258"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544882"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_7_83hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/7.83HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "13頻 脈輪波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "大腦α波共振\n專注提升 · 創意啟發",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/jm7cdmq"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060309"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544847"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_13Freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/13Freq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "40Hz γ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "高頻能量激活\n意識提升 · 靈性覺醒",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/GJc8Yru"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060293"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544673"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_40hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/40HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "雙頻 α/θ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "多頻率組合\n全方位體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/ciUiZfy"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060278"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544545"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_double_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/DoubleFreq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "客製頻率 脈衝產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "11頻率可選\n客製燒錄 · 精準穩定",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/44379328891/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4217824"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314571867"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_pulse_gen",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/PulseGen.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "複合式頻率產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "0.5Hz + 8.0Hz 雙頻\n深層助眠 · 放鬆共振",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/43580081153/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4291363"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314918938"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_composite_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/CompositeFreq.png"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "十頻儀",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "10 頻率一鍵切換\nOLED 顯示 · 銅線加強",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/56159529196/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4313856"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975315173580"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_ten_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/十頻儀.png"
+     },
+     "type": "bubble"
+    }
+   ],
+   "type": "carousel"
+  },
+  "type": "flex"
+ },
+ "help": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🤖 VibPath 智能客服使用說明\n\n🎵 商品服務：\n• 輸入「商品介紹」或「服務項目」查看產品\n• 專業商品技術\n\n🏢 企業服務：\n• 輸入「公司介紹」了解我們的服務\n• 輸入「關於我們」查看企業資訊\n\n💬 智能對話：\n• 直接輸入問題，AI 會為您解答\n• 支援繁體中文對話\n\n🔧 其他功能：\n• 輸入「選單」顯示服務選單\n• 輸入「幫助」顯示此說明\n\n有任何問題都可以直接詢問我！",
+  "type": "text"
+ },
+ "manual_card": {
+  "altText": "產品手冊下載",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "align": "center",
+      "color": "#1976D2",
+      "size": "md",
+      "text": "生命頻率指南",
+      "type": "text",
+      "weight": "bold"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "下載指南",
+       "type": "uri",
+       "uri": "https://csl426.github.io/VibPath-LineBot/images/manual_frequency_guide.pdf"
+      },
+      "style": "primary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "size": "micro",
+   "type": "bubble"
+  },
+  "type": "flex"
+ },
+ "postback_check_ai_status": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "ℹ️ AI 自動回覆狀態\n\n目前狀態：✅ 已開啟\n\n我會使用 AI 來回答您的問題。",
+  "type": "text"
+ },
+ "postback_explain_13Freq": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🕉️ 13頻脈輪波\n\n如其名，脈輪，屬於瑜珈的系統，對應從海底到頂輪。\n\n🎯 主要用途：\n• 對應瑜珈系統修行\n• 多頻率選擇，支援Theta、Alpha、Gamma波\n• 幫助冥想、放鬆與情緒穩定\n• 調理相對位置的健康\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足\n• 不只修行人輔助好用，一般人用也都很好",
+  "type": "text"
+ },
+ "postback_explain_40hz": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "⚡ γ波(GAMMA) 40Hz\n\n這是人高度專注時大腦的腦波。\n\n🧠 效果：\n• 提升記憶力與專注力\n• 適合高效學習與思考時使用\n• 期望誘發大腦的同步性\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 不只修行人輔助好用，一般人用也都很好\n\n💡 在醫學上也有不少研究，您可以GOOGLE「MIT 40Hz」。",
+  "type": "text"
+ },
+ "postback_explain_7_83hz": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🎵 舒曼波 (7.83Hz)\n\n這是較大家一般所知的極低頻電磁波，一般是拿來作助眠使用。\n\n🧠 原理：\n• α波(7.83-8Hz)：大腦靜下來後的狀態，幫助身心平衡、放鬆，助眠效果\n• 相對於7.83Hz，依我們的經驗，8Hz的效果更好，雖然差異僅0.17Hz\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 每一台機器都經過精密調校\n\n🎯 適用：放鬆、助眠",
+  "type": "text"
+ },
+ "postback_explain_company": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🏢 VibPath 商品中心\n\n我們是專業的商品設備製造商，專精於極低頻電磁波技術，致力於為客戶提供高品質的商品體驗。\n\n🎯 我們的使命：\n透過精準的商品技術，幫助每個人找回內在的和諧與平衡。\n\n🔬 核心技術優勢：\n• 波形極低失真度 - 確保治療效果最大化\n• 磁場強度充足 - 提供更深層的共振效果\n• 波形純淨穩定 - 每一台機器都經過精密調校\n• 專業頻率配方 - 基於科學研究和實務經驗\n\n⚡ 產品特色：\n• 不只修行人適用，一般人也能輕鬆使用\n• 涵蓋助眠、專注、修行等多元需求\n• 每款產品都具備卓越的技術規格\n• 長期使用安全可靠\n\n✨ 服務理念：\n以技術為本，用心製造每一台設備，讓商品真正發揮應有的效果。\n\n📞 歡迎體驗我們的專業產品，感受高品質商品的神奇力量！",
+  "type": "text"
+ },
+ "postback_explain_composite_freq": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🎛️ 複合式頻率產生器 (0.5Hz + 8.0Hz)\n\n同一台機器同時產出 0.5Hz 與 8.0Hz 兩組極低頻電磁波，複合式共振體驗。\n\n🧠 頻率原理：\n• 0.5Hz (Delta Wave)：深層睡眠腦波，幫助深度放鬆、修復\n• 8.0Hz (Alpha Wave)：大腦靜下來後的狀態，放鬆、助眠、身心平衡\n• 兩頻同時作用，兼顧深層修復與身心平衡\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 銅線加強版，磁場穩定\n• 每一台機器都經過精密調校\n\n🎯 適用：深層助眠、放鬆、修復共振\n",
+  "type": "text"
+ },
+ "postback_explain_double_freq": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🔄 α/θ波\n\n🧠 雙頻說明：\n\n1、α波(7.83-8Hz)：\n• 大腦靜下來後的狀態，幫助身心平衡、放鬆，助眠效果\n• 相對於7.83Hz，依我們的經驗，8Hz的效果更好，雖然差異僅0.17Hz\n\n2、θ波(4Hz)：\n• 醒睡之間的腦波，比α波更積極的助眠作用\n• 修行時很好的輔助機器，幫助修行人修行時更容易進入更深的定靜狀態\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 不只修行人輔助好用，一般人用也都很好",
+  "type": "text"
+ },
+ "postback_explain_frequency": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🎵 商品原理說明\n\n商品產品是運用特定的極低頻電磁波來調節身心狀態的自然方法。\n\n🧠 科學基礎：\n• 大腦會與外部頻率產生共振現象\n• 不同頻率對應不同的腦波狀態\n• α波(7.83-8Hz)：大腦靜下來後的狀態，幫助身心平衡、放鬆，助眠效果\n• θ波(4Hz)：醒睡之間的腦波，比α波更積極的助眠作用\n• γ波(40Hz)：提升記憶力與專注力，適合高效學習與思考時使用\n\n⚡ 我們的技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 每一台機器都經過精密調校\n• 不只修行人輔助好用，一般人用也都很好\n\n🎯 主要應用：\n• 助眠放鬆：舒曼波、α波、θ波，放鬆、助眠\n• 提升專注：γ波(40Hz)，提升記憶力與專注力\n• 修行輔助：α波、θ波、γ波，幫助修行時更容易進入深層定靜狀態\n• 脈輪調理：13頻脈輪波對應瑜珈系統修行，多頻率選擇，支援Theta、Alpha、Gamma波，幫助冥想、放鬆與情緒穩定\n\n🌟 產品共同特點：波形純淨、失真度低、磁場強度足",
+  "type": "text"
+ },
+ "postback_explain_pulse_gen": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🔧 客製頻率 脈衝產生器\n\n程式修改客製頻率，目前已完成共11頻率可選：\n(選一個頻率進行燒寫，一台機器固定一個頻率，不能切換頻率)\n\n📋 可選頻率：\n• 0.1Hz：Sub-Delta Wave\n• 0.5Hz：Delta Wave\n• 4.0Hz：Theta Wave（可選α/θ波雙頻版）\n• 8.0Hz：Alpha Wave（可選α/θ波雙頻版）\n• 10.0Hz：Middle Alpha Wave\n• 12.0Hz：Low Beta Wave\n• 25.0Hz：Beta Wave\n• 40.0Hz：Gamma Wave（可選γ波獨立版）\n• 111Hz：Angel Frequency\n• 128Hz：Grounding Frequency (Otto 128)\n• 136.1Hz：OM Frequency\n（亦可依需求重新設計新頻率）\n\n⚡ 機器特色：\n• 出貨前重新燒錄新頻率程式，可微調至誤差0.5%以內\n• 波形維持超低總失真度(THD)\n• 磁場強度維持銅線加強版\n• 使用有效距離約5公尺以內，3公尺以內效果佳\n\n⚠️ 與人體安全距離：\n• 0.1 / 0.5 / 4.0 Hz：0公分，可貼身使用\n• 8.0Hz：4公分\n• 12.0Hz：5公分\n• 25.0 / 40.0 / 111 / 128 / 136.1 Hz：7公分\n\n機器皆以舒曼波機重新編寫、燒錄新程式碼達成。",
+  "type": "text"
+ },
+ "postback_explain_ten_freq": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "🎚️ 十頻儀 (0.1Hz~136.1Hz)\n\nPEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側按切換鍵即時切換，OLED 螢幕顯示當前頻率資訊。\n\n📋 內建 10 頻率：\n• 0.1Hz：Sub-Delta Wave\n• 0.5Hz：Deep Delta Wave\n• 4.0Hz：Theta Wave\n• 8.0Hz：Low Alpha Wave\n• 10.0Hz：Middle Alpha Wave\n• 12.0Hz：Low Beta Wave\n• 40.0Hz：Gamma Wave\n• 111Hz：Angel Frequency\n• 128Hz：Grounding Frequency (Otto 128)\n• 136.1Hz：OM Frequency\n\n⚡ 機器特色：\n• 側按頻率切換鍵，免重新燒錄即可切換頻率\n• OLED 螢幕即時顯示當前頻率與波型資訊\n• 3A 大電晶體驅動，磁場強度充足\n• LED 呼吸燈，運作狀態一目了然\n• Type-C (USB-C) 供電，接線方便\n• 銅線加強版線圈，波形純淨、總諧波失真度低\n• 每一台皆單獨確認頻率精度，微調至誤差 0.3% 以內\n• 100% 台灣設計製造，符合國家(極)低頻電磁波暴露規範\n\n📏 使用距離：\n• 有效距離約 5 公尺以內，3 公尺以內效果佳\n\n⚠️ 與人體安全距離：\n• 0.1 / 0.5 / 4.0 Hz：0 公分，可貼身使用\n• 8.0Hz：4 公分\n• 12.0Hz：5 公分\n• 40.0 / 111 / 128 / 136.1 Hz：7 公分\n\n🎯 適用：助眠、放鬆、專注提升、修行輔助、健康調理\n",
+  "type": "text"
+ },
+ "postback_no_quick_reply": {
+  "text": "⚡ γ波(GAMMA) 40Hz\n\n這是人高度專注時大腦的腦波。\n\n🧠 效果：\n• 提升記憶力與專注力\n• 適合高效學習與思考時使用\n• 期望誘發大腦的同步性\n\n⚡ 技術特色：\n• 波形都很漂亮，總諧波失真度都很低\n• 磁場強度都很足，能發揮更好效果，同時皆符合國家(極)低頻電磁波暴露規範\n• 不只修行人輔助好用，一般人用也都很好\n\n💡 在醫學上也有不少研究，您可以GOOGLE「MIT 40Hz」。",
+  "type": "text"
+ },
+ "postback_show_basic_menu": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "◀️ 返回基本選單",
+  "type": "text"
+ },
+ "postback_show_company_intro": {
+  "altText": "VibPath 公司介紹",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "color": "#2C3E50",
+      "size": "xl",
+      "text": "VibPath 商品介紹",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#7F8C8D",
+      "margin": "md",
+      "size": "sm",
+      "text": "專業產品服務 · 身心靈平衡體驗",
+      "type": "text"
+     },
+     {
+      "margin": "lg",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🎵 專業產品技術",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🔬 科學驗證頻率配方",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "✨ 身心靈全面平衡",
+        "type": "text"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "lg",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "蝦皮賣場",
+       "type": "uri",
+       "uri": "https://shopee.tw/baba1018"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "全家好賣+",
+       "type": "uri",
+       "uri": "https://famistore.famiport.com.tw/users/5806400"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "7-11 IOpen Mall",
+       "type": "uri",
+       "uri": "https://mall.iopenmall.tw/099753/"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_frequency_products",
+       "label": "產品介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "explain_company",
+       "label": "詳細介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_manual_download",
+       "label": "產品手冊",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "hero": {
+    "animated": false,
+    "aspectMode": "cover",
+    "aspectRatio": "20:13",
+    "size": "full",
+    "type": "image",
+    "url": "https://csl426.github.io/VibPath-LineBot/images/business/HomePage.png"
+   },
+   "type": "bubble"
+  },
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "type": "flex"
+ },
+ "postback_show_frequency_products": {
+  "altText": "VibPath 商品服務",
+  "contents": {
+   "contents": [
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "7.83Hz 舒曼波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "地球基礎頻率\n放鬆身心 · 減壓體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/1d1RBDe"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060258"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544882"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_7_83hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/7.83HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "13頻 脈輪波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "大腦α波共振\n專注提升 · 創意啟發",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/jm7cdmq"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060309"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544847"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_13Freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/13Freq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "40Hz γ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "高頻能量激活\n意識提升 · 靈性覺醒",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/GJc8Yru"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060293"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544673"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_40hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/40HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "雙頻 α/θ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "多頻率組合\n全方位體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/ciUiZfy"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060278"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544545"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_double_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/DoubleFreq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "客製頻率 脈衝產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "11頻率可選\n客製燒錄 · 精準穩定",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/44379328891/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4217824"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314571867"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_pulse_gen",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/PulseGen.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "複合式頻率產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "0.5Hz + 8.0Hz 雙頻\n深層助眠 · 放鬆共振",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/43580081153/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4291363"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314918938"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_composite_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/CompositeFreq.png"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "十頻儀",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "10 頻率一鍵切換\nOLED 顯示 · 銅線加強",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/56159529196/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4313856"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975315173580"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_ten_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/十頻儀.png"
+     },
+     "type": "bubble"
+    }
+   ],
+   "type": "carousel"
+  },
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "type": "flex"
+ },
+ "postback_show_manual_download": {
+  "altText": "產品手冊下載",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "align": "center",
+      "color": "#1976D2",
+      "size": "md",
+      "text": "生命頻率指南",
+      "type": "text",
+      "weight": "bold"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "下載指南",
+       "type": "uri",
+       "uri": "https://csl426.github.io/VibPath-LineBot/images/manual_frequency_guide.pdf"
+      },
+      "style": "primary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "size": "micro",
+   "type": "bubble"
+  },
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "type": "flex"
+ },
+ "postback_show_product_details": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "explain_frequency",
+      "label": "🎵 商品原理",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_7_83hz",
+      "label": "🌍 舒曼波",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_13Freq",
+      "label": "🕉️ 13頻脈輪",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_40hz",
+      "label": "⚡ γ波40Hz",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_double_freq",
+      "label": "🔄 α/θ雙頻",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_pulse_gen",
+      "label": "🔧 客製頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_composite_freq",
+      "label": "🎛️ 複合式頻率",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "explain_ten_freq",
+      "label": "🎚️ 十頻儀",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_basic_menu",
+      "label": "◀️ 返回基本",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "📖 產品詳細說明\n\n請選擇您想了解的產品：",
+  "type": "text"
+ },
+ "postback_show_service_menu": {
+  "altText": "VibPath 服務選單",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "color": "#1976D2",
+      "size": "xl",
+      "text": "VibPath 智能客服 - 阿弦",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#666666",
+      "margin": "md",
+      "size": "md",
+      "text": "選擇您需要的服務",
+      "type": "text"
+     },
+     {
+      "margin": "xl",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🎵",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "商品介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "專業產品服務介紹",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🏢",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "公司介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "了解 VibPath 企業資訊",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "💬",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "智能客服",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "AI 客服為您解答產品問題",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "xl",
+      "spacing": "sm",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "🎵 商品介紹",
+       "text": "商品介紹",
+       "type": "message"
+      },
+      "style": "primary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "🏢 公司介紹",
+       "text": "公司介紹",
+       "type": "message"
+      },
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "type": "bubble"
+  },
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "type": "flex"
+ },
+ "postback_toggle_ai_reply": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "✅ AI 自動回覆已開啟\n\n我會使用 AI 來回答您的問題。\n如需關閉，請點擊「🤖 AI開關」。",
+  "type": "text"
+ },
+ "postback_unknown_postback": {
+  "text": "抱歉，目前沒有相關說明資訊。請聯繫客服獲得更多幫助。",
+  "type": "text"
+ },
+ "qr_basic": {
+  "items": [
+   {
+    "action": {
+     "data": "show_company_intro",
+     "label": "🏢 公司介紹",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "show_frequency_products",
+     "label": "🛒 查看產品",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "show_service_menu",
+     "label": "📋 選單",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "toggle_ai_reply",
+     "label": "🤖 AI開關",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "show_product_details",
+     "label": "📖 更多產品",
+     "type": "postback"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_custom_uri": {
+  "items": [
+   {
+    "action": {
+     "label": "網站",
+     "type": "uri",
+     "uri": "https://example.test"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_error_recovery": {
+  "items": [
+   {
+    "action": {
+     "label": "🔄 重試",
+     "text": "重試",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🏠 回主選單",
+     "text": "選單",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "❓ 說明",
+     "text": "幫助",
+     "type": "message"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_feedback": {
+  "items": [
+   {
+    "action": {
+     "data": "action=feedback&rating=5",
+     "label": "⭐⭐⭐⭐⭐ 很好",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=feedback&rating=4",
+     "label": "⭐⭐⭐⭐ 不錯",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=feedback&rating=3",
+     "label": "⭐⭐⭐ 普通",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=feedback&rating=2",
+     "label": "⭐⭐ 不佳",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=feedback&rating=1",
+     "label": "⭐ 很差",
+     "type": "postback"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_location": {
+  "items": [
+   {
+    "action": {
+     "label": "📍 分享位置",
+     "type": "location"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "✏️ 手動輸入",
+     "text": "請輸入城市名稱",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🌍 熱門城市",
+     "text": "熱門城市",
+     "type": "message"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_main_menu": {
+  "items": [
+   {
+    "action": {
+     "label": "🌤️ 天氣查詢",
+     "text": "天氣查詢",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "📋 服務選單",
+     "text": "選單",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "❓ 使用說明",
+     "text": "幫助",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "💬 智能對話",
+     "text": "你好",
+     "type": "message"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_products": {
+  "items": [
+   {
+    "action": {
+     "data": "explain_frequency",
+     "label": "🎵 商品原理",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_7_83hz",
+     "label": "🌍 舒曼波",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_13Freq",
+     "label": "🕉️ 13頻脈輪",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_40hz",
+     "label": "⚡ γ波40Hz",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_double_freq",
+     "label": "🔄 α/θ雙頻",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_pulse_gen",
+     "label": "🔧 客製頻率",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_composite_freq",
+     "label": "🎛️ 複合式頻率",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "explain_ten_freq",
+     "label": "🎚️ 十頻儀",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "toggle_ai_reply",
+     "label": "🤖 AI開關",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "show_basic_menu",
+     "label": "◀️ 返回基本",
+     "type": "postback"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_weather_actions": {
+  "items": [
+   {
+    "action": {
+     "label": "🔄 更新天氣",
+     "text": "台北天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "📍 其他城市",
+     "text": "天氣查詢",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=forecast&city=台北",
+     "label": "📊 詳細預報",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🏠 回主選單",
+     "text": "選單",
+     "type": "message"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_weather_cities": {
+  "items": [
+   {
+    "action": {
+     "label": "🏙️ 台北",
+     "text": "台北天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🌃 高雄",
+     "text": "高雄天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🏢 台中",
+     "text": "台中天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🗼 東京",
+     "text": "東京天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🏰 首爾",
+     "text": "首爾天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🏖️ 新加坡",
+     "text": "新加坡天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🎡 倫敦",
+     "text": "倫敦天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🗽 紐約",
+     "text": "紐約天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🗼 巴黎",
+     "text": "巴黎天氣",
+     "type": "message"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "label": "🌍 其他城市",
+     "text": "請輸入城市名稱",
+     "type": "message"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "qr_yes_no": {
+  "items": [
+   {
+    "action": {
+     "data": "action=confirm&value=yes",
+     "label": "✅ 是",
+     "type": "postback"
+    },
+    "type": "action"
+   },
+   {
+    "action": {
+     "data": "action=confirm&value=no",
+     "label": "❌ 否",
+     "type": "postback"
+    },
+    "type": "action"
+   }
+  ]
+ },
+ "service_menu": {
+  "altText": "VibPath 服務選單",
+  "contents": {
+   "body": {
+    "contents": [
+     {
+      "color": "#1976D2",
+      "size": "xl",
+      "text": "VibPath 智能客服 - 阿弦",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#666666",
+      "margin": "md",
+      "size": "md",
+      "text": "選擇您需要的服務",
+      "type": "text"
+     },
+     {
+      "margin": "xl",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🎵",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "商品介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "專業產品服務介紹",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🏢",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "公司介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "了解 VibPath 企業資訊",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "💬",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "智能客服",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "AI 客服為您解答產品問題",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "xl",
+      "spacing": "sm",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "🎵 商品介紹",
+       "text": "商品介紹",
+       "type": "message"
+      },
+      "style": "primary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "🏢 公司介紹",
+       "text": "公司介紹",
+       "type": "message"
+      },
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "type": "bubble"
+  },
+  "type": "flex"
+ },
+ "set_on": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "✅ AI 自動回覆已開啟\n\n我會使用 AI 來回答您的問題。\n如需關閉，請點擊「🤖 AI開關」。",
+  "type": "text"
+ },
+ "status_off": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "ℹ️ AI 自動回覆狀態\n\n目前狀態：⏸️ 已關閉\n\n我將不會使用 AI 自動回答問題。",
+  "type": "text"
+ },
+ "status_on": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "ℹ️ AI 自動回覆狀態\n\n目前狀態：✅ 已開啟\n\n我會使用 AI 來回答您的問題。",
+  "type": "text"
+ },
+ "toggle_off": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "⏸️ AI 自動回覆已關閉\n\n我將不會使用 AI 自動回答問題。\n您仍然可以使用快速回覆按鈕查看服務資訊。\n如需開啟，請點擊「🤖 AI開關」。",
+  "type": "text"
+ },
+ "toggle_on": {
+  "quickReply": {
+   "items": [
+    {
+     "action": {
+      "data": "show_company_intro",
+      "label": "🏢 公司介紹",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_frequency_products",
+      "label": "🛒 查看產品",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_service_menu",
+      "label": "📋 選單",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "toggle_ai_reply",
+      "label": "🤖 AI開關",
+      "type": "postback"
+     },
+     "type": "action"
+    },
+    {
+     "action": {
+      "data": "show_product_details",
+      "label": "📖 更多產品",
+      "type": "postback"
+     },
+     "type": "action"
+    }
+   ]
+  },
+  "text": "✅ AI 自動回覆已開啟\n\n我會使用 AI 來回答您的問題。\n如需關閉，請點擊「🤖 AI開關」。",
+  "type": "text"
+ },
+ "tool_apps": {
+  "alt_text": "Android 檢測 APP 下載",
+  "content": {
+   "body": {
+    "contents": [
+     {
+      "color": "#2C3E50",
+      "size": "lg",
+      "text": "Android 檢測 APP",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#7F8C8D",
+      "margin": "sm",
+      "size": "sm",
+      "text": "Ultimate EMF Detector",
+      "type": "text"
+     },
+     {
+      "color": "#888888",
+      "margin": "md",
+      "size": "xs",
+      "text": "可檢測機器發出的電磁場訊號，確認設備是否正常運作",
+      "type": "text",
+      "wrap": true
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "前往 Google Play",
+       "type": "uri",
+       "uri": "https://play.google.com/store/apps/details?id=com.mreprogramming.ultimateemfdetector"
+      },
+      "style": "primary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "hero": {
+    "aspectMode": "cover",
+    "aspectRatio": "20:13",
+    "size": "full",
+    "type": "image",
+    "url": "https://csl426.github.io/VibPath-LineBot/images/app/android.jpg"
+   },
+   "type": "bubble"
+  },
+  "type": "flex_message"
+ },
+ "tool_catalog": {
+  "alt_text": "VibPath 商品目錄",
+  "content": {
+   "contents": [
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "7.83Hz 舒曼波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "地球基礎頻率\n放鬆身心 · 減壓體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/1d1RBDe"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060258"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544882"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_7_83hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/7.83HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "13頻 脈輪波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "大腦α波共振\n專注提升 · 創意啟發",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/jm7cdmq"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060309"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544847"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_13Freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/13Freq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "40Hz γ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "高頻能量激活\n意識提升 · 靈性覺醒",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/GJc8Yru"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060293"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544673"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_40hz",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/40HZ.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "雙頻 α/θ波",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "多頻率組合\n全方位體驗",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://tw.shp.ee/ciUiZfy"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4060278"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975313544545"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_double_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/DoubleFreq.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "客製頻率 脈衝產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "11頻率可選\n客製燒錄 · 精準穩定",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/44379328891/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4217824"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314571867"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_pulse_gen",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/PulseGen.jpg"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "複合式頻率產生器",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "0.5Hz + 8.0Hz 雙頻\n深層助眠 · 放鬆共振",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/43580081153/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4291363"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975314918938"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_composite_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/CompositeFreq.png"
+     },
+     "type": "bubble"
+    },
+    {
+     "body": {
+      "contents": [
+       {
+        "color": "#2C3E50",
+        "size": "lg",
+        "text": "十頻儀",
+        "type": "text",
+        "weight": "bold"
+       },
+       {
+        "color": "#7F8C8D",
+        "margin": "md",
+        "size": "sm",
+        "text": "10 頻率一鍵切換\nOLED 顯示 · 銅線加強",
+        "type": "text",
+        "wrap": true
+       }
+      ],
+      "layout": "vertical",
+      "type": "box"
+     },
+     "footer": {
+      "contents": [
+       {
+        "action": {
+         "label": "蝦皮購買",
+         "type": "uri",
+         "uri": "https://shopee.tw/product/15192070/56159529196/"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "全家好賣+",
+         "type": "uri",
+         "uri": "https://famistore.famiport.com.tw/users/5806400/merchandise/4313856"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "label": "7-11 IOpen Mall",
+         "type": "uri",
+         "uri": "https://mall.iopenmall.tw/099753/index.php?action=product_detail&prod_no=P9975315173580"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       },
+       {
+        "action": {
+         "data": "explain_ten_freq",
+         "label": "產品介紹",
+         "type": "postback"
+        },
+        "margin": "sm",
+        "style": "secondary",
+        "type": "button"
+       }
+      ],
+      "layout": "vertical",
+      "spacing": "sm",
+      "type": "box"
+     },
+     "hero": {
+      "animated": false,
+      "aspectMode": "cover",
+      "aspectRatio": "20:13",
+      "size": "full",
+      "type": "image",
+      "url": "https://csl426.github.io/VibPath-LineBot/images/services/十頻儀.png"
+     },
+     "type": "bubble"
+    }
+   ],
+   "type": "carousel"
+  },
+  "type": "flex_message"
+ },
+ "tool_company": {
+  "alt_text": "VibPath 公司介紹",
+  "content": {
+   "body": {
+    "contents": [
+     {
+      "color": "#2C3E50",
+      "size": "xl",
+      "text": "VibPath 商品介紹",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#7F8C8D",
+      "margin": "md",
+      "size": "sm",
+      "text": "專業產品服務 · 身心靈平衡體驗",
+      "type": "text"
+     },
+     {
+      "margin": "lg",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🎵 專業產品技術",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "🔬 科學驗證頻率配方",
+        "type": "text"
+       },
+       {
+        "color": "#34495E",
+        "margin": "sm",
+        "size": "sm",
+        "text": "✨ 身心靈全面平衡",
+        "type": "text"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "lg",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "蝦皮賣場",
+       "type": "uri",
+       "uri": "https://shopee.tw/baba1018"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "全家好賣+",
+       "type": "uri",
+       "uri": "https://famistore.famiport.com.tw/users/5806400"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "7-11 IOpen Mall",
+       "type": "uri",
+       "uri": "https://mall.iopenmall.tw/099753/"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_frequency_products",
+       "label": "產品介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "explain_company",
+       "label": "詳細介紹",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "data": "show_manual_download",
+       "label": "產品手冊",
+       "type": "postback"
+      },
+      "margin": "sm",
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "hero": {
+    "animated": false,
+    "aspectMode": "cover",
+    "aspectRatio": "20:13",
+    "size": "full",
+    "type": "image",
+    "url": "https://csl426.github.io/VibPath-LineBot/images/business/HomePage.png"
+   },
+   "type": "bubble"
+  },
+  "type": "flex_message"
+ },
+ "tool_manual": {
+  "alt_text": "生命頻率指南下載",
+  "content": {
+   "body": {
+    "contents": [
+     {
+      "align": "center",
+      "color": "#1976D2",
+      "size": "md",
+      "text": "生命頻率指南",
+      "type": "text",
+      "weight": "bold"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "下載指南",
+       "type": "uri",
+       "uri": "https://csl426.github.io/VibPath-LineBot/images/manual_frequency_guide.pdf"
+      },
+      "style": "primary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "size": "micro",
+   "type": "bubble"
+  },
+  "type": "flex_message"
+ },
+ "tool_menu": {
+  "alt_text": "VibPath 服務選單",
+  "content": {
+   "body": {
+    "contents": [
+     {
+      "color": "#1976D2",
+      "size": "xl",
+      "text": "VibPath 智能客服 - 阿弦",
+      "type": "text",
+      "weight": "bold"
+     },
+     {
+      "color": "#666666",
+      "margin": "md",
+      "size": "md",
+      "text": "選擇您需要的服務",
+      "type": "text"
+     },
+     {
+      "margin": "xl",
+      "type": "separator"
+     },
+     {
+      "contents": [
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🎵",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "商品介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "專業產品服務介紹",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "🏢",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "公司介紹",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "了解 VibPath 企業資訊",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       },
+       {
+        "type": "separator"
+       },
+       {
+        "contents": [
+         {
+          "flex": 1,
+          "size": "xl",
+          "text": "💬",
+          "type": "text"
+         },
+         {
+          "contents": [
+           {
+            "size": "md",
+            "text": "智能客服",
+            "type": "text",
+            "weight": "bold"
+           },
+           {
+            "color": "#666666",
+            "size": "sm",
+            "text": "AI 客服為您解答產品問題",
+            "type": "text"
+           }
+          ],
+          "flex": 4,
+          "layout": "vertical",
+          "type": "box"
+         }
+        ],
+        "layout": "horizontal",
+        "paddingAll": "sm",
+        "spacing": "md",
+        "type": "box"
+       }
+      ],
+      "layout": "vertical",
+      "margin": "xl",
+      "spacing": "sm",
+      "type": "box"
+     }
+    ],
+    "layout": "vertical",
+    "type": "box"
+   },
+   "footer": {
+    "contents": [
+     {
+      "action": {
+       "label": "🎵 商品介紹",
+       "text": "商品介紹",
+       "type": "message"
+      },
+      "style": "primary",
+      "type": "button"
+     },
+     {
+      "action": {
+       "label": "🏢 公司介紹",
+       "text": "公司介紹",
+       "type": "message"
+      },
+      "style": "secondary",
+      "type": "button"
+     }
+    ],
+    "layout": "vertical",
+    "spacing": "sm",
+    "type": "box"
+   },
+   "type": "bubble"
+  },
+  "type": "flex_message"
+ },
+ "tool_product": {
+  "content": "🎚️ 十頻儀 (0.1Hz~136.1Hz)\n\nPEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側按切換鍵即時切換，OLED 螢幕顯示當前頻率資訊。\n\n📋 內建 10 頻率：\n• 0.1Hz：Sub-Delta Wave\n• 0.5Hz：Deep Delta Wave\n• 4.0Hz：Theta Wave\n• 8.0Hz：Low Alpha Wave\n• 10.0Hz：Middle Alpha Wave\n• 12.0Hz：Low Beta Wave\n• 40.0Hz：Gamma Wave\n• 111Hz：Angel Frequency\n• 128Hz：Grounding Frequency (Otto 128)\n• 136.1Hz：OM Frequency\n\n⚡ 機器特色：\n• 側按頻率切換鍵，免重新燒錄即可切換頻率\n• OLED 螢幕即時顯示當前頻率與波型資訊\n• 3A 大電晶體驅動，磁場強度充足\n• LED 呼吸燈，運作狀態一目了然\n• Type-C (USB-C) 供電，接線方便\n• 銅線加強版線圈，波形純淨、總諧波失真度低\n• 每一台皆單獨確認頻率精度，微調至誤差 0.3% 以內\n• 100% 台灣設計製造，符合國家(極)低頻電磁波暴露規範\n\n📏 使用距離：\n• 有效距離約 5 公尺以內，3 公尺以內效果佳\n\n⚠️ 與人體安全距離：\n• 0.1 / 0.5 / 4.0 Hz：0 公分，可貼身使用\n• 8.0Hz：4 公分\n• 12.0Hz：5 公分\n• 40.0 / 111 / 128 / 136.1 Hz：7 公分\n\n🎯 適用：助眠、放鬆、專注提升、修行輔助、健康調理\n",
+  "type": "text_with_quick_reply"
+ },
+ "welcome": [
+  {
+   "text": "👋 您好！歡迎使用 VibPath 智能客服！\n\n我是 AI 客服阿弦，可以為您介紹產品、公司資訊或顯示服務選單。\n\n💡 提醒：若不需要 AI 回覆，可點選下方「🤖 AI開關」或輸入「AI開關」來開啟/關閉。",
+   "type": "text"
+  },
+  {
+   "altText": "VibPath 服務選單",
+   "contents": {
+    "body": {
+     "contents": [
+      {
+       "color": "#1976D2",
+       "size": "xl",
+       "text": "VibPath 智能客服 - 阿弦",
+       "type": "text",
+       "weight": "bold"
+      },
+      {
+       "color": "#666666",
+       "margin": "md",
+       "size": "md",
+       "text": "選擇您需要的服務",
+       "type": "text"
+      },
+      {
+       "margin": "xl",
+       "type": "separator"
+      },
+      {
+       "contents": [
+        {
+         "contents": [
+          {
+           "flex": 1,
+           "size": "xl",
+           "text": "🎵",
+           "type": "text"
+          },
+          {
+           "contents": [
+            {
+             "size": "md",
+             "text": "商品介紹",
+             "type": "text",
+             "weight": "bold"
+            },
+            {
+             "color": "#666666",
+             "size": "sm",
+             "text": "專業產品服務介紹",
+             "type": "text"
+            }
+           ],
+           "flex": 4,
+           "layout": "vertical",
+           "type": "box"
+          }
+         ],
+         "layout": "horizontal",
+         "paddingAll": "sm",
+         "spacing": "md",
+         "type": "box"
+        },
+        {
+         "type": "separator"
+        },
+        {
+         "contents": [
+          {
+           "flex": 1,
+           "size": "xl",
+           "text": "🏢",
+           "type": "text"
+          },
+          {
+           "contents": [
+            {
+             "size": "md",
+             "text": "公司介紹",
+             "type": "text",
+             "weight": "bold"
+            },
+            {
+             "color": "#666666",
+             "size": "sm",
+             "text": "了解 VibPath 企業資訊",
+             "type": "text"
+            }
+           ],
+           "flex": 4,
+           "layout": "vertical",
+           "type": "box"
+          }
+         ],
+         "layout": "horizontal",
+         "paddingAll": "sm",
+         "spacing": "md",
+         "type": "box"
+        },
+        {
+         "type": "separator"
+        },
+        {
+         "contents": [
+          {
+           "flex": 1,
+           "size": "xl",
+           "text": "💬",
+           "type": "text"
+          },
+          {
+           "contents": [
+            {
+             "size": "md",
+             "text": "智能客服",
+             "type": "text",
+             "weight": "bold"
+            },
+            {
+             "color": "#666666",
+             "size": "sm",
+             "text": "AI 客服為您解答產品問題",
+             "type": "text"
+            }
+           ],
+           "flex": 4,
+           "layout": "vertical",
+           "type": "box"
+          }
+         ],
+         "layout": "horizontal",
+         "paddingAll": "sm",
+         "spacing": "md",
+         "type": "box"
+        }
+       ],
+       "layout": "vertical",
+       "margin": "xl",
+       "spacing": "sm",
+       "type": "box"
+      }
+     ],
+     "layout": "vertical",
+     "type": "box"
+    },
+    "footer": {
+     "contents": [
+      {
+       "action": {
+        "label": "🎵 商品介紹",
+        "text": "商品介紹",
+        "type": "message"
+       },
+       "style": "primary",
+       "type": "button"
+      },
+      {
+       "action": {
+        "label": "🏢 公司介紹",
+        "text": "公司介紹",
+        "type": "message"
+       },
+       "style": "secondary",
+       "type": "button"
+      }
+     ],
+     "layout": "vertical",
+     "spacing": "sm",
+     "type": "box"
+    },
+    "type": "bubble"
+   },
+   "type": "flex"
+  }
+ ]
+}
