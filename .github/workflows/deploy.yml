@@ -64,3 +64,38 @@ jobs:
 
       - name: Health check
         run: curl --fail --retry 5 --retry-delay 10 "${{ steps.deploy.outputs.url }}/health"
+
+      # 只留還在接流量的 revision 與它用的映像；失敗不影響這次部署結果
+      - name: Clean up old revisions and images
+        continue-on-error: true
+        shell: bash
+        run: |
+          SERVICE="${{ env.SERVICE_NAME }}"
+          REGION="${{ env.REGION }}"
+          PROJECT="${{ env.PROJECT_ID }}"
+          AR_REPO="${REGION}-docker.pkg.dev/${PROJECT}/cloud-run-source-deploy/${SERVICE}"
+
+          SERVING=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" --format=json \
+            | jq -r '.status.traffic[].revisionName')
+          # 查詢失敗時清單會是空的，不擋下來就會把線上版本一起刪掉
+          [ -n "$SERVING" ] || { echo "no serving revisions found; skip cleanup"; exit 1; }
+          for rev in $(gcloud run revisions list --service "$SERVICE" --region "$REGION" --project "$PROJECT" --format='value(metadata.name)'); do
+            if ! grep -qx "$rev" <<<"$SERVING"; then
+              echo "delete revision $rev"
+              gcloud run revisions delete "$rev" --region "$REGION" --project "$PROJECT" --quiet
+            fi
+          done
+
+          IN_USE=$(gcloud run revisions list --service "$SERVICE" --region "$REGION" --project "$PROJECT" --format=json \
+            | jq -r '.[].spec.containers[0].image')
+          # 下面用 digest 比對，只要有一筆不是 digest 形式就比不準，寧可不刪
+          if [ -z "$IN_USE" ] || grep -qv '@sha256:' <<<"$IN_USE"; then
+            echo "cannot determine in-use image digests; skip image cleanup"
+            exit 1
+          fi
+          for digest in $(gcloud artifacts docker images list "$AR_REPO" --project "$PROJECT" --format='value(version)'); do
+            if ! grep -q "@${digest}" <<<"$IN_USE"; then
+              echo "delete image $digest"
+              gcloud artifacts docker images delete "${AR_REPO}@${digest}" --project "$PROJECT" --delete-tags --quiet
+            fi
+          done
