@@ -7,30 +7,6 @@ import sys
 from typing import Optional
 
 
-class ColoredFormatter(logging.Formatter):
-    """Custom formatter with colors for console output"""
-
-    # ANSI color codes
-    COLORS = {
-        'DEBUG': '\033[36m',      # Cyan
-        'INFO': '\033[32m',       # Green
-        'WARNING': '\033[33m',    # Yellow
-        'ERROR': '\033[31m',      # Red
-        'CRITICAL': '\033[35m',   # Magenta
-        'RESET': '\033[0m'        # Reset
-    }
-
-    def format(self, record):
-        """Format log record with colors"""
-        if record.levelname in self.COLORS:
-            record.levelname = (
-                f"{self.COLORS[record.levelname]}"
-                f"{record.levelname:8}"
-                f"{self.COLORS['RESET']}"
-            )
-        return super().format(record)
-
-
 def setup_logger(
     name: str,
     level: str = "INFO",
@@ -55,13 +31,17 @@ def setup_logger(
 
     logger.setLevel(getattr(logging, level.upper()))
 
-    # Console handler with colors
+    # 父 logger 已有 handler 時再加一個，每筆 log 會印兩次
+    if logger.parent and logger.parent.hasHandlers():
+        return logger
+
+    # Console handler
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.DEBUG)
 
     # Format: [2025-01-15 10:30:00] INFO     module_name - Message
-    console_format = ColoredFormatter(
-        fmt='[%(asctime)s] %(levelname)s %(name)s - %(message)s',
+    console_format = logging.Formatter(
+        fmt='[%(asctime)s] %(levelname)-8s %(name)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     console_handler.setFormatter(console_format)
@@ -96,6 +76,6 @@ def get_logger(name: str) -> logging.Logger:
 
 # Application-wide logger instances
 app_logger = setup_logger("vibpath_bot", level="INFO")
-ai_logger = setup_logger("vibpath_bot.ai", level="DEBUG")
+ai_logger = setup_logger("vibpath_bot.ai", level="INFO")
 db_logger = setup_logger("vibpath_bot.db", level="INFO")
 webhook_logger = setup_logger("vibpath_bot.webhook", level="INFO")

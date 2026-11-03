@@ -234,8 +234,6 @@ PEMF 脈衝電磁場產生器強化版，一台機器整合 10 種頻率，側�
             TextMessage or FlexMessage: Response message with optional quick reply
         """
         try:
-            logger.info(f"Handling postback: {postback_data} for user: {user_id}")
-
             # Special handlers for different UI actions
             if postback_data == "toggle_ai_reply":
                 # Handle AI reply toggle from Rich Menu

@@ -36,11 +36,9 @@ async def display_loading_animation(user_id: str, loading_seconds: int = 20):
     validated_seconds = max(5, min(loading_seconds, 60))
 
     try:
-        logger.info(f"Displaying loading animation for user {user_id} for {validated_seconds} seconds.")
         await line_bot_api_instance.show_loading_animation(
             ShowLoadingAnimationRequest(chat_id=user_id, loading_seconds=validated_seconds)
         )
-        logger.info(f"Loading animation started successfully for user {user_id}")
 
     except Exception as e:
         logger.error(f"An unexpected error occurred while displaying loading animation: {e}")

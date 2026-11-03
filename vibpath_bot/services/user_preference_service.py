@@ -2,6 +2,7 @@
 User Preference Service
 Integrates MongoDB and in-memory cache for user preferences
 """
+from vibpath_bot.utils.logger import db_logger as logger
 from vibpath_bot.utils.mongodb_client import mongodb_client
 from vibpath_bot.utils.user_cache import user_preferences_cache
 
@@ -25,25 +26,21 @@ class UserPreferenceService:
         # Check if MongoDB is connected
         if mongodb_client.is_connected():
             # Try MongoDB first
-            print(f"🔌 MongoDB connected, querying for user {user_id}...")
             db_status = mongodb_client.get_ai_reply_status(user_id)
 
             # Update cache with fresh data from DB
             user_preferences_cache.set(user_id, db_status)
-            print(f"✅ Got status from MongoDB for user {user_id}: AI={db_status}")
 
             return db_status
         else:
             # MongoDB not available, fallback to cache
-            print(f"⚠️ MongoDB not connected, using cache for user {user_id}...")
+            logger.warning(f"MongoDB not connected, using cache for user {user_id}")
             cached_status = user_preferences_cache.get(user_id)
 
             if cached_status is not None:
-                print(f"🎯 Cache FALLBACK for user {user_id}: AI={cached_status}")
                 return cached_status
             else:
                 # No cache available either, return default
-                print(f"⚠️ No cache available for user {user_id}, using default: AI=True")
                 return True
 
     @staticmethod
@@ -65,12 +62,11 @@ class UserPreferenceService:
         if db_success:
             # Only update cache if DB write succeeded
             user_preferences_cache.set(user_id, enabled)
-            print(f"✅ Updated both DB and cache for user {user_id}: AI={enabled}")
             return True
         else:
             # DB write failed - invalidate cache to force re-fetch from DB next time
             user_preferences_cache.invalidate(user_id)
-            print(f"❌ MongoDB write failed for user {user_id} - cache invalidated")
+            logger.error(f"MongoDB write failed for user {user_id}, cache invalidated")
             return False
 
     @staticmethod

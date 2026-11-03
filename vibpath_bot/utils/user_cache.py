@@ -74,13 +74,11 @@ class UserPreferencesCache:
         with self._lock:
             if user_id in self._cache:
                 del self._cache[user_id]
-                print(f"🗑️  Cache invalidated for user {user_id}")
 
     def clear(self):
         """Clear all cache entries"""
         with self._lock:
             self._cache.clear()
-            print("🗑️  All cache cleared")
 
     def get_stats(self) -> dict:
         """
@@ -121,8 +119,6 @@ class UserPreferencesCache:
             for user_id in expired_keys:
                 del self._cache[user_id]
 
-            if expired_keys:
-                print(f"🗑️  Cleaned up {len(expired_keys)} expired cache entries")
 
 
 # Global cache instance with 10 minutes TTL

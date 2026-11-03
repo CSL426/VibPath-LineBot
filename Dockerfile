@@ -30,4 +30,4 @@ USER app
 EXPOSE 8080
 
 # Command to run the application
-CMD exec uvicorn main:app --host=0.0.0.0 --port=${PORT:-8080}
+CMD exec uvicorn main:app --host=0.0.0.0 --port=${PORT:-8080} --no-access-log

@@ -153,7 +153,7 @@ def test_ai_text_reply_shows_loading_without_error_log(client, line_api, monkeyp
     # LINE 回 202 才是成功，舊版只認 200，每次都記一筆假的 ERROR
     loading = [body for path, _, body in line_api.calls if path == "/v2/bot/chat/loading/start"]
     assert loading == [{"chatId": USER_ID, "loadingSeconds": 60}]
-    assert "Loading animation started successfully" in caplog.text
+    assert line_api.calls[0][0] == "/v2/bot/chat/loading/start"
     assert not [r for r in caplog.records if r.levelno >= logging.ERROR]
 
     message = replies(line_api)[0]["messages"][0]
