@@ -120,6 +120,7 @@ gcloud run deploy "$SERVICE_NAME" \
     --set-env-vars="MONGODB_CLUSTER=${MONGODB_CLUSTER}" \
     --set-env-vars="MONGODB_DATABASE=${MONGODB_DATABASE}" \
     --set-env-vars="MONGODB_APP_NAME=${MONGODB_APP_NAME}" \
+    --set-env-vars="ADMIN_API_TOKEN=${ADMIN_API_TOKEN}" \
     "${DECISION_ENV_ARGS[@]}"
 
 # Get the service URL

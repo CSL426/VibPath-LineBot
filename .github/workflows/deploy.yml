@@ -61,6 +61,7 @@ jobs:
             MONGODB_DATABASE=${{ secrets.MONGODB_DATABASE }}
             MONGODB_APP_NAME=${{ secrets.MONGODB_APP_NAME }}
             DECISION_API_URL=${{ secrets.DECISION_API_URL }}
+            ADMIN_API_TOKEN=${{ secrets.ADMIN_API_TOKEN }}
 
       - name: Health check
         run: curl --fail --retry 5 --retry-delay 10 "${{ steps.deploy.outputs.url }}/health"

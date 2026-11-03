@@ -47,6 +47,9 @@ class Settings(BaseSettings):
     decision_action_min_confidence: float = Field(default=0.8, alias="DECISION_ACTION_MIN_CONFIDENCE", description="Minimum confidence for state-changing intents (AI on/off, admin commands)")
     decision_timeout_seconds: float = Field(default=3.0, alias="DECISION_TIMEOUT_SECONDS", description="Decision API request timeout")
 
+    # Bearer token for the /api/users admin endpoints (unset means all requests are rejected)
+    admin_api_token: Optional[str] = Field(default=None, alias="ADMIN_API_TOKEN", description="Admin API bearer token")
+
     # Timezone (optional)
     timezone: str = Field(default="UTC", alias="TIMEZONE", description="Application timezone")
 

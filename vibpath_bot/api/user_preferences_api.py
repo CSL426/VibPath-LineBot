@@ -2,13 +2,31 @@
 RESTful API Router for User Preferences Management
 Handles CRUD operations for user preferences
 """
-from fastapi import Request, HTTPException, APIRouter
+import hmac
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
+
+from vibpath_bot.config.env_config import settings
 from vibpath_bot.services.user_preference_service import user_preference_service
 from vibpath_bot.utils.mongodb_client import mongodb_client
 from vibpath_bot.utils.user_cache import user_preferences_cache
 
+def require_admin_token(authorization: Optional[str] = Header(default=None)):
+    """Require `Authorization: Bearer <ADMIN_API_TOKEN>`."""
+    expected = settings.admin_api_token
+    supplied = (authorization or "").removeprefix("Bearer ")
+    # 沒設定 token 時全部拒絕：部署漏設變數不能變成沒有驗證
+    if not expected or not hmac.compare_digest(supplied.encode(), expected.encode()):
+        raise HTTPException(status_code=401, detail="Unauthorized", headers={"WWW-Authenticate": "Bearer"})
+
+
 # Create router
-router = APIRouter(prefix="/api/users", tags=["user-preferences"])
+router = APIRouter(
+    prefix="/api/users",
+    tags=["user-preferences"],
+    dependencies=[Depends(require_admin_token)],
+)
 
 
 @router.get("/{user_id}/preferences")

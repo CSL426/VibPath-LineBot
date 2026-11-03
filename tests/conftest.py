@@ -15,4 +15,5 @@ os.environ.update({
     "MONGODB_PASSWORD": "",
     "MONGODB_CLUSTER": "",
     "DECISION_API_URL": "",
+    "ADMIN_API_TOKEN": "test-admin-token",
 })
