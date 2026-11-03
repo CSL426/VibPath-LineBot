@@ -35,6 +35,33 @@ BUSY_MESSAGE = "⚠️ AI 服務目前繁忙中，請稍後再試。"
 
 _S2T = OpenCC("s2t")
 
+# 模型偶爾會用的大陸用語。逐詞列出：OpenCC 的 s2twp 會連「設備→裝置」「查看→檢視」一起改
+_TAIWAN_TERMS = {
+    "視頻": "影片",
+    "軟件": "軟體",
+    "信息": "資訊",
+    "打印": "列印",
+    "內存": "記憶體",
+    "網絡": "網路",
+    "質量": "品質",
+    "屏幕": "螢幕",
+    "默認": "預設",
+    "充電寶": "行動電源",
+    "關于": "關於",
+}
+
+
+# 模型偶爾把回答方式講給客人聽，例如「這是安全問題，我直接用文字回答。」，提示詞擋不乾淨
+_META_OPENING = re.compile(
+    r"^[^。！？\n]*(?:文字(?:回答|說明|回覆)|我直接回答|依規定|(?:呼叫|使用)工具)[^。！？：:\n]*[。！？：:]?\s*"
+)
+
+
+def _strip_meta_opening(text: str) -> str:
+    """Drop a leading sentence that talks about how the reply is being given."""
+    stripped = _META_OPENING.sub("", text, count=1)
+    return stripped or text
+
 
 def _to_traditional(text: str) -> str:
     """Fix the stray simplified characters models mix in despite the prompt.
@@ -49,8 +76,10 @@ def _to_traditional(text: str) -> str:
         except UnicodeEncodeError:
             return _S2T.convert(char)
 
-    # 「于」本身在 Big5 內不會被轉，但「关于」只轉一半會變成「關于」
-    return "".join(convert(char) for char in text).replace("關于", "關於")
+    converted = "".join(convert(char) for char in text)
+    for term, taiwan_term in _TAIWAN_TERMS.items():
+        converted = converted.replace(term, taiwan_term)
+    return converted
 
 
 def _build_model():
@@ -229,7 +258,7 @@ class AIAgentService:
                     text_parts = [p.text for p in event.content.parts if hasattr(p, 'text') and p.text]
                     if text_parts:
                         raw_text = text_parts[0]
-                        clean_text = _to_traditional(self._clean_markdown(raw_text))
+                        clean_text = _strip_meta_opening(_to_traditional(self._clean_markdown(raw_text)))
                         final_response = "AI客服阿弦:\n" + clean_text
                 elif event.actions and event.actions.escalate:
                     final_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
