@@ -5,10 +5,13 @@ Manages Gemini AI agent initialization, session management, and query execution
 import os
 import json
 import re
+from anthropic import AsyncAnthropic
 from google.adk.agents import Agent
+from google.adk.models.anthropic_llm import AnthropicGenerateContentConfig, AnthropicLlm
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
+from opencc import OpenCC
 from vibpath_bot.tools.ai_tools import show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download
 from vibpath_bot.config.agent_prompts import get_agent_instruction
 from vibpath_bot.config.env_config import settings
@@ -30,6 +33,45 @@ TOOLS_WITH_HOST = {'show_company_introduction', 'show_product_catalog'}
 BUSY_MESSAGE = "⚠️ AI 服務目前繁忙中，請稍後再試。"
 
 
+_S2T = OpenCC("s2t")
+
+
+def _to_traditional(text: str) -> str:
+    """Fix the stray simplified characters models mix in despite the prompt.
+
+    Only characters outside Big5 are converted: converting whole text also rewrites
+    valid Traditional, e.g. 台→臺, 干擾→幹擾, 了解→瞭解.
+    """
+    def convert(char: str) -> str:
+        try:
+            char.encode("big5")
+            return char
+        except UnicodeEncodeError:
+            return _S2T.convert(char)
+
+    # 「于」本身在 Big5 內不會被轉，但「关于」只轉一半會變成「關于」
+    return "".join(convert(char) for char in text).replace("關于", "關於")
+
+
+def _build_model():
+    """Return (model, generate_content_config) for AI_MODEL."""
+    ai_model = os.getenv("AI_MODEL", "claude-haiku-5-5")
+    if not ai_model.startswith("claude"):
+        return ai_model, None
+
+    workspace_id = os.getenv("ANTHROPIC_WORKSPACE_ID")
+    client = AsyncAnthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        default_headers={"anthropic-workspace-id": workspace_id} if workspace_id else None,
+        timeout=30.0,
+        max_retries=1,
+    )
+    return (
+        AnthropicLlm(model=ai_model, max_tokens=2048, client=client),
+        AnthropicGenerateContentConfig(effort="low"),
+    )
+
+
 def _reply_with_tool_result(tool, args, tool_context, tool_response):
     """工具的卡片或固定文字就是給客人的回覆，不需要模型再摘要一次。"""
     tool_context.actions.skip_summarization = True
@@ -42,7 +84,7 @@ class AIAgentService:
     def __init__(self):
         """Initialize AI agent service"""
         # Initialize ADK client with AI tools
-        ai_model = os.getenv("GOOGLE_AI_MODEL", "gemini-3.5-flash-lite")
+        ai_model, generate_content_config = _build_model()
         self.root_agent = Agent(
             name="vibpath_agent",
             model=ai_model,
@@ -50,6 +92,7 @@ class AIAgentService:
             instruction=get_agent_instruction("vibpath_customer_service"),
             tools=[show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download],
             after_tool_callback=_reply_with_tool_result,
+            generate_content_config=generate_content_config,
         )
         logger.info(f"Agent '{self.root_agent.name}' created successfully")
 
@@ -152,6 +195,9 @@ class AIAgentService:
         # 拿到工具結果也要把事件讀完：提早離開的話工具回應不會寫進 session，
         # 模型會以為上一題還沒答完，之後每句話都重複呼叫同一個工具
         async for event in events:
+            if event.error_code:
+                logger.error(f"Model returned an error: {event.error_code} {event.error_message}")
+
             # Check for tool calls in multiple locations
             # Method 1: Check event.tool_calls
             if hasattr(event, 'tool_calls') and event.tool_calls:
@@ -183,7 +229,7 @@ class AIAgentService:
                     text_parts = [p.text for p in event.content.parts if hasattr(p, 'text') and p.text]
                     if text_parts:
                         raw_text = text_parts[0]
-                        clean_text = self._clean_markdown(raw_text)
+                        clean_text = _to_traditional(self._clean_markdown(raw_text))
                         final_response = "AI客服阿弦:\n" + clean_text
                 elif event.actions and event.actions.escalate:
                     final_response = f"Agent escalated: {event.error_message or 'No specific message.'}"

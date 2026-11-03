@@ -7,7 +7,7 @@ os.environ.update({
     "ChannelAccessToken": "test-channel-token",
     "GOOGLE_API_KEY": "test-google-key",
     "GOOGLE_API_KEY_FALLBACK": "",
-    "GOOGLE_AI_MODEL": "gemini-test",
+    "AI_MODEL": "gemini-test",
     "STATIC_BASE_URL": "https://csl426.github.io/VibPath-LineBot",
     "ADMIN_USER_IDS": "",
     "MONGODB_URI": "",

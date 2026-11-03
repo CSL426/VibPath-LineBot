@@ -54,7 +54,7 @@ fi
 
 # Check if required environment variables are set
 echo -e "${YELLOW}📋 Checking required environment variables...${NC}"
-REQUIRED_VARS=("ChannelSecret" "ChannelAccessToken" "GOOGLE_API_KEY")
+REQUIRED_VARS=("ChannelSecret" "ChannelAccessToken" "GOOGLE_API_KEY" "ANTHROPIC_API_KEY" "ADMIN_API_TOKEN")
 for var in "${REQUIRED_VARS[@]}"; do
     if [ -z "${!var}" ]; then
         echo -e "${RED}❌ $var is not set${NC}"
@@ -121,6 +121,8 @@ gcloud run deploy "$SERVICE_NAME" \
     --set-env-vars="MONGODB_DATABASE=${MONGODB_DATABASE}" \
     --set-env-vars="MONGODB_APP_NAME=${MONGODB_APP_NAME}" \
     --set-env-vars="ADMIN_API_TOKEN=${ADMIN_API_TOKEN}" \
+    --set-env-vars="ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" \
+    --set-env-vars="ANTHROPIC_WORKSPACE_ID=${ANTHROPIC_WORKSPACE_ID}" \
     "${DECISION_ENV_ARGS[@]}"
 
 # Get the service URL
