@@ -30,6 +30,12 @@ TOOLS_WITH_HOST = {'show_company_introduction', 'show_product_catalog'}
 BUSY_MESSAGE = "⚠️ AI 服務目前繁忙中，請稍後再試。"
 
 
+def _reply_with_tool_result(tool, args, tool_context, tool_response):
+    """工具的卡片或固定文字就是給客人的回覆，不需要模型再摘要一次。"""
+    tool_context.actions.skip_summarization = True
+    return None
+
+
 class AIAgentService:
     """Service for managing AI agent and sessions"""
 
@@ -43,6 +49,7 @@ class AIAgentService:
             description="VibPath智能客服",
             instruction=get_agent_instruction("vibpath_customer_service"),
             tools=[show_company_introduction, show_product_catalog, show_service_menu, show_product_details, show_detection_apps, show_manual_download],
+            after_tool_callback=_reply_with_tool_result,
         )
         logger.info(f"Agent '{self.root_agent.name}' created successfully")
 
@@ -140,17 +147,17 @@ class AIAgentService:
             Final response (string or dict)
         """
         final_response = "抱歉，我暫時無法處理您的請求，請稍後再試或使用快速回覆按鈕。"
+        tool_result = None
 
+        # 拿到工具結果也要把事件讀完：提早離開的話工具回應不會寫進 session，
+        # 模型會以為上一題還沒答完，之後每句話都重複呼叫同一個工具
         async for event in events:
             # Check for tool calls in multiple locations
             # Method 1: Check event.tool_calls
             if hasattr(event, 'tool_calls') and event.tool_calls:
                 for tool_call in event.tool_calls:
                     try:
-                        tool_result = self._execute_tool(tool_call, request_host)
-                        if tool_result:
-                            logger.info("Tool executed successfully via tool_calls")
-                            return tool_result
+                        tool_result = tool_result or self._execute_tool(tool_call, request_host)
                     except ToolExecutionError as e:
                         logger.error(f"Tool execution error: {e.message}")
                     except Exception as e:
@@ -161,10 +168,7 @@ class AIAgentService:
                 for part in event.content.parts:
                     if hasattr(part, 'function_call') and part.function_call:
                         try:
-                            tool_result = self._execute_tool_from_function_call(part.function_call, request_host)
-                            if tool_result:
-                                logger.info("Tool executed successfully via function_call in parts")
-                                return tool_result
+                            tool_result = tool_result or self._execute_tool_from_function_call(part.function_call, request_host)
                         except ToolExecutionError as e:
                             logger.error(f"Tool execution error: {e.message}")
                         except Exception as e:
@@ -172,6 +176,8 @@ class AIAgentService:
 
             # Check for final response
             if event.is_final_response():
+                if tool_result:
+                    break
                 if event.content and event.content.parts:
                     # Get only text parts
                     text_parts = [p.text for p in event.content.parts if hasattr(p, 'text') and p.text]
@@ -183,7 +189,7 @@ class AIAgentService:
                     final_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
                 break
 
-        return final_response
+        return tool_result or final_response
 
     def _execute_tool_from_function_call(self, function_call, request_host: str = None):
         """Execute a tool from a function_call object in content parts."""
@@ -200,7 +206,6 @@ class AIAgentService:
             logger.info(f"Executing tool: {tool_name}")
             try:
                 result = TOOL_MAP[tool_name](**args)
-                logger.debug(f"Tool '{tool_name}' executed successfully")
                 return result
             except Exception as e:
                 logger.error(f"Tool '{tool_name}' execution failed: {str(e)}", exc_info=True)

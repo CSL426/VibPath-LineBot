@@ -3,6 +3,7 @@ LINE Bot message handler for different types of responses.
 Handles text, flex messages, quick replies, and other LINE-specific features.
 """
 import logging
+import re
 from typing import Union, List, Optional
 from linebot.v3.messaging import FlexContainer, FlexMessage, TextMessage
 from ..templates.flex_templates import FlexMessageTemplates
@@ -16,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 # Intents that change state need DECISION_ACTION_MIN_CONFIDENCE
 ACTION_INTENTS = {'ai_on', 'ai_off'}
+# 決策模型曾以 0.90 信心把「講人話」判成 ai_off；會改狀態的意圖要訊息真的提到才算
+AI_TOGGLE_MENTION = re.compile(r"ai|回覆|回復|機器人")
 
 
 class MessageHandler:
@@ -230,6 +233,8 @@ class MessageHandler:
             else settings.decision_min_confidence
         )
         if confidence < min_confidence:
+            return 'general'
+        if intent in ACTION_INTENTS and not AI_TOGGLE_MENTION.search(text.lower()):
             return 'general'
         return intent
 
