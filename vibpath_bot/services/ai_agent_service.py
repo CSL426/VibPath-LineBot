@@ -7,6 +7,8 @@ import json
 import re
 from anthropic import AsyncAnthropic
 from google.adk.agents import Agent
+from google.adk.agents.context_cache_config import ContextCacheConfig
+from google.adk.apps import App
 from google.adk.models.anthropic_llm import AnthropicGenerateContentConfig, AnthropicLlm
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
@@ -131,9 +133,11 @@ class AIAgentService:
         self.active_sessions = {}
 
         # Initialize runner
+        # Claude 只快取有標記的前綴；工具與系統提示約 5K token，每則訊息都一樣。
+        # Gemini 的快取會另外建伺服器端資源，不在這裡開
+        cache_config = ContextCacheConfig() if isinstance(ai_model, AnthropicLlm) else None
         self.runner = Runner(
-            agent=self.root_agent,
-            app_name=self.app_name,
+            app=App(name=self.app_name, root_agent=self.root_agent, context_cache_config=cache_config),
             session_service=self.session_service,
         )
         logger.info(f"Runner created for agent '{self.runner.agent.name}'")

@@ -32,6 +32,17 @@ def test_default_is_haiku(monkeypatch):
     assert model.model == "claude-haiku-5-5"
 
 
+def test_claude_runner_caches_the_prompt_prefix(monkeypatch):
+    monkeypatch.setenv("AI_MODEL", "claude-haiku-5-5")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    assert service.AIAgentService().runner.context_cache_config is not None
+
+
+def test_gemini_runner_creates_no_cache(monkeypatch):
+    monkeypatch.setenv("AI_MODEL", "gemini-3.5-flash-lite")
+    assert service.AIAgentService().runner.context_cache_config is None
+
+
 def test_simplified_characters_become_traditional():
     assert service._to_traditional("这是关于磁场的问题") == "這是關於磁場的問題"
 
