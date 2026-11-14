@@ -231,6 +231,16 @@ class AIAgentService:
             if event.error_code:
                 logger.error(f"Model returned an error: {event.error_code} {event.error_message}")
 
+            # 線上確認 prompt cache 有沒有命中，只能靠這行
+            usage = event.usage_metadata
+            if usage and usage.prompt_token_count:
+                logger.info(
+                    f"Model usage: prompt={usage.prompt_token_count}"
+                    f" cache_read={usage.cached_content_token_count or 0}"
+                    f" cache_write={getattr(usage, 'cache_creation_input_tokens', None) or 0}"
+                    f" output={usage.candidates_token_count or 0}"
+                )
+
             # Check for tool calls in multiple locations
             # Method 1: Check event.tool_calls
             if hasattr(event, 'tool_calls') and event.tool_calls:
