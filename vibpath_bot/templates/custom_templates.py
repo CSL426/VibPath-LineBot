@@ -64,14 +64,14 @@ class BusinessTemplates:
                             },
                             {
                                 "type": "text",
-                                "text": "🔬 科學驗證頻率配方",
+                                "text": "🔬 專業頻率配方",
                                 "size": "sm",
                                 "color": "#34495E",
                                 "margin": "sm"
                             },
                             {
                                 "type": "text",
-                                "text": "✨ 身心靈全面平衡",
+                                "text": "✨ 助眠 · 放鬆 · 專注",
                                 "size": "sm",
                                 "color": "#34495E",
                                 "margin": "sm"
@@ -96,17 +96,17 @@ class BusinessTemplates:
         services = [
             {
                 "name": "7.83Hz 舒曼波",
-                "description": "地球基礎頻率\n放鬆身心 · 減壓體驗",
+                "description": "地球基礎頻率\n放鬆身心 · 助眠",
                 "image": "services/7.83HZ.jpg"
             },
             {
                 "name": "13頻 脈輪波",
-                "description": "大腦α波共振\n專注提升 · 創意啟發",
+                "description": "對應瑜珈脈輪系統\n冥想 · 修行輔助",
                 "image": "services/13Freq.jpg"
             },
             {
                 "name": "40Hz γ波",
-                "description": "高頻能量激活\n意識提升 · 靈性覺醒",
+                "description": "高度專注時的腦波\n輔助專注 · 學習思考",
                 "image": "services/40HZ.jpg"
             },
             {
@@ -121,7 +121,7 @@ class BusinessTemplates:
             },
             {
                 "name": "複合式頻率產生器",
-                "description": "0.5Hz + 8.0Hz 雙頻\n深層助眠 · 放鬆共振",
+                "description": "0.5Hz + 8.0Hz 雙頻\n深層助眠 · 放鬆",
                 "image": "services/CompositeFreq.png"
             },
             {
